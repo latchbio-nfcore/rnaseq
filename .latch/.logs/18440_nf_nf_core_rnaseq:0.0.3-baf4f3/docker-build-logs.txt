@@ -62,48 +62,48 @@ Step 9/15 : run apt-get update && apt-get install -y default-jre-headless
 Step 10/15 : copy . /root/
 
 
- ---> 8a13e1618749
+ ---> c0c3141e9710
 
 Step 11/15 : run ln -s /root/.latch/bin/nextflow /root/nextflow
 
 
- ---> Running in b2d1514dac01
+ ---> Running in 96f80ec78b32
 
 [91mln -s /root/.latch/bin/nextflow /root/nextflow
 [0m
- ---> 0ce86fec3325
+ ---> cff024fa1423
 
 Step 12/15 : run ln -s /root/.latch/.nextflow /root/.nextflow
 
 
- ---> Running in c3236712cbdd
+ ---> Running in c8d6ea36621a
 
 [91mln -s /root/.latch/.nextflow /root/.nextflow
 [0m
- ---> 10ee95ec90c7
+ ---> eab5d8458871
 
 Step 13/15 : arg tag
 
 
- ---> Running in ec9444fac266
+ ---> Running in 7b6e5f579db8
 
- ---> c605fb002a27
+ ---> e730630b6f49
 
 Step 14/15 : env FLYTE_INTERNAL_IMAGE $tag
 
 
- ---> Running in 662c81f6ecc9
+ ---> Running in 6ffa460c6652
 
- ---> b3513b458679
+ ---> be5daf944021
 
 Step 15/15 : workdir /root
 
 
- ---> Running in 334609b9510a
+ ---> Running in 319a9728b243
 
- ---> 63c17ea6095a
+ ---> 25ab0e71be0d
 
-Successfully built 63c17ea6095a
+Successfully built 25ab0e71be0d
 
-Successfully tagged 812206152185.dkr.ecr.us-west-2.amazonaws.com/35597_nf_nf_core_rnaseq:0.1.0-5ae4f8
+Successfully tagged 812206152185.dkr.ecr.us-west-2.amazonaws.com/18440_nf_nf_core_rnaseq:0.0.3-baf4f3
 

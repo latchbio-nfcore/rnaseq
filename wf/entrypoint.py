@@ -19,9 +19,13 @@ from latch_cli.nextflow.utils import _get_execution_name
 from latch_cli.nextflow.workflow import get_flag
 from latch_cli.services.register.utils import import_module_by_path
 from latch_cli.utils import urljoins
+from wf.differential_gene_expression import dge
 
 meta = Path("latch_metadata") / "__init__.py"
 import_module_by_path(meta)
+
+with open("README.md", "r") as readme_file:
+    readme_contents = readme_file.read()
 
 
 @dataclass
@@ -30,6 +34,7 @@ class SampleSheet:
     fastq_1: LatchFile
     fastq_2: Optional[LatchFile]
     strandedness: str
+    differential_condition: Optional[str]
 
 
 class Reference_Type(Enum):
@@ -37,7 +42,7 @@ class Reference_Type(Enum):
     mus_musculus = "Mus musculus (RefSeq GRCm39)"
     rattus_norvegicus = "Rattus norvegicus (RefSeq GRCr8)"
     # drosophila_melanogaster = "Drosophila melanogaster (RefSeq Release_6_plus_ISO1_MT)"
-    rhesus_macaque = "Macaca mulatta (RefSeq rheMac10/Mmul_10)"
+    # rhesus_macaque = "Macaca mulatta (RefSeq rheMac10/Mmul_10)"
     saccharomyces_cerevisiae = "Saccharomyces cerevisiae (RefSeq R64)"
 
 
@@ -82,6 +87,12 @@ class SalmonQuantLibType(Enum):
 class PseudoAligner(Enum):
     salmon = "salmon"
     kallisto = "kallisto"
+
+
+class DifferentialGeneTool(Enum):
+    deseq2 = "deseq2"
+    # sleuth = "sleuth"
+    # edgeR = "edgeR"
 
 
 def get_flag_defaults(name: str, val: Any, default_val: Optional[Any]):
@@ -138,7 +149,6 @@ def initialize() -> str:
 def nextflow_runtime(
     pvc_name: str,
     input: typing.List[SampleSheet],
-    condition_file: typing.Optional[LatchFile],
     run_name: str,
     outdir: LatchOutputDir,
     genome_source: str,
@@ -172,7 +182,6 @@ def nextflow_runtime(
     email: typing.Optional[str],
     multiqc_title: typing.Optional[str],
     latch_genome: Reference_Type,
-    # igenome: Reference_Type,
     hisat2_build_memory: int,
     gencode: bool,
     gtf_extra_attributes: str,
@@ -223,7 +232,7 @@ def nextflow_runtime(
     skip_deseq2_qc: bool,
     skip_multiqc: bool,
     skip_qc: bool,
-) -> None:
+) -> str:
     try:
         shared_dir = Path("/nf-workdir")
 
@@ -271,25 +280,25 @@ def nextflow_runtime(
         if genome_source == "latch_genome_source":
             cmd += [
                 "--fasta",
-                f"latch:///bulk-nfcore/references/{latch_genome.name}/{latch_genome.name}.genomic.fna",
+                f"s3://latch-public/nf-core/rnaseq/{latch_genome.name}/{latch_genome.name}.genomic.fna",
                 "--gtf",
-                f"latch:///bulk-nfcore/references/{latch_genome.name}/{latch_genome.name}.genomic.gtf",
+                f"s3://latch-public/nf-core/rnaseq/{latch_genome.name}/{latch_genome.name}.genomic.gtf",
                 "--gene_bed",
-                f"latch:///bulk-nfcore/references/{latch_genome.name}/{latch_genome.name}.genomic.filtered.bed",
+                f"s3://latch-public/nf-core/rnaseq/{latch_genome.name}/{latch_genome.name}.genomic.filtered.bed",
                 "--transcript_fasta",
-                f"latch:///bulk-nfcore/references/{latch_genome.name}/{latch_genome.name}.genomic.transcripts.fa",
+                f"s3://latch-public/nf-core/rnaseq/{latch_genome.name}/{latch_genome.name}.genomic.transcripts.fa",
                 "--splicesites",
-                f"latch:///bulk-nfcore/references/{latch_genome.name}/index/{latch_genome.name}.genomic.filtered.splice_sites.txt",
+                f"s3://latch-public/nf-core/rnaseq/{latch_genome.name}/index/{latch_genome.name}.genomic.filtered.splice_sites.txt",
                 "--star_index",
-                f"latch:///bulk-nfcore/references/{latch_genome.name}/index/star.tar.gz",
+                f"s3://latch-public/nf-core/rnaseq/{latch_genome.name}/index/star.tar.gz",
                 "--hisat2_index",
-                f"latch:///bulk-nfcore/references/{latch_genome.name}/index/hisat2.tar.gz",
+                f"s3://latch-public/nf-core/rnaseq/{latch_genome.name}/index/hisat2.tar.gz",
                 "--rsem_index",
-                f"latch:///bulk-nfcore/references/{latch_genome.name}/index/rsem.tar.gz",
+                f"s3://latch-public/nf-core/rnaseq/{latch_genome.name}/index/rsem.tar.gz",
                 "--salmon_index",
-                f"latch:///bulk-nfcore/references/{latch_genome.name}/index/salmon.tar.gz",
+                f"s3://latch-public/nf-core/rnaseq/{latch_genome.name}/index/salmon.tar.gz",
                 "--kallisto_index",
-                f"latch:///bulk-nfcore/references/{latch_genome.name}/index/kallisto",
+                f"s3://latch-public/nf-core/rnaseq/{latch_genome.name}/index/kallisto",
             ]
 
         cmd += [
@@ -398,7 +407,7 @@ def nextflow_runtime(
             *get_flag_defaults("skip_qc", skip_qc, False),
             *get_flag_defaults("email", email, None),
             *get_flag_defaults("multiqc_title", multiqc_title, None),
-            *get_flag_defaults("condition_file", condition_file, None),
+            # *get_flag_defaults("condition_file", condition_file, None),
         ]
 
         print("Launching Nextflow Runtime")
@@ -418,6 +427,9 @@ def nextflow_runtime(
             check=True,
             cwd=str(shared_dir),
         )
+
+        return run_name
+
     finally:
         print()
 
@@ -439,7 +451,6 @@ def nextflow_runtime(
 @workflow(metadata._nextflow_metadata)
 def nf_nf_core_rnaseq(
     input: typing.List[SampleSheet],
-    condition_file: typing.Optional[LatchFile],
     run_name: str,
     genome_source: str,
     fasta: typing.Optional[LatchFile],
@@ -471,9 +482,9 @@ def nf_nf_core_rnaseq(
     extra_kallisto_quant_args: typing.Optional[str],
     email: typing.Optional[str],
     multiqc_title: typing.Optional[str],
+    run_latch_dge: Optional[DifferentialGeneTool] = None,
     outdir: LatchOutputDir = LatchOutputDir("latch:///Bulk_RNAseq"),
     latch_genome: Reference_Type = Reference_Type.homo_sapiens,
-    # igenome: Reference_Type = Reference_Type.homo_sapiens,
     hisat2_build_memory: int = 200,
     gencode: bool = False,
     gtf_extra_attributes: str = "gene_name",
@@ -524,23 +535,21 @@ def nf_nf_core_rnaseq(
     skip_deseq2_qc: bool = False,
     skip_multiqc: bool = False,
     skip_qc: bool = False,
-) -> None:
+) -> Optional[LatchOutputDir]:
     """
     nf-core/rnaseq
 
-    Sample Descriptions
-    """
+    {readme_contents}
+    """.format(readme_contents=readme_contents)
 
     pvc_name: str = initialize()
-    nextflow_runtime(
+    run_name = nextflow_runtime(
         pvc_name=pvc_name,
         input=input,
-        condition_file=condition_file,
         run_name=run_name,
         outdir=outdir,
         genome_source=genome_source,
         latch_genome=latch_genome,
-        # igenome=igenome,
         fasta=fasta,
         gtf=gtf,
         gff=gff,
@@ -620,4 +629,11 @@ def nf_nf_core_rnaseq(
         skip_qc=skip_qc,
         email=email,
         multiqc_title=multiqc_title,
+    )
+
+    return dge(
+        input=input,
+        run_name=run_name,
+        run_latch_dge=run_latch_dge,
+        outdir=outdir,
     )

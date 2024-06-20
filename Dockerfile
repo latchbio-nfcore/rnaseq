@@ -19,9 +19,23 @@ env LANG='en_US.UTF-8'
 
 arg DEBIAN_FRONTEND=noninteractive
 
+# Get secure apt key for CRAN
+run apt-get update --yes && \
+    apt-get install --yes dirmngr apt-transport-https gnupg2 && \
+    gpg --keyserver keyserver.ubuntu.com --recv-key '95C0FAF38DB3CCAD0C080A7BDC78B2DDEABC47B7' && \
+    gpg --armor --export '95C0FAF38DB3CCAD0C080A7BDC78B2DDEABC47B7' | tee /etc/apt/trusted.gpg.d/cran_debian_key.asc
+
+# install R requirements
+run echo "deb http://cloud.r-project.org/bin/linux/debian bullseye-cran40/" | tee /etc/apt/sources.list.d/cran.list && \
+    apt-get update --yes && \
+    DEBIAN_FRONTEND=noninteractive apt-get install --yes r-base r-base-dev libxml2-dev libcurl4-openssl-dev libssl-dev wget
+
+COPY latch_environment.R /tmp/docker-build/work/latch_environment.R
+RUN Rscript /tmp/docker-build/work/latch_environment.R
+
 # Latch SDK
 # DO NOT REMOVE
-run pip install latch==2.46.6
+run pip install latch==2.46.7
 run mkdir /opt/latch
 run apt-get update && apt-get install -y default-jre-headless
 

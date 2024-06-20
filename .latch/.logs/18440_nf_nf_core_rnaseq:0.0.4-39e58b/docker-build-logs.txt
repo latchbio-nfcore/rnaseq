@@ -1,0 +1,2038 @@
+Step 1/19 : from 812206152185.dkr.ecr.us-west-2.amazonaws.com/latch-base:fe0b-main
+
+
+ ---> f23c37efcd53
+
+Step 2/19 : workdir /tmp/docker-build/work/
+
+
+ ---> Using cache
+
+ ---> dd16c2d4f334
+
+Step 3/19 : shell [     "/usr/bin/env", "bash",     "-o", "errexit",     "-o", "pipefail",     "-o", "nounset",     "-o", "verbose",     "-o", "errtrace",     "-O", "inherit_errexit",     "-O", "shift_verbose",     "-c" ]
+
+
+ ---> Using cache
+
+ ---> aaada0c60239
+
+Step 4/19 : env TZ='Etc/UTC'
+
+
+ ---> Using cache
+
+ ---> d6869bc03deb
+
+Step 5/19 : env LANG='en_US.UTF-8'
+
+
+ ---> Using cache
+
+ ---> ae2f7ca65880
+
+Step 6/19 : arg DEBIAN_FRONTEND=noninteractive
+
+
+ ---> Using cache
+
+ ---> f029b3f36a86
+
+Step 7/19 : run apt-get update --yes &&     apt-get install --yes dirmngr apt-transport-https gnupg2 &&     gpg --keyserver keyserver.ubuntu.com --recv-key '95C0FAF38DB3CCAD0C080A7BDC78B2DDEABC47B7' &&     gpg --armor --export '95C0FAF38DB3CCAD0C080A7BDC78B2DDEABC47B7' | tee /etc/apt/trusted.gpg.d/cran_debian_key.asc
+
+
+ ---> Using cache
+
+ ---> 37cda4773e06
+
+Step 8/19 : run echo "deb http://cloud.r-project.org/bin/linux/debian bullseye-cran40/" | tee /etc/apt/sources.list.d/cran.list &&     apt-get update --yes &&     DEBIAN_FRONTEND=noninteractive apt-get install --yes r-base r-base-dev libxml2-dev libcurl4-openssl-dev libssl-dev wget
+
+
+ ---> Using cache
+
+ ---> e386aca7bd1c
+
+Step 9/19 : COPY latch_environment.R /tmp/docker-build/work/latch_environment.R
+
+
+ ---> 570385860621
+
+Step 10/19 : RUN Rscript /tmp/docker-build/work/latch_environment.R
+
+
+ ---> Running in 0bd55d441388
+
+[91mRscript /tmp/docker-build/work/latch_environment.R
+[0m
+[91mInstalling package into ‘/usr/local/lib/R/site-library’
+(as ‘lib’ is unspecified)
+[0m
+[91mtrying URL 'https://cloud.r-project.org/src/contrib/BiocManager_1.30.23.tar.gz'
+[0m
+[91mContent type 'application/x-gzip' length 589753 bytes (575 KB)
+==[0m
+[91m==[0m
+[91m=[0m
+[91m=[0m
+[91m==[0m
+[91m=[0m
+[91m==[0m
+[91m=[0m
+[91m==[0m
+[91m==[0m
+[91m=[0m
+[91m==[0m
+[91m=[0m
+[91m===[0m
+[91m===[0m
+[91m===[0m
+[91m==[0m
+[91m===[0m
+[91m===[0m
+[91m===[0m
+[91m==[0m
+[91m===[0m
+[91m===[0m
+[91m==
+downloaded 575 KB
+
+[0m
+[91m* installing *source* package ‘BiocManager’ ...
+[0m
+[91m** package ‘BiocManager’ successfully unpacked and MD5 sums checked
+[0m
+[91m** using staged installation
+[0m
+[91m** R
+[0m
+[91m** inst
+[0m
+[91m** byte-compile and prepare package for lazy loading
+[0m
+[91m** help
+[0m
+[91m*** installing help indices
+[0m
+[91m** building package indices
+[0m
+[91m** installing vignettes
+[0m
+[91m** testing if installed package can be loaded from temporary location
+[0m
+[91m** testing if installed package can be loaded from final location
+[0m
+[91m** testing if installed package keeps a record of temporary installation path
+[0m
+[91m* DONE (BiocManager)
+[0m
+[91m
+The downloaded source packages are in
+	‘/tmp/RtmpISrMNi/downloaded_packages’
+[0m
+[91m'getOption("repos")' replaces Bioconductor standard repositories, see
+'help("repositories", package = "BiocManager")' for details.
+Replacement repositories:
+    CRAN: https://cloud.r-project.org
+[0m
+[91mBioconductor version 3.18 (BiocManager 1.30.23), R 4.3.2 (2023-10-31)
+[0m
+[91mInstalling package(s) 'BiocVersion', 'DESeq2'
+[0m
+[91malso installing the dependencies ‘bitops’, ‘formatR’, ‘colorspace’, ‘utf8’, ‘RCurl’, ‘GenomeInfoDbData’, ‘zlibbioc’, ‘abind’, ‘crayon’, ‘SparseArray’, ‘lambda.r’, ‘futile.options’, ‘farver’, ‘labeling’, ‘munsell’, ‘R6’, ‘RColorBrewer’, ‘viridisLite’, ‘fansi’, ‘magrittr’, ‘pillar’, ‘pkgconfig’, ‘GenomeInfoDb’, ‘XVector’, ‘S4Arrays’, ‘DelayedArray’, ‘futile.logger’, ‘snow’, ‘BH’, ‘cpp11’, ‘cli’, ‘glue’, ‘gtable’, ‘isoband’, ‘lifecycle’, ‘rlang’, ‘scales’, ‘tibble’, ‘vctrs’, ‘withr’, ‘S4Vectors’, ‘IRanges’, ‘GenomicRanges’, ‘SummarizedExperiment’, ‘BiocGenerics’, ‘Biobase’, ‘BiocParallel’, ‘matrixStats’, ‘locfit’, ‘ggplot2’, ‘Rcpp’, ‘MatrixGenerics’, ‘RcppArmadillo’
+
+[0m
+[91mtrying URL 'https://cloud.r-project.org/src/contrib/bitops_1.0-7.tar.gz'
+[0m
+[91mContent type 'application/x-gzip' length 10809 bytes (10 KB)
+==================================================
+downloaded 10 KB
+
+[0m
+[91mtrying URL 'https://cloud.r-project.org/src/contrib/formatR_1.14.tar.gz'
+[0m
+[91mContent type 'application/x-gzip' length 96077 bytes (93 KB)
+================[0m
+[91m=========[0m
+[91m========[0m
+[91m=========[0m
+[91m========
+downloaded 93 KB
+
+[0m
+[91mtrying URL 'https://cloud.r-project.org/src/contrib/colorspace_2.1-0.tar.gz'
+[0m
+[91mContent type 'application/x-gzip' length 2116339 bytes (2.0 MB)
+[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m==[0m
+[91m=[0m
+[91m==[0m
+[91m=[0m
+[91m==[0m
+[91m=[0m
+[91m==[0m
+[91m==[0m
+[91m=[0m
+[91m=[0m
+[91m==[0m
+[91m=[0m
+[91m==[0m
+[91m=[0m
+[91m===
+downloaded 2.0 MB
+
+[0m
+[91mtrying URL 'https://cloud.r-project.org/src/contrib/utf8_1.2.4.tar.gz'
+[0m
+[91mContent type 'application/x-gzip' length 241081 bytes (235 KB)
+===[0m
+[91m===[0m
+[91m====[0m
+[91m===[0m
+[91m===[0m
+[91m====[0m
+[91m===[0m
+[91m====[0m
+[91m===[0m
+[91m===[0m
+[91m====[0m
+[91m===[0m
+[91m====[0m
+[91m===[0m
+[91m===
+downloaded 235 KB
+
+[0m
+[91mtrying URL 'https://cloud.r-project.org/src/contrib/RCurl_1.98-1.14.tar.gz'
+[0m
+[91mContent type 'application/x-gzip' length 731307 bytes (714 KB)
+===[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m==[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m==[0m
+[91m=[0m
+[91m==[0m
+[91m=[0m
+[91m==[0m
+[91m==[0m
+[91m==[0m
+[91m===[0m
+[91m==[0m
+[91m==[0m
+[91m==[0m
+[91m===[0m
+[91m==[0m
+[91m==[0m
+[91m=[0m
+[91m==[0m
+[91m====
+downloaded 714 KB
+
+[0m
+[91mtrying URL 'https://bioconductor.org/packages/3.18/data/annotation/src/contrib/GenomeInfoDbData_1.2.11.tar.gz'
+[0m
+[91mContent type 'application/gzip' length 12284235 bytes (11.7 MB)
+[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=
+downloaded 11.7 MB
+
+[0m
+[91mtrying URL 'https://bioconductor.org/packages/3.18/bioc/src/contrib/zlibbioc_1.48.2.tar.gz'
+[0m
+[91mContent type 'application/gzip' length 382668 bytes (373 KB)
+[0m
+[91m==[0m
+[91m==[0m
+[91m==[0m
+[91m==[0m
+[91m==[0m
+[91m==[0m
+[91m==[0m
+[91m===[0m
+[91m==[0m
+[91m==[0m
+[91m==[0m
+[91m==[0m
+[91m==[0m
+[91m==[0m
+[91m===[0m
+[91m==[0m
+[91m==[0m
+[91m==[0m
+[91m==[0m
+[91m==[0m
+[91m==[0m
+[91m===[0m
+[91m==[0m
+[91m=
+downloaded 373 KB
+
+[0m
+[91mtrying URL 'https://cloud.r-project.org/src/contrib/abind_1.4-5.tar.gz'
+[0m
+[91mContent type 'application/x-gzip' length 21810 bytes (21 KB)
+====================================[0m
+[91m==============
+downloaded 21 KB
+
+[0m
+[91mtrying URL 'https://cloud.r-project.org/src/contrib/crayon_1.5.2.tar.gz'
+[0m
+[91mContent type 'application/x-gzip' length 40567 bytes (39 KB)
+=======================================[0m
+[91m===========
+downloaded 39 KB
+
+[0m
+[91mtrying URL 'https://bioconductor.org/packages/3.18/bioc/src/contrib/SparseArray_1.2.4.tar.gz'
+[0m
+[91mContent type 'application/gzip' length 367778 bytes (359 KB)
+[0m
+[91m==[0m
+[91m==[0m
+[91m==[0m
+[91m==[0m
+[91m===[0m
+[91m==[0m
+[91m==[0m
+[91m==[0m
+[91m===[0m
+[91m==[0m
+[91m==[0m
+[91m==[0m
+[91m==[0m
+[91m===[0m
+[91m==[0m
+[91m==[0m
+[91m==[0m
+[91m===[0m
+[91m==[0m
+[91m==[0m
+[91m==[0m
+[91m===[0m
+[91m=
+downloaded 359 KB
+
+[0m
+[91mtrying URL 'https://cloud.r-project.org/src/contrib/lambda.r_1.2.4.tar.gz'
+[0m
+[91mContent type 'application/x-gzip' length 25666 bytes (25 KB)
+==================================================
+downloaded 25 KB
+
+[0m
+[91mtrying URL 'https://cloud.r-project.org/src/contrib/futile.options_1.0.1.tar.gz'
+[0m
+[91mContent type 'application/x-gzip' length 3919 bytes
+==================================================
+downloaded 3919 bytes
+
+[0m
+[91mtrying URL 'https://cloud.r-project.org/src/contrib/farver_2.1.2.tar.gz'
+[0m
+[91mContent type 'application/x-gzip' length 1275981 bytes (1.2 MB)
+[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m==[0m
+[91m=[0m
+[91m=[0m
+[91m==[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m==[0m
+[91m=[0m
+[91m=[0m
+[91m==[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m==[0m
+[91m=[0m
+[91m===[0m
+[91m=[0m
+[91m===[0m
+[91m===[0m
+[91m==
+downloaded 1.2 MB
+
+[0m
+[91mtrying URL 'https://cloud.r-project.org/src/contrib/labeling_0.4.3.tar.gz'
+[0m
+[91mContent type 'application/x-gzip' length 10167 bytes
+==================================================
+downloaded 10167 bytes
+
+[0m
+[91mtrying URL 'https://cloud.r-project.org/src/contrib/munsell_0.5.1.tar.gz'
+[0m
+[91mContent type 'application/x-gzip' length 182310 bytes (178 KB)
+========[0m
+[91m=====[0m
+[91m====[0m
+[91m=====[0m
+[91m====[0m
+[91m=====[0m
+[91m====[0m
+[91m=====[0m
+[91m====[0m
+[91m======
+downloaded 178 KB
+
+[0m
+[91mtrying URL 'https://cloud.r-project.org/src/contrib/R6_2.5.1.tar.gz'
+[0m
+[91mContent type 'application/x-gzip' length 63422 bytes (61 KB)
+=========================[0m
+[91m=============[0m
+[91m============
+downloaded 61 KB
+
+[0m
+[91mtrying URL 'https://cloud.r-project.org/src/contrib/RColorBrewer_1.1-3.tar.gz'
+[0m
+[91mContent type 'application/x-gzip' length 11638 bytes (11 KB)
+==================================================
+downloaded 11 KB
+
+[0m
+[91mtrying URL 'https://cloud.r-project.org/src/contrib/viridisLite_0.4.2.tar.gz'
+[0m
+[91mContent type 'application/x-gzip' length 1267121 bytes (1.2 MB)
+=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m==[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m==[0m
+[91m=[0m
+[91m=[0m
+[91m==[0m
+[91m==[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m==[0m
+[91m=[0m
+[91m=[0m
+[91m==[0m
+[91m=[0m
+[91m=[0m
+[91m==[0m
+[91m=[0m
+[91m===[0m
+[91m===[0m
+[91m===
+downloaded 1.2 MB
+
+[0m
+[91mtrying URL 'https://cloud.r-project.org/src/contrib/fansi_1.0.6.tar.gz'
+[0m
+[91mContent type 'application/x-gzip' length 482480 bytes (471 KB)
+=[0m
+[91m==[0m
+[91m==[0m
+[91m=[0m
+[91m==[0m
+[91m==[0m
+[91m=[0m
+[91m==[0m
+[91m==[0m
+[91m=====[0m
+[91m===[0m
+[91m==[0m
+[91m==[0m
+[91m=[0m
+[91m====[0m
+[91m===[0m
+[91m===[0m
+[91m====[0m
+[91m===[0m
+[91m====[0m
+[91m=
+downloaded 471 KB
+
+[0m
+[91mtrying URL 'https://cloud.r-project.org/src/contrib/magrittr_2.0.3.tar.gz'
+[0m
+[91mContent type 'application/x-gzip' length 267074 bytes (260 KB)
+==[0m
+[91m====[0m
+[91m===[0m
+[91m===[0m
+[91m===[0m
+[91m===[0m
+[91m===[0m
+[91m===[0m
+[91m===[0m
+[91m===[0m
+[91m======[0m
+[91m===[0m
+[91m===[0m
+[91m===[0m
+[91m===[0m
+[91m==
+downloaded 260 KB
+
+[0m
+[91mtrying URL 'https://cloud.r-project.org/src/contrib/pillar_1.9.0.tar.gz'
+[0m
+[91mContent type 'application/x-gzip' length 444528 bytes (434 KB)
+=[0m
+[91m==[0m
+[91m==[0m
+[91m==[0m
+[91m==[0m
+[91m==[0m
+[91m=[0m
+[91m==[0m
+[91m====[0m
+[91m==[0m
+[91m==[0m
+[91m=[0m
+[91m==[0m
+[91m==[0m
+[91m==[0m
+[91m==[0m
+[91m===[0m
+[91m====[0m
+[91m====[0m
+[91m===[0m
+[91m=====
+downloaded 434 KB
+
+[0m
+[91mtrying URL 'https://cloud.r-project.org/src/contrib/pkgconfig_2.0.3.tar.gz'
+[0m
+[91mContent type 'application/x-gzip' length 6080 bytes
+==================================================
+downloaded 6080 bytes
+
+[0m
+[91mtrying URL 'https://bioconductor.org/packages/3.18/bioc/src/contrib/GenomeInfoDb_1.38.8.tar.gz'
+[0m
+[91mContent type 'application/gzip' length 3581806 bytes (3.4 MB)
+[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=
+downloaded 3.4 MB
+
+[0m
+[91mtrying URL 'https://bioconductor.org/packages/3.18/bioc/src/contrib/XVector_0.42.0.tar.gz'
+[0m
+[91mContent type 'application/gzip' length 67825 bytes (66 KB)
+[0m
+[91m============[0m
+[91m============[0m
+[91m============[0m
+[91m============[0m
+[91m==
+downloaded 66 KB
+
+[0m
+[91mtrying URL 'https://bioconductor.org/packages/3.18/bioc/src/contrib/S4Arrays_1.2.1.tar.gz'
+[0m
+[91mContent type 'application/gzip' length 282089 bytes (275 KB)
+[0m
+[91m==[0m
+[91m===[0m
+[91m===[0m
+[91m===[0m
+[91m===[0m
+[91m===[0m
+[91m===[0m
+[91m===[0m
+[91m===[0m
+[91m===[0m
+[91m==[0m
+[91m===[0m
+[91m===[0m
+[91m===[0m
+[91m===[0m
+[91m===[0m
+[91m===[0m
+[91m=
+downloaded 275 KB
+
+[0m
+[91mtrying URL 'https://bioconductor.org/packages/3.18/bioc/src/contrib/DelayedArray_0.28.0.tar.gz'
+[0m
+[91mContent type 'application/gzip' length 624166 bytes (609 KB)
+=[0m
+[91m=[0m
+[91m=[0m
+[91m==[0m
+[91m=[0m
+[91m=[0m
+[91m==[0m
+[91m=[0m
+[91m=[0m
+[91m==[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m==[0m
+[91m=[0m
+[91m=[0m
+[91m==[0m
+[91m=[0m
+[91m=[0m
+[91m==[0m
+[91m=[0m
+[91m=[0m
+[91m==[0m
+[91m=[0m
+[91m=[0m
+[91m==[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m==[0m
+[91m=[0m
+[91m=[0m
+[91m==[0m
+[91m=[0m
+[91m=[0m
+[91m==[0m
+[91m=[0m
+[91m==
+downloaded 609 KB
+
+[0m
+[91mtrying URL 'https://cloud.r-project.org/src/contrib/futile.logger_1.4.3.tar.gz'
+[0m
+[91mContent type 'application/x-gzip' length 17456 bytes (17 KB)
+==================================================
+downloaded 17 KB
+
+[0m
+[91mtrying URL 'https://cloud.r-project.org/src/contrib/snow_0.4-4.tar.gz'
+[0m
+[91mContent type 'application/x-gzip' length 20464 bytes (19 KB)
+==================================================
+downloaded 19 KB
+
+[0m
+[91mtrying URL 'https://cloud.r-project.org/src/contrib/BH_1.84.0-0.tar.gz'
+[0m
+[91mContent type 'application/x-gzip' length 14017751 bytes (13.4 MB)
+[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=====[0m
+[91m=====[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=
+downloaded 13.4 MB
+
+[0m
+[91mtrying URL 'https://cloud.r-project.org/src/contrib/cpp11_0.4.7.tar.gz'
+[0m
+[91mContent type 'application/x-gzip' length 285779 bytes (279 KB)
+=====[0m
+[91m===[0m
+[91m===[0m
+[91m===[0m
+[91m===[0m
+[91m==[0m
+[91m===[0m
+[91m===[0m
+[91m===[0m
+[91m===[0m
+[91m===[0m
+[91m===[0m
+[91m===[0m
+[91m==[0m
+[91m===[0m
+[91m===[0m
+[91m==
+downloaded 279 KB
+
+[0m
+[91mtrying URL 'https://cloud.r-project.org/src/contrib/cli_3.6.2.tar.gz'
+[0m
+[91mContent type 'application/x-gzip' length 569771 bytes (556 KB)
+==[0m
+[91m==[0m
+[91m=[0m
+[91m==[0m
+[91m=[0m
+[91m==[0m
+[91m=[0m
+[91m=[0m
+[91m==[0m
+[91m===[0m
+[91m=[0m
+[91m==[0m
+[91m=[0m
+[91m=[0m
+[91m==[0m
+[91m=[0m
+[91m==[0m
+[91m===[0m
+[91m==[0m
+[91m==[0m
+[91m=[0m
+[91m===[0m
+[91m===[0m
+[91m===[0m
+[91m===[0m
+[91m===
+downloaded 556 KB
+
+[0m
+[91mtrying URL 'https://cloud.r-project.org/src/contrib/glue_1.7.0.tar.gz'
+[0m
+[91mContent type 'application/x-gzip' length 105420 bytes (102 KB)
+=======[0m
+[91m========[0m
+[91m========[0m
+[91m=======[0m
+[91m========[0m
+[91m============
+downloaded 102 KB
+
+[0m
+[91mtrying URL 'https://cloud.r-project.org/src/contrib/gtable_0.3.5.tar.gz'
+[0m
+[91mContent type 'application/x-gzip' length 130227 bytes (127 KB)
+============[0m
+[91m======[0m
+[91m======[0m
+[91m=======[0m
+[91m======[0m
+[91m======[0m
+[91m=======
+downloaded 127 KB
+
+[0m
+[91mtrying URL 'https://cloud.r-project.org/src/contrib/isoband_0.2.7.tar.gz'
+[0m
+[91mContent type 'application/x-gzip' length 1591812 bytes (1.5 MB)
+[0m
+[91m=[0m
+[91m=[0m
+[91m=======================[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m==[0m
+[91m==[0m
+[91m==[0m
+[91m==[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m==[0m
+[91m==[0m
+[91m=
+downloaded 1.5 MB
+
+[0m
+[91mtrying URL 'https://cloud.r-project.org/src/contrib/lifecycle_1.0.4.tar.gz'
+[0m
+[91mContent type 'application/x-gzip' length 107656 bytes (105 KB)
+=======[0m
+[91m========[0m
+[91m=======[0m
+[91m========[0m
+[91m=======[0m
+[91m========[0m
+[91m=====
+downloaded 105 KB
+
+[0m
+[91mtrying URL 'https://cloud.r-project.org/src/contrib/rlang_1.1.4.tar.gz'
+[0m
+[91mContent type 'application/x-gzip' length 767041 bytes (749 KB)
+==[0m
+[91m=[0m
+[91m==[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m===[0m
+[91m==[0m
+[91m=[0m
+[91m==[0m
+[91m==[0m
+[91m==[0m
+[91m==[0m
+[91m==[0m
+[91m==[0m
+[91m==[0m
+[91m===[0m
+[91m==[0m
+[91m==[0m
+[91m==[0m
+[91m=[0m
+[91m==[0m
+[91m==[0m
+[91m===[0m
+[91m=
+downloaded 749 KB
+
+[0m
+[91mtrying URL 'https://cloud.r-project.org/src/contrib/scales_1.3.0.tar.gz'
+[0m
+[91mContent type 'application/x-gzip' length 302544 bytes (295 KB)
+==[0m
+[91m===[0m
+[91m===[0m
+[91m==[0m
+[91m===[0m
+[91m===[0m
+[91m==[0m
+[91m===[0m
+[91m===[0m
+[91m==[0m
+[91m===[0m
+[91m===[0m
+[91m===[0m
+[91m==[0m
+[91m===[0m
+[91m===[0m
+[91m===[0m
+[91m==[0m
+[91m==
+downloaded 295 KB
+
+[0m
+[91mtrying URL 'https://cloud.r-project.org/src/contrib/tibble_3.2.1.tar.gz'
+[0m
+[91mContent type 'application/x-gzip' length 565982 bytes (552 KB)
+=[0m
+[91m=[0m
+[91m==[0m
+[91m=[0m
+[91m==[0m
+[91m=[0m
+[91m==[0m
+[91m=[0m
+[91m=[0m
+[91m==[0m
+[91m=[0m
+[91m==[0m
+[91m=[0m
+[91m==[0m
+[91m=[0m
+[91m==[0m
+[91m=[0m
+[91m=[0m
+[91m==[0m
+[91m===[0m
+[91m===[0m
+[91m===[0m
+[91m==[0m
+[91m===[0m
+[91m===[0m
+[91m===[0m
+[91m===
+downloaded 552 KB
+
+[0m
+[91mtrying URL 'https://cloud.r-project.org/src/contrib/vctrs_0.6.5.tar.gz'
+[0m
+[91mContent type 'application/x-gzip' length 969066 bytes (946 KB)
+[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m==[0m
+[91m==[0m
+[91m==[0m
+[91m=[0m
+[91m==[0m
+[91m==[0m
+[91m=[0m
+[91m==[0m
+[91m==[0m
+[91m=[0m
+[91m=[0m
+[91m==[0m
+[91m==[0m
+[91m=[0m
+[91m==[0m
+[91m==[0m
+[91m=[0m
+[91m==[0m
+[91m==[0m
+[91m=[0m
+[91m==
+downloaded 946 KB
+
+[0m
+[91mtrying URL 'https://cloud.r-project.org/src/contrib/withr_3.0.0.tar.gz'
+[0m
+[91mContent type 'application/x-gzip' length 107677 bytes (105 KB)
+=======[0m
+[91m========[0m
+[91m=======[0m
+[91m========[0m
+[91m=======[0m
+[91m========[0m
+[91m=====
+downloaded 105 KB
+
+[0m
+[91mtrying URL 'https://bioconductor.org/packages/3.18/bioc/src/contrib/S4Vectors_0.40.2.tar.gz'
+[0m
+[91mContent type 'application/gzip' length 838187 bytes (818 KB)
+[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m==
+downloaded 818 KB
+
+[0m
+[91mtrying URL 'https://bioconductor.org/packages/3.18/bioc/src/contrib/IRanges_2.36.0.tar.gz'
+[0m
+[91mContent type 'application/gzip' length 481055 bytes (469 KB)
+=[0m
+[91m==[0m
+[91m=[0m
+[91m==[0m
+[91m==[0m
+[91m==[0m
+[91m=[0m
+[91m==[0m
+[91m==[0m
+[91m=[0m
+[91m==[0m
+[91m==[0m
+[91m=[0m
+[91m==[0m
+[91m==[0m
+[91m==[0m
+[91m=[0m
+[91m==[0m
+[91m==[0m
+[91m=[0m
+[91m==[0m
+[91m==[0m
+[91m==[0m
+[91m=[0m
+[91m==[0m
+[91m==[0m
+[91m=[0m
+[91m==[0m
+[91m==[0m
+[91m=
+downloaded 469 KB
+
+[0m
+[91mtrying URL 'https://bioconductor.org/packages/3.18/bioc/src/contrib/GenomicRanges_1.54.1.tar.gz'
+[0m
+[91mContent type 'application/gzip' length 1140246 bytes (1.1 MB)
+[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=
+downloaded 1.1 MB
+
+[0m
+[91mtrying URL 'https://bioconductor.org/packages/3.18/bioc/src/contrib/SummarizedExperiment_1.32.0.tar.gz'
+[0m
+[91mContent type 'application/gzip' length 686052 bytes (669 KB)
+=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m==[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m==[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m==[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m==[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m==[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m==[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m==[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m==
+downloaded 669 KB
+
+[0m
+[91mtrying URL 'https://bioconductor.org/packages/3.18/bioc/src/contrib/BiocGenerics_0.48.1.tar.gz'
+[0m
+[91mContent type 'application/gzip' length 49546 bytes (48 KB)
+[0m
+[91m================[0m
+[91m=================[0m
+[91m================[0m
+[91m=
+downloaded 48 KB
+
+[0m
+[91mtrying URL 'https://bioconductor.org/packages/3.18/bioc/src/contrib/Biobase_2.62.0.tar.gz'
+[0m
+[91mContent type 'application/gzip' length 1795862 bytes (1.7 MB)
+[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=
+downloaded 1.7 MB
+
+[0m
+[91mtrying URL 'https://bioconductor.org/packages/3.18/bioc/src/contrib/BiocParallel_1.36.0.tar.gz'
+[0m
+[91mContent type 'application/gzip' length 997117 bytes (973 KB)
+[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=
+downloaded 973 KB
+
+[0m
+[91mtrying URL 'https://cloud.r-project.org/src/contrib/matrixStats_1.3.0.tar.gz'
+[0m
+[91mContent type 'application/x-gzip' length 213441 bytes (208 KB)
+===[0m
+[91m====[0m
+[91m====[0m
+[91m====[0m
+[91m===[0m
+[91m====[0m
+[91m====[0m
+[91m====[0m
+[91m========[0m
+[91m===[0m
+[91m====[0m
+[91m=====
+downloaded 208 KB
+
+[0m
+[91mtrying URL 'https://cloud.r-project.org/src/contrib/locfit_1.5-9.9.tar.gz'
+[0m
+[91mContent type 'application/x-gzip' length 201123 bytes (196 KB)
+===[0m
+[91m=====[0m
+[91m======[0m
+[91m==[0m
+[91m====[0m
+[91m====[0m
+[91m====[0m
+[91m====[0m
+[91m====[0m
+[91m====[0m
+[91m========[0m
+[91m==
+downloaded 196 KB
+
+[0m
+[91mtrying URL 'https://cloud.r-project.org/src/contrib/ggplot2_3.5.1.tar.gz'
+[0m
+[91mContent type 'application/x-gzip' length 3604371 bytes (3.4 MB)
+[0m
+[91m=[0m
+[91m==========[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=
+downloaded 3.4 MB
+
+[0m
+[91mtrying URL 'https://cloud.r-project.org/src/contrib/Rcpp_1.0.12.tar.gz'
+[0m
+[91mContent type 'application/x-gzip' length 3430494 bytes (3.3 MB)
+[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m==[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m==[0m
+[91m==[0m
+[91m=[0m
+[91m=[0m
+[91m==[0m
+[91m======
+downloaded 3.3 MB
+
+[0m
+[91mtrying URL 'https://bioconductor.org/packages/3.18/bioc/src/contrib/MatrixGenerics_1.14.0.tar.gz'
+[0m
+[91mContent type 'application/gzip' length 31230 bytes (30 KB)
+=======================[0m
+[91m===========================
+downloaded 30 KB
+
+[0m
+[91mtrying URL 'https://cloud.r-project.org/src/contrib/RcppArmadillo_0.12.8.4.0.tar.gz'
+[0m
+[91mContent type 'application/x-gzip' length 1406640 bytes (1.3 MB)
+=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m==[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m==[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m==[0m
+[91m=[0m
+[91m===[0m
+[91m==[0m
+[91m=[0m
+[91m=[0m
+[91m===[0m
+[91m==[0m
+[91m=
+downloaded 1.3 MB
+
+[0m
+[91mtrying URL 'https://bioconductor.org/packages/3.18/bioc/src/contrib/BiocVersion_3.18.1.tar.gz'
+[0m
+[91mContent type 'application/gzip' length 973 bytes
+==================================================
+downloaded 973 bytes
+
+[0m
+[91mtrying URL 'https://bioconductor.org/packages/3.18/bioc/src/contrib/DESeq2_1.42.1.tar.gz'
+[0m
+[91mContent type 'application/gzip' length 2098789 bytes (2.0 MB)
+[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=
+downloaded 2.0 MB
+
+[0m
+[91m* installing *source* package ‘bitops’ ...
+[0m
+[91m** package ‘bitops’ successfully unpacked and MD5 sums checked
+[0m
+[91m** using staged installation
+[0m
+[91m** libs
+[0m
+[91musing C compiler: ‘gcc (Debian 10.2.1-6) 10.2.1 20210110’
+[0m
+gcc -I"/usr/share/R/include" -DNDEBUG       -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c bit-ops.c -o bit-ops.o
+
+gcc -I"/usr/share/R/include" -DNDEBUG       -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c cksum.c -o cksum.o
+
+gcc -I"/usr/share/R/include" -DNDEBUG       -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c init.c -o init.o
+
+gcc -shared -L/usr/lib/R/lib -Wl,-z,relro -o bitops.so bit-ops.o cksum.o init.o -L/usr/lib/R/lib -lR
+
+[91minstalling to /usr/local/lib/R/site-library/00LOCK-bitops/00new/bitops/libs
+[0m
+[91m** R
+[0m
+[91m** byte-compile and prepare package for lazy loading
+[0m
+[91m** help
+[0m
+[91m*** installing help indices
+[0m
+[91m** building package indices
+[0m
+[91m** testing if installed package can be loaded from temporary location
+[0m
+[91m** checking absolute paths in shared objects and dynamic libraries
+[0m
+[91m** testing if installed package can be loaded from final location
+[0m
+[91m** testing if installed package keeps a record of temporary installation path
+[0m
+[91m* DONE (bitops)
+[0m
+[91m* installing *source* package ‘formatR’ ...
+[0m
+[91m** package ‘formatR’ successfully unpacked and MD5 sums checked
+[0m
+[91m** using staged installation
+[0m
+[91m** R
+[0m
+[91m** inst
+[0m
+[91m** byte-compile and prepare package for lazy loading
+[0m
+[91m** help
+[0m
+[91m*** installing help indices
+[0m
+[91m** building package indices
+[0m
+[91m** installing vignettes
+[0m
+[91m** testing if installed package can be loaded from temporary location
+[0m
+[91m** testing if installed package can be loaded from final location
+[0m
+[91m** testing if installed package keeps a record of temporary installation path
+[0m
+[91m* DONE (formatR)
+[0m
+[91m* installing *source* package ‘colorspace’ ...
+[0m
+[91m** package ‘colorspace’ successfully unpacked and MD5 sums checked
+[0m
+[91m** using staged installation
+[0m
+[91m** libs
+[0m
+[91musing C compiler: ‘gcc (Debian 10.2.1-6) 10.2.1 20210110’
+[0m
+gcc -I"/usr/share/R/include" -DNDEBUG       -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c colorspace.c -o colorspace.o
+
+gcc -I"/usr/share/R/include" -DNDEBUG       -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c init.c -o init.o
+
+gcc -shared -L/usr/lib/R/lib -Wl,-z,relro -o colorspace.so colorspace.o init.o -L/usr/lib/R/lib -lR
+
+[91minstalling to /usr/local/lib/R/site-library/00LOCK-colorspace/00new/colorspace/libs
+[0m
+[91m** R
+[0m
+[91m** data
+[0m
+[91m*** moving datasets to lazyload DB
+[0m
+[91m** demo
+[0m
+[91m** inst
+[0m
+[91m** byte-compile and prepare package for lazy loading
+[0m
+[91m** help
+[0m
+[91m*** installing help indices
+[0m
+[91m** building package indices
+[0m
+[91m** installing vignettes
+[0m
+[91m** testing if installed package can be loaded from temporary location
+[0m
+[91m** checking absolute paths in shared objects and dynamic libraries
+[0m
+[91m** testing if installed package can be loaded from final location
+[0m
+[91m** testing if installed package keeps a record of temporary installation path
+[0m
+[91m* DONE (colorspace)
+[0m
+[91m* installing *source* package ‘utf8’ ...
+[0m
+[91m** package ‘utf8’ successfully unpacked and MD5 sums checked
+[0m
+[91m** using staged installation
+[0m
+[91m** libs
+[0m
+[91musing C compiler: ‘gcc (Debian 10.2.1-6) 10.2.1 20210110’
+[0m
+gcc -I"/usr/share/R/include" -DNDEBUG      -Iutf8lite/src -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c as_utf8.c -o as_utf8.o
+
+gcc -I"/usr/share/R/include" -DNDEBUG      -Iutf8lite/src -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c bytes.c -o bytes.o
+
+gcc -I"/usr/share/R/include" -DNDEBUG      -Iutf8lite/src -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c context.c -o context.o
+
+gcc -I"/usr/share/R/include" -DNDEBUG      -Iutf8lite/src -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c init.c -o init.o
+
+gcc -I"/usr/share/R/include" -DNDEBUG      -Iutf8lite/src -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c render.c -o render.o
+
+gcc -I"/usr/share/R/include" -DNDEBUG      -Iutf8lite/src -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c render_table.c -o render_table.o
+
+gcc -I"/usr/share/R/include" -DNDEBUG      -Iutf8lite/src -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c string.c -o string.o
+
+gcc -I"/usr/share/R/include" -DNDEBUG      -Iutf8lite/src -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c text.c -o text.o
+
+gcc -I"/usr/share/R/include" -DNDEBUG      -Iutf8lite/src -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c utf8_encode.c -o utf8_encode.o
+
+gcc -I"/usr/share/R/include" -DNDEBUG      -Iutf8lite/src -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c utf8_format.c -o utf8_format.o
+
+gcc -I"/usr/share/R/include" -DNDEBUG      -Iutf8lite/src -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c utf8_normalize.c -o utf8_normalize.o
+
+gcc -I"/usr/share/R/include" -DNDEBUG      -Iutf8lite/src -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c utf8_valid.c -o utf8_valid.o
+
+gcc -I"/usr/share/R/include" -DNDEBUG      -Iutf8lite/src -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c utf8_width.c -o utf8_width.o
+
+gcc -I"/usr/share/R/include" -DNDEBUG      -Iutf8lite/src -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c util.c -o util.o
+
+gcc -I"/usr/share/R/include" -DNDEBUG      -Iutf8lite/src -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c utf8lite/src/array.c -o utf8lite/src/array.o
+
+gcc -I"/usr/share/R/include" -DNDEBUG      -Iutf8lite/src -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c utf8lite/src/char.c -o utf8lite/src/char.o
+
+gcc -I"/usr/share/R/include" -DNDEBUG      -Iutf8lite/src -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c utf8lite/src/encode.c -o utf8lite/src/encode.o
+
+gcc -I"/usr/share/R/include" -DNDEBUG      -Iutf8lite/src -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c utf8lite/src/error.c -o utf8lite/src/error.o
+
+gcc -I"/usr/share/R/include" -DNDEBUG      -Iutf8lite/src -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c utf8lite/src/escape.c -o utf8lite/src/escape.o
+
+gcc -I"/usr/share/R/include" -DNDEBUG      -Iutf8lite/src -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c utf8lite/src/graph.c -o utf8lite/src/graph.o
+
+gcc -I"/usr/share/R/include" -DNDEBUG      -Iutf8lite/src -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c utf8lite/src/graphscan.c -o utf8lite/src/graphscan.o
+
+gcc -I"/usr/share/R/include" -DNDEBUG      -Iutf8lite/src -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c utf8lite/src/normalize.c -o utf8lite/src/normalize.o
+
+gcc -I"/usr/share/R/include" -DNDEBUG      -Iutf8lite/src -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c utf8lite/src/render.c -o utf8lite/src/render.o
+
+gcc -I"/usr/share/R/include" -DNDEBUG      -Iutf8lite/src -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c utf8lite/src/text.c -o utf8lite/src/text.o
+
+gcc -I"/usr/share/R/include" -DNDEBUG      -Iutf8lite/src -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c utf8lite/src/textassign.c -o utf8lite/src/textassign.o
+
+gcc -I"/usr/share/R/include" -DNDEBUG      -Iutf8lite/src -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c utf8lite/src/textiter.c -o utf8lite/src/textiter.o
+
+gcc -I"/usr/share/R/include" -DNDEBUG      -Iutf8lite/src -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c utf8lite/src/textmap.c -o utf8lite/src/textmap.o
+
+ar rcs libcutf8lite.a utf8lite/src/array.o utf8lite/src/char.o utf8lite/src/encode.o utf8lite/src/error.o utf8lite/src/escape.o utf8lite/src/graph.o utf8lite/src/graphscan.o utf8lite/src/normalize.o utf8lite/src/render.o utf8lite/src/text.o utf8lite/src/textassign.o utf8lite/src/textiter.o utf8lite/src/textmap.o
+
+gcc -shared -L/usr/lib/R/lib -Wl,-z,relro -o utf8.so as_utf8.o bytes.o context.o init.o render.o render_table.o string.o text.o utf8_encode.o utf8_format.o utf8_normalize.o utf8_valid.o utf8_width.o util.o -L. -lcutf8lite -L/usr/lib/R/lib -lR
+
+[91minstalling to /usr/local/lib/R/site-library/00LOCK-utf8/00new/utf8/libs
+[0m
+[91m** R
+[0m
+[91m** inst
+[0m
+[91m** byte-compile and prepare package for lazy loading
+[0m
+[91m** help
+[0m
+[91m*** installing help indices
+[0m
+[91m** building package indices
+[0m
+[91m** installing vignettes
+[0m
+[91m** testing if installed package can be loaded from temporary location
+[0m
+[91m** checking absolute paths in shared objects and dynamic libraries
+[0m
+[91m** testing if installed package can be loaded from final location
+[0m
+[91m** testing if installed package keeps a record of temporary installation path
+[0m
+[91m* DONE (utf8)
+[0m
+[91m* installing *source* package ‘GenomeInfoDbData’ ...
+[0m
+[91m** using staged installation
+[0m
+[91m** data
+[0m
+[91m** inst
+[0m
+[91m** help
+[0m
+[91m*** installing help indices
+[0m
+[91m** building package indices
+[0m
+[91m** testing if installed package can be loaded from temporary location
+[0m
+[91m** testing if installed package can be loaded from final location
+[0m
+[91m** testing if installed package keeps a record of temporary installation path
+[0m
+[91m* DONE (GenomeInfoDbData)
+[0m
+[91m* installing *source* package ‘zlibbioc’ ...
+[0m
+[91m** using staged installation
+[0m
+configure: creating ./config.status
+
+config.status: creating src/Makevars
+
+[91m** libs
+[0m
+[91musing C compiler: ‘gcc (Debian 10.2.1-6) 10.2.1 20210110’
+[0m
+mkdir -p "/usr/local/lib/R/site-library/00LOCK-zlibbioc/00new/zlibbioc/include"
+
+gcc -I"/usr/share/R/include" -DNDEBUG       -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c R_init_zlibbioc.c -o R_init_zlibbioc.o
+
+gcc -shared -L/usr/lib/R/lib -Wl,-z,relro -o zlibbioc.so R_init_zlibbioc.o -L/usr/lib/R/lib -lR
+
+[91minstalling to /usr/local/lib/R/site-library/00LOCK-zlibbioc/00new/zlibbioc/libs
+[0m
+[91m** R
+[0m
+[91m** inst
+[0m
+[91m** byte-compile and prepare package for lazy loading
+[0m
+[91m** help
+[0m
+[91m*** installing help indices
+[0m
+[91m** building package indices
+[0m
+[91m** installing vignettes
+[0m
+[91m** testing if installed package can be loaded from temporary location
+[0m
+[91m** checking absolute paths in shared objects and dynamic libraries
+[0m
+[91m** testing if installed package can be loaded from final location
+[0m
+[91m** testing if installed package keeps a record of temporary installation path
+[0m
+[91m* DONE (zlibbioc)
+[0m
+[91m* installing *source* package ‘abind’ ...
+[0m
+[91m** package ‘abind’ successfully unpacked and MD5 sums checked
+[0m
+[91m** using staged installation
+[0m
+[91m** R
+[0m
+[91m** inst
+[0m
+[91m** byte-compile and prepare package for lazy loading
+[0m
+[91m** help
+[0m
+[91m*** installing help indices
+[0m
+[91m** building package indices
+[0m
+[91m** testing if installed package can be loaded from temporary location
+[0m
+[91m** testing if installed package can be loaded from final location
+[0m
+[91m** testing if installed package keeps a record of temporary installation path
+[0m
+[91m* DONE (abind)
+[0m
+[91m* installing *source* package ‘crayon’ ...
+[0m
+[91m** package ‘crayon’ successfully unpacked and MD5 sums checked
+[0m
+[91m** using staged installation
+[0m
+[91m** R
+[0m
+[91m** byte-compile and prepare package for lazy loading
+[0m
+[91m** help
+[0m
+[91m*** installing help indices
+[0m
+[91m** building package indices
+[0m
+[91m** testing if installed package can be loaded from temporary location
+[0m
+[91m** testing if installed package can be loaded from final location
+[0m
+[91m** testing if installed package keeps a record of temporary installation path
+[0m
+[91m* DONE (crayon)
+[0m
+[91m* installing *source* package ‘futile.options’ ...
+[0m
+[91m** package ‘futile.options’ successfully unpacked and MD5 sums checked
+[0m
+[91m** using staged installation
+[0m
+[91m** R
+[0m
+[91m** byte-compile and prepare package for lazy loading
+[0m
+[91m** help
+[0m
+[91m*** installing help indices
+[0m
+[91m** building package indices
+[0m
+[91m** testing if installed package can be loaded from temporary location
+[0m
+[91m** testing if installed package can be loaded from final location
+[0m
+[91m** testing if installed package keeps a record of temporary installation path
+[0m
+[91m* DONE (futile.options)
+[0m
+[91m* installing *source* package ‘farver’ ...
+[0m
+[91m** package ‘farver’ successfully unpacked and MD5 sums checked
+[0m
+[91m** using staged installation
+[0m
+[91m** libs
+[0m
+[91musing C++ compiler: ‘g++ (Debian 10.2.1-6) 10.2.1 20210110’
+[0m
+g++ -std=gnu++17 -I"/usr/share/R/include" -DNDEBUG       -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c ColorSpace.cpp -o ColorSpace.o
+
+g++ -std=gnu++17 -I"/usr/share/R/include" -DNDEBUG       -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c Comparison.cpp -o Comparison.o
+
+g++ -std=gnu++17 -I"/usr/share/R/include" -DNDEBUG       -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c Conversion.cpp -o Conversion.o
+
+g++ -std=gnu++17 -I"/usr/share/R/include" -DNDEBUG       -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c encode.cpp -o encode.o
+
+g++ -std=gnu++17 -I"/usr/share/R/include" -DNDEBUG       -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c farver.cpp -o farver.o
+

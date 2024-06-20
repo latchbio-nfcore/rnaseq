@@ -25,12 +25,6 @@ flow = [
         Params("input"),
     ),
     Section(
-        "Differential Expression",
-        Params(
-            "condition_file",
-        ),
-    ),
-    Section(
         "Reference Genome",
         Fork(
             "genome_source",
@@ -41,12 +35,6 @@ flow = [
                     "latch_genome",
                 ),
             ),
-            # igenome_source=ForkBranch(
-            #     "iGenome",
-            #     Params(
-            #         "igenome",
-            #     ),
-            # ),
             custom=ForkBranch(
                 "Custom Reference Genome",
                 Params(
@@ -81,6 +69,12 @@ flow = [
                     "pseudo_aligner",
                 ),
             ),
+        ),
+    ),
+    Section(
+        "Differential Gene Expression",
+        Params(
+            "run_latch_dge",
         ),
     ),
     Section(
@@ -221,14 +215,15 @@ class SampleSheet:
     fastq_1: LatchFile
     fastq_2: Optional[LatchFile]
     strandedness: str
+    differential_condition: Optional[str]
 
 
 class Reference_Type(Enum):
     homo_sapiens = "Homo sapiens (RefSeq GRCh38.p14)"
     mus_musculus = "Mus musculus (RefSeq GRCm39)"
     rattus_norvegicus = "Rattus norvegicus (RefSeq GRCr8)"
-    drosophila_melanogaster = "Drosophila melanogaster (RefSeq Release_6_plus_ISO1_MT)"
-    rhesus_macaque = "Macaca mulatta (RefSeq rheMac10/Mmul_10)"
+    # drosophila_melanogaster = "Drosophila melanogaster (RefSeq Release_6_plus_ISO1_MT)"
+    # rhesus_macaque = "Macaca mulatta (RefSeq rheMac10/Mmul_10)"
     saccharomyces_cerevisiae = "Saccharomyces cerevisiae (RefSeq R64)"
 
 
@@ -275,6 +270,12 @@ class PseudoAligner(Enum):
     kallisto = "kallisto"
 
 
+class DifferentialGeneTool(Enum):
+    deseq2 = "deseq2"
+    # sleuth = "sleuth"
+    # edgeR = "edgeR"
+
+
 def custom_samplesheet_constructor(samples: List[SampleSheet]) -> Path:
     samplesheet = Path("/root/samplesheet.csv")
 
@@ -299,7 +300,7 @@ def custom_samplesheet_constructor(samples: List[SampleSheet]) -> Path:
 NextflowMetadata(
     display_name="nf-core/rnaseq",
     author=LatchAuthor(
-        name="LatchBio",
+        name="nf-core",
     ),
     parameters={
         "input": NextflowParameter(
@@ -323,6 +324,11 @@ NextflowMetadata(
             batch_table_column=True,
             default=LatchOutputDir("latch:///Bulk_RNAseq"),
         ),
+        "run_latch_dge": NextflowParameter(
+            type=Optional[DifferentialGeneTool],
+            display_name="Differential Gene Expression",
+            description="Run differential gene expression.",
+        ),
         "genome_source": NextflowParameter(
             type=str,
             display_name="Reference Genome",
@@ -334,21 +340,10 @@ NextflowMetadata(
             description="Name of Latch Verfied Reference Genome.",
             default=Reference_Type.homo_sapiens,
         ),
-        # "igenome": NextflowParameter(
-        #     type=Reference_Type,
-        #     display_name="Reference Genome",
-        #     description="Name of iGenomes reference.",
-        #     default=Reference_Type.homo_sapiens,
-        # ),
         "fasta": NextflowParameter(
             type=Optional[LatchFile],
             display_name="FASTA Genome File",
             description="Path to FASTA genome file.",
-        ),
-        "condition_file": NextflowParameter(
-            type=Optional[LatchFile],
-            display_name="Condition CSV",
-            description="Condition file CSV.",
         ),
         "gtf": NextflowParameter(
             type=Optional[LatchFile],

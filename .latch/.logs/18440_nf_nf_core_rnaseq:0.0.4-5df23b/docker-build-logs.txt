@@ -1,0 +1,326 @@
+Step 1/21 : from 812206152185.dkr.ecr.us-west-2.amazonaws.com/latch-base:fe0b-main
+
+
+ ---> f23c37efcd53
+
+Step 2/21 : workdir /tmp/docker-build/work/
+
+
+ ---> Using cache
+
+ ---> dd16c2d4f334
+
+Step 3/21 : shell [     "/usr/bin/env", "bash",     "-o", "errexit",     "-o", "pipefail",     "-o", "nounset",     "-o", "verbose",     "-o", "errtrace",     "-O", "inherit_errexit",     "-O", "shift_verbose",     "-c" ]
+
+
+ ---> Using cache
+
+ ---> aaada0c60239
+
+Step 4/21 : env TZ='Etc/UTC'
+
+
+ ---> Using cache
+
+ ---> d6869bc03deb
+
+Step 5/21 : env LANG='en_US.UTF-8'
+
+
+ ---> Using cache
+
+ ---> ae2f7ca65880
+
+Step 6/21 : arg DEBIAN_FRONTEND=noninteractive
+
+
+ ---> Using cache
+
+ ---> f029b3f36a86
+
+Step 7/21 : run apt-get update --yes &&     apt-get install --yes dirmngr apt-transport-https gnupg2 &&     gpg --keyserver keyserver.ubuntu.com --recv-key '95C0FAF38DB3CCAD0C080A7BDC78B2DDEABC47B7' &&     gpg --armor --export '95C0FAF38DB3CCAD0C080A7BDC78B2DDEABC47B7' | tee /etc/apt/trusted.gpg.d/cran_debian_key.asc
+
+
+ ---> Using cache
+
+ ---> 37cda4773e06
+
+Step 8/21 : run echo "deb http://cloud.r-project.org/bin/linux/debian bullseye-cran40/" | tee /etc/apt/sources.list.d/cran.list &&     apt-get update --yes &&     DEBIAN_FRONTEND=noninteractive apt-get install --yes r-base r-base-dev libxml2-dev libcurl4-openssl-dev libssl-dev wget
+
+
+ ---> Using cache
+
+ ---> e386aca7bd1c
+
+Step 9/21 : COPY latch_environment.R /tmp/docker-build/work/latch_environment.R
+
+
+ ---> Using cache
+
+ ---> 5abea30b3e07
+
+Step 10/21 : RUN Rscript /tmp/docker-build/work/latch_environment.R
+
+
+ ---> Running in b504e164419b
+
+[91mRscript /tmp/docker-build/work/latch_environment.R
+[0m
+[91mInstalling package into ‘/usr/local/lib/R/site-library’
+(as ‘lib’ is unspecified)
+[0m
+[91mtrying URL 'https://cloud.r-project.org/src/contrib/pak_0.7.2.tar.gz'
+[0m
+[91mContent type 'application/x-gzip' length 2027490 bytes (1.9 MB)
+[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m=[0m
+[91m==[0m
+[91m=[0m
+[91m==[0m
+[91m=[0m
+[91m==[0m
+[91m==[0m
+[91m=[0m
+[91m==[0m
+[91m===[0m
+[91m==[0m
+[91m===[0m
+[91m====
+downloaded 1.9 MB
+
+[0m
+[91m* installing *source* package ‘pak’ ...
+[0m
+[91m** package ‘pak’ successfully unpacked and MD5 sums checked
+[0m
+[91m** using staged installation
+[0m
+** Running ./configure
+
+[91m** libs
+[0m
+Current platform: x86_64-pc-linux-gnu 
+Build platform:   
+Target platform:   
+
+Compiling R6 
+
+Compiling cli 
+using C compiler: ‘gcc (Debian 10.2.1-6) 10.2.1 20210110’
+make[1]: Entering directory '/tmp/Rtmp5aTIjV/R.INSTALL174ea322c2/pak/src/library/cli/src'
+gcc -I"/usr/share/R/include" -DNDEBUG      -fvisibility=hidden -I../inst/include -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c ansi.c -o ansi.o
+gcc -I"/usr/share/R/include" -DNDEBUG      -fvisibility=hidden -I../inst/include -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c cleancall.c -o cleancall.o
+gcc -I"/usr/share/R/include" -DNDEBUG      -fvisibility=hidden -I../inst/include -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c diff.c -o diff.o
+gcc -I"/usr/share/R/include" -DNDEBUG      -fvisibility=hidden -I../inst/include -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c errors.c -o errors.o
+gcc -I"/usr/share/R/include" -DNDEBUG      -fvisibility=hidden -I../inst/include -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c glue.c -o glue.o
+gcc -I"/usr/share/R/include" -DNDEBUG      -fvisibility=hidden -I../inst/include -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c init.c -o init.o
+gcc -I"/usr/share/R/include" -DNDEBUG      -fvisibility=hidden -I../inst/include -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c inst.c -o inst.o
+gcc -I"/usr/share/R/include" -DNDEBUG      -fvisibility=hidden -I../inst/include -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c keypress-unix.c -o keypress-unix.o
+gcc -I"/usr/share/R/include" -DNDEBUG      -fvisibility=hidden -I../inst/include -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c keypress-win.c -o keypress-win.o
+gcc -I"/usr/share/R/include" -DNDEBUG      -fvisibility=hidden -I../inst/include -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c keypress.c -o keypress.o
+gcc -I"/usr/share/R/include" -DNDEBUG      -fvisibility=hidden -I../inst/include -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c md5.c -o md5.o
+gcc -I"/usr/share/R/include" -DNDEBUG      -fvisibility=hidden -I../inst/include -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c progress-altrep.c -o progress-altrep.o
+gcc -I"/usr/share/R/include" -DNDEBUG      -fvisibility=hidden -I../inst/include -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c progress.c -o progress.o
+gcc -I"/usr/share/R/include" -DNDEBUG      -fvisibility=hidden -I../inst/include -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye
+/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c sha1.c -o sha1.o
+gcc -I"/usr/share/R/include" -DNDEBUG      -fvisibility=hidden -I../inst/include -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c sha256.c -o sha256.o
+gcc -I"/usr/share/R/include" -DNDEBUG      -fvisibility=hidden -I../inst/include -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c thread.c -o thread.o
+gcc -I"/usr/share/R/include" -DNDEBUG      -fvisibility=hidden -I../inst/include -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c tty.c -o tty.o
+gcc -I"/usr/share/R/include" -DNDEBUG      -fvisibility=hidden -I../inst/include -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c utf8.c -o utf8.o
+gcc -I"/usr/share/R/include" -DNDEBUG      -fvisibility=hidden -I../inst/include -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c utils.c -o utils.o
+gcc -I"/usr/share/R/include" -DNDEBUG      -fvisibility=hidden -I../inst/include -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c vt.c -o vt.o
+gcc -I"/usr/share/R/include" -DNDEBUG      -fvisibility=hidden -I../inst/include -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c vtparse.c -o vtparse.o
+gcc -I"/usr/share/R/include" -DNDEBUG      -fvisibility=hidden -I../inst/include -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c vtparse_table.c -o vtparse_table.o
+gcc -I"/usr/share/R/include" -DNDEBUG      -fvisibility=hidden -I../inst/include -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c win-utf8.c -o win-utf8.o
+gcc -I"/usr/share/R/include" -DNDEBUG      -fvisibility=hidden -I../inst/include -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c winfiles.c -o winfiles.o
+gcc -shared -L/usr/lib/R/lib -Wl,-z,relro -o cli.so ansi.o cleancall.o diff.o errors.o glue.o init.o inst.o keypress-unix.o keypress-win.o keypress.o md5.o progress-altrep.o progress.o sha1.o sha256.o thread.o tty.o utf8.o utils.o vt.o vtparse.o vtparse_table.o win-utf8.o winfiles.o -L/usr/lib/R/lib -lR
+make[1]: Leaving directory '/tmp/Rtmp5aTIjV/R.INSTALL174ea322c2/pak/src/library/cli/src'
+installing to /usr/local/lib/R/site-library/00LOCK-pak/00new/pak/library/cli/libs
+
+Compiling curl 
+Found pkg-config cflags and libs!
+Using PKG_CFLAGS=-I/usr/include/x86_64-linux-gnu
+Using PKG_LIBS=-lcurl
+using C compiler: ‘gcc (Debian 10.2.1-6) 10.2.1 20210110’
+make[1]: Entering directory '/tmp/Rtmp5aTIjV/R.INSTALL174ea322c2/pak/src/library/curl/src'
+rm -f curl.so callbacks.o curl.o download.o escape.o fetch.o findport.o form.o getdate.o handle.o ieproxy.o init.o interrupt.o multi.o nslookup.o options.o reflist.o split.o ssl.o typechecking.o utils.o version.o winidn.o writer.o
+gcc -I"/usr/share/R/include" -DNDEBUG -I/usr/include/x86_64-linux-gnu -DSTRICT_R_HEADERS -DR_NO_REMAP     -fvisibility=hidden -fpic  -g -O2 -ffile-prefix-map=/home/jranke/gi
+t/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c callbacks.c -o callbacks.o
+gcc -I"/usr/share/R/include" -DNDEBUG -I/usr/include/x86_64-linux-gnu -DSTRICT_R_HEADERS -DR_NO_REMAP     -fvisibility=hidden -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c curl.c -o curl.o
+gcc -I"/usr/share/R/include" -DNDEBUG -I/usr/include/x86_64-linux-gnu -DSTRICT_R_HEADERS -DR_NO_REMAP     -fvisibility=hidden -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c download.c -o download.o
+gcc -I"/usr/share/R/include" -DNDEBUG -I/usr/include/x86_64-linux-gnu -DSTRICT_R_HEADERS -DR_NO_REMAP     -fvisibility=hidden -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c escape.c -o escape.o
+gcc -I"/usr/share/R/include" -DNDEBUG -I/usr/include/x86_64-linux-gnu -DSTRICT_R_HEADERS -DR_NO_REMAP     -fvisibility=hidden -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c fetch.c -o fetch.o
+gcc -I"/usr/share/R/include" -DNDEBUG -I/usr/include/x86_64-linux-gnu -DSTRICT_R_HEADERS -DR_NO_REMAP     -fvisibility=hidden -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c findport.c -o findport.o
+gcc -I"/usr/share/R/include" -DNDEBUG -I/usr/include/x86_64-linux-gnu -DSTRICT_R_HEADERS -DR_NO_REMAP     -fvisibility=hidden -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c form.c -o form.o
+gcc -I"/usr/share/R/include" -DNDEBUG -I/usr/include/x86_64-linux-gnu -DSTRICT_R_HEADERS -DR_NO_REMAP     -fvisibility=hidden -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c getdate.c -o getdate.o
+gcc -I"/usr/share/R/include" -DNDEBUG -I/usr/include/x86_64-linux-gnu -DSTRICT_R_HEADERS -DR_NO_REMAP     -fvisibility=hidden -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c handle.c -o handle.o
+gcc -I"/usr/share/R/include" -DNDEBUG -I/usr/include/x86_64-linux-gnu -DSTRICT_R_HEADERS -DR_NO_REMAP     -fvisibility=hidden -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c ieproxy.c -o ieproxy.o
+gcc -I"/usr/share/R/include" -DNDEBUG -I/usr/include/x86_64-linux-gnu -DSTRICT_R_HEADERS -DR_NO_REMAP     -fvisibility=hidden -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c init.c -o init.o
+gcc -I"/usr/share/R/include" -DNDEBUG -I/usr/include/x86_64-linux-gnu -DSTRICT_R_HEADERS -DR_NO_REMAP     -fvisibility=hidden -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c interrupt.c -o interrupt.o
+gcc -I"/usr/share/R/include" -DNDEBUG -I/usr/include/x86_64-linux-gnu -DSTRICT_R_HEADERS -DR_NO_REMAP     -fvisibility=hidden -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c multi.c -o multi.o
+gcc -I"/usr/share/R/inc
+lude" -DNDEBUG -I/usr/include/x86_64-linux-gnu -DSTRICT_R_HEADERS -DR_NO_REMAP     -fvisibility=hidden -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c nslookup.c -o nslookup.o
+gcc -I"/usr/share/R/include" -DNDEBUG -I/usr/include/x86_64-linux-gnu -DSTRICT_R_HEADERS -DR_NO_REMAP     -fvisibility=hidden -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c options.c -o options.o
+gcc -I"/usr/share/R/include" -DNDEBUG -I/usr/include/x86_64-linux-gnu -DSTRICT_R_HEADERS -DR_NO_REMAP     -fvisibility=hidden -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c reflist.c -o reflist.o
+gcc -I"/usr/share/R/include" -DNDEBUG -I/usr/include/x86_64-linux-gnu -DSTRICT_R_HEADERS -DR_NO_REMAP     -fvisibility=hidden -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c split.c -o split.o
+gcc -I"/usr/share/R/include" -DNDEBUG -I/usr/include/x86_64-linux-gnu -DSTRICT_R_HEADERS -DR_NO_REMAP     -fvisibility=hidden -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c ssl.c -o ssl.o
+gcc -I"/usr/share/R/include" -DNDEBUG -I/usr/include/x86_64-linux-gnu -DSTRICT_R_HEADERS -DR_NO_REMAP     -fvisibility=hidden -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c typechecking.c -o typechecking.o
+gcc -I"/usr/share/R/include" -DNDEBUG -I/usr/include/x86_64-linux-gnu -DSTRICT_R_HEADERS -DR_NO_REMAP     -fvisibility=hidden -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c utils.c -o utils.o
+gcc -I"/usr/share/R/include" -DNDEBUG -I/usr/include/x86_64-linux-gnu -DSTRICT_R_HEADERS -DR_NO_REMAP     -fvisibility=hidden -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c version.c -o version.o
+gcc -I"/usr/share/R/include" -DNDEBUG -I/usr/include/x86_64-linux-gnu -DSTRICT_R_HEADERS -DR_NO_REMAP     -fvisibility=hidden -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c winidn.c -o winidn.o
+gcc -I"/usr/share/R/include" -DNDEBUG -I/usr/include/x86_64-linux-gnu -DSTRICT_R_HEADERS -DR_NO_REMAP     -fvisibility=hidden -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c writer.c -o writer.o
+gcc -shared -L/usr/lib/R/lib -Wl,-z,relro -o curl.so callbacks.o curl.o download.o escape.o fetch.o findport.o form.o getdate.o handle.o ieproxy.o init.o interrupt.o multi.o nslookup.o options.o reflist.o split.o ssl.o typechecking.o utils.o version.o winidn.o writer.o -lcurl -L/usr/lib/R/lib -lR
+make[1]: Leaving directory '/tmp/Rtmp5aTIjV/R.INSTALL174ea322c2/pak/src/library/curl/src'
+installing to /usr/local/lib/R/site-library/00LOCK-pak/00new/pak/library/curl/libs
+
+Compiling filelock 
+using C compiler: ‘gcc (Debian 10.2.1-6) 10.2.1 20210110’
+make[1]: Entering directory '/tmp/Rtmp5aTIjV/R.INSTALL174ea322c2/pak/src/library/filelock/src'
+rm -f filelock.so init.o filelock-unix.o locklist.o
+gcc -I"/usr/share/R/include" -DNDEBUG       -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector
+-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c init.c -o init.o
+gcc -I"/usr/share/R/include" -DNDEBUG       -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c filelock-unix.c -o filelock-unix.o
+gcc -I"/usr/share/R/include" -DNDEBUG       -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c locklist.c -o locklist.o
+gcc -shared -L/usr/lib/R/lib -Wl,-z,relro -o filelock.so init.o filelock-unix.o locklist.o -L/usr/lib/R/lib -lR
+make[1]: Leaving directory '/tmp/Rtmp5aTIjV/R.INSTALL174ea322c2/pak/src/library/filelock/src'
+installing to /usr/local/lib/R/site-library/00LOCK-pak/00new/pak/library/filelock/libs
+
+Compiling jsonlite 
+using C compiler: ‘gcc (Debian 10.2.1-6) 10.2.1 20210110’
+make[1]: Entering directory '/tmp/Rtmp5aTIjV/R.INSTALL174ea322c2/pak/src/library/jsonlite/src'
+gcc -I"/usr/share/R/include" -DNDEBUG -Iyajl/api     -fvisibility=hidden  -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c base64.c -o base64.o
+gcc -I"/usr/share/R/include" -DNDEBUG -Iyajl/api     -fvisibility=hidden  -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c collapse_array.c -o collapse_array.o
+gcc -I"/usr/share/R/include" -DNDEBUG -Iyajl/api     -fvisibility=hidden  -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c collapse_object.c -o collapse_object.o
+gcc -I"/usr/share/R/include" -DNDEBUG -Iyajl/api     -fvisibility=hidden  -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c collapse_pretty.c -o collapse_pretty.o
+gcc -I"/usr/share/R/include" -DNDEBUG -Iyajl/api     -fvisibility=hidden  -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c escape_chars.c -o escape_chars.o
+gcc -I"/usr/share/R/include" -DNDEBUG -Iyajl/api     -fvisibility=hidden  -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c integer64_to_na.c -o integer64_to_na.o
+gcc -I"/usr/share/R/include" -DNDEBUG -Iyajl/api     -fvisibility=hidden  -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c is_datelist.c -o is_datelist.o
+gcc -I"/usr/share/R/include" -DNDEBUG -Iyajl/api     -fvisibility=hidden  -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c is_recordlist.c -o is_recordlist.o
+gcc -I"/usr/share/R/include" -DNDEBUG -Iyajl/api     -fvisibility=hidden  -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c is_scalarlist.c -o is_scalarlist.o
+gcc -I"/usr/share/R/include" -DNDEBUG -Iyajl/api     -fvisibility=hidden  -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c modp_numtoa.c -o modp_numtoa.o
+gcc -I"/usr/share/R/include" -DNDEBUG -Iyajl/api     -fvisibility=hidden  -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.
+2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c null_to_na.c -o null_to_na.o
+gcc -I"/usr/share/R/include" -DNDEBUG -Iyajl/api     -fvisibility=hidden  -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c num_to_char.c -o num_to_char.o
+gcc -I"/usr/share/R/include" -DNDEBUG -Iyajl/api     -fvisibility=hidden  -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c parse.c -o parse.o
+gcc -I"/usr/share/R/include" -DNDEBUG -Iyajl/api     -fvisibility=hidden  -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c prettify.c -o prettify.o
+gcc -I"/usr/share/R/include" -DNDEBUG -Iyajl/api     -fvisibility=hidden  -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c push_parser.c -o push_parser.o
+gcc -I"/usr/share/R/include" -DNDEBUG -Iyajl/api     -fvisibility=hidden  -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c r-base64.c -o r-base64.o
+gcc -I"/usr/share/R/include" -DNDEBUG -Iyajl/api     -fvisibility=hidden  -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c register.c -o register.o
+gcc -I"/usr/share/R/include" -DNDEBUG -Iyajl/api     -fvisibility=hidden  -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c row_collapse.c -o row_collapse.o
+gcc -I"/usr/share/R/include" -DNDEBUG -Iyajl/api     -fvisibility=hidden  -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c transpose_list.c -o transpose_list.o
+gcc -I"/usr/share/R/include" -DNDEBUG -Iyajl/api     -fvisibility=hidden  -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c validate.c -o validate.o
+gcc -I"/usr/share/R/include" -DNDEBUG -Iyajl/api     -fvisibility=hidden  -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c yajl/yajl.c -o yajl/yajl.o
+gcc -I"/usr/share/R/include" -DNDEBUG -Iyajl/api     -fvisibility=hidden  -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c yajl/yajl_alloc.c -o yajl/yajl_alloc.o
+gcc -I"/usr/share/R/include" -DNDEBUG -Iyajl/api     -fvisibility=hidden  -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c yajl/yajl_buf.c -o yajl/yajl_buf.o
+gcc -I"/usr/share/R/include" -DNDEBUG -Iyajl/api     -fvisibility=hidden  -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c yajl/yajl_encode.c -o yajl/yajl_encode.o
+gcc -I"/usr/share/R/include" -DNDEBUG -Iyajl/api     -fvisibility=hidden  -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c yajl/yajl_gen.c -o yajl/yajl_gen.o
+
+gcc -I"/usr/share/R/include" -DNDEBUG -Iyajl/api     -fvisibility=hidden  -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c yajl/yajl_lex.c -o yajl/yajl_lex.o
+gcc -I"/usr/share/R/include" -DNDEBUG -Iyajl/api     -fvisibility=hidden  -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c yajl/yajl_parser.c -o yajl/yajl_parser.o
+gcc -I"/usr/share/R/include" -DNDEBUG -Iyajl/api     -fvisibility=hidden  -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c yajl/yajl_tree.c -o yajl/yajl_tree.o
+ar rcs yajl/libstatyajl.a yajl/yajl.o yajl/yajl_alloc.o yajl/yajl_buf.o yajl/yajl_encode.o yajl/yajl_gen.o yajl/yajl_lex.o yajl/yajl_parser.o yajl/yajl_tree.o
+gcc -shared -L/usr/lib/R/lib -Wl,-z,relro -o jsonlite.so base64.o collapse_array.o collapse_object.o collapse_pretty.o escape_chars.o integer64_to_na.o is_datelist.o is_recordlist.o is_scalarlist.o modp_numtoa.o null_to_na.o num_to_char.o parse.o prettify.o push_parser.o r-base64.o register.o row_collapse.o transpose_list.o validate.o -Lyajl -lstatyajl -L/usr/lib/R/lib -lR
+make[1]: Leaving directory '/tmp/Rtmp5aTIjV/R.INSTALL174ea322c2/pak/src/library/jsonlite/src'
+installing to /usr/local/lib/R/site-library/00LOCK-pak/00new/pak/library/jsonlite/libs
+in method for ‘asJSON’ with signature ‘"AsIs"’: no definition for class “AsIs”
+in method for ‘asJSON’ with signature ‘"ITime"’: no definition for class “ITime”
+in method for ‘asJSON’ with signature ‘"hms"’: no definition for class “hms”
+in method for ‘asJSON’ with signature ‘"json"’: no definition for class “json”
+in method for ‘asJSON’ with signature ‘"integer64"’: no definition for class “integer64”
+in method for ‘asJSON’ with signature ‘"pairlist"’: no definition for class “pairlist”
+in method for ‘asJSON’ with signature ‘"blob"’: no definition for class “blob”
+in method for ‘asJSON’ with signature ‘"scalar"’: no definition for class “scalar”
+in method for ‘asJSON’ with signature ‘"sf"’: no definition for class “sf”
+in method for ‘asJSON’ with signature ‘"sfc"’: no definition for class “sfc”
+in method for ‘asJSON’ with signature ‘"vctrs_vctr"’: no definition for class “vctrs_vctr”
+
+Compiling lpSolve 
+using C compiler: ‘gcc (Debian 10.2.1-6) 10.2.1 20210110’
+make[1]: Entering directory '/tmp/Rtmp5aTIjV/R.INSTALL174ea322c2/pak/src/library/lpSolve/src'
+gcc -I"/usr/share/R/include" -DNDEBUG -I . -DINTEGERTIME -DPARSER_LP -DBUILDING_FOR_R -DYY_NEVER_INTERACTIVE -DUSRDLL -DCLOCKTIME -DRoleIsExternalInvEngine -DINVERSE_ACTIVE=INVERSE_LUSOL -DINLINE=static -DParanoia      -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c colamd.c -o colamd.o
+gcc -I"/usr/share/R/include" -DNDEBUG -I . -DINTEGERTIME -DPARSER_LP -DBUILDING_FOR_R -DYY_NEVER_INTERACTIVE -DUSRDLL -DCLOCKTIME -DRoleIsExternalInvEngine -DINVERSE_ACTIVE=INVERSE_LUSOL -DINLINE=static -DParanoia      -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c commonlib.c -o commonlib.o
+gcc -I"/usr/share/R/include" -DNDEBUG -I . -DINTEGERTIME -DPARSER_LP -DBUILDING_FOR_R -DYY_NEVER_INTERACTIVE -DUSRDLL -DCLOCKTIME -DRoleIsExternalInvEngine -DINVERSE_ACTIVE=INVERSE_LUSOL -DINLINE=static -DParanoia      -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c hbio.c -o hbio.o
+gcc -I"/usr/share/R/include" -DNDEBUG -I . 
+-DINTEGERTIME -DPARSER_LP -DBUILDING_FOR_R -DYY_NEVER_INTERACTIVE -DUSRDLL -DCLOCKTIME -DRoleIsExternalInvEngine -DINVERSE_ACTIVE=INVERSE_LUSOL -DINLINE=static -DParanoia      -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c ini.c -o ini.o
+gcc -I"/usr/share/R/include" -DNDEBUG -I . -DINTEGERTIME -DPARSER_LP -DBUILDING_FOR_R -DYY_NEVER_INTERACTIVE -DUSRDLL -DCLOCKTIME -DRoleIsExternalInvEngine -DINVERSE_ACTIVE=INVERSE_LUSOL -DINLINE=static -DParanoia      -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c init.c -o init.o
+gcc -I"/usr/share/R/include" -DNDEBUG -I . -DINTEGERTIME -DPARSER_LP -DBUILDING_FOR_R -DYY_NEVER_INTERACTIVE -DUSRDLL -DCLOCKTIME -DRoleIsExternalInvEngine -DINVERSE_ACTIVE=INVERSE_LUSOL -DINLINE=static -DParanoia      -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c isfixedvar.c -o isfixedvar.o
+gcc -I"/usr/share/R/include" -DNDEBUG -I . -DINTEGERTIME -DPARSER_LP -DBUILDING_FOR_R -DYY_NEVER_INTERACTIVE -DUSRDLL -DCLOCKTIME -DRoleIsExternalInvEngine -DINVERSE_ACTIVE=INVERSE_LUSOL -DINLINE=static -DParanoia      -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c lp_Hash.c -o lp_Hash.o
+gcc -I"/usr/share/R/include" -DNDEBUG -I . -DINTEGERTIME -DPARSER_LP -DBUILDING_FOR_R -DYY_NEVER_INTERACTIVE -DUSRDLL -DCLOCKTIME -DRoleIsExternalInvEngine -DINVERSE_ACTIVE=INVERSE_LUSOL -DINLINE=static -DParanoia      -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c lp_LUSOL.c -o lp_LUSOL.o
+gcc -I"/usr/share/R/include" -DNDEBUG -I . -DINTEGERTIME -DPARSER_LP -DBUILDING_FOR_R -DYY_NEVER_INTERACTIVE -DUSRDLL -DCLOCKTIME -DRoleIsExternalInvEngine -DINVERSE_ACTIVE=INVERSE_LUSOL -DINLINE=static -DParanoia      -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c lp_MDO.c -o lp_MDO.o
+gcc -I"/usr/share/R/include" -DNDEBUG -I . -DINTEGERTIME -DPARSER_LP -DBUILDING_FOR_R -DYY_NEVER_INTERACTIVE -DUSRDLL -DCLOCKTIME -DRoleIsExternalInvEngine -DINVERSE_ACTIVE=INVERSE_LUSOL -DINLINE=static -DParanoia      -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c lp_MPS.c -o lp_MPS.o
+gcc -I"/usr/share/R/include" -DNDEBUG -I . -DINTEGERTIME -DPARSER_LP -DBUILDING_FOR_R -DYY_NEVER_INTERACTIVE -DUSRDLL -DCLOCKTIME -DRoleIsExternalInvEngine -DINVERSE_ACTIVE=INVERSE_LUSOL -DINLINE=static -DParanoia      -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c lp_SOS.c -o lp_SOS.o
+gcc -I"/usr/share/R/include" -DNDEBUG -I . -DINTEGERTIME -DPARSER_LP -DBUILDING_FOR_R -DYY_NEVER_INTERACTIVE -DUSRDLL -DCLOCKTIME -DRoleIsExternalInvEngine -DINVERSE_ACTIVE=INVERSE_LUSOL -DINLINE=static -DParanoia      -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c lp_crash.c -o lp_crash.o
+gcc -I"/usr/share/R/include" -DNDEBUG -I . -DINTEGERTIME -DPARSER_LP -DBUILDING_FOR_R -DYY_NEVER_INTERACTIVE -DUSRDLL -DCLOCKTIME -DRoleIsExternalInvEngine -DINVERSE_ACTIVE=INVERSE_LUSOL -DINLINE=static -DParanoia      -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-securit
+y -Wdate-time -D_FORTIFY_SOURCE=2  -c lp_lib.c -o lp_lib.o
+gcc -I"/usr/share/R/include" -DNDEBUG -I . -DINTEGERTIME -DPARSER_LP -DBUILDING_FOR_R -DYY_NEVER_INTERACTIVE -DUSRDLL -DCLOCKTIME -DRoleIsExternalInvEngine -DINVERSE_ACTIVE=INVERSE_LUSOL -DINLINE=static -DParanoia      -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c lp_matrix.c -o lp_matrix.o
+gcc -I"/usr/share/R/include" -DNDEBUG -I . -DINTEGERTIME -DPARSER_LP -DBUILDING_FOR_R -DYY_NEVER_INTERACTIVE -DUSRDLL -DCLOCKTIME -DRoleIsExternalInvEngine -DINVERSE_ACTIVE=INVERSE_LUSOL -DINLINE=static -DParanoia      -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c lp_mipbb.c -o lp_mipbb.o
+gcc -I"/usr/share/R/include" -DNDEBUG -I . -DINTEGERTIME -DPARSER_LP -DBUILDING_FOR_R -DYY_NEVER_INTERACTIVE -DUSRDLL -DCLOCKTIME -DRoleIsExternalInvEngine -DINVERSE_ACTIVE=INVERSE_LUSOL -DINLINE=static -DParanoia      -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c lp_params.c -o lp_params.o
+gcc -I"/usr/share/R/include" -DNDEBUG -I . -DINTEGERTIME -DPARSER_LP -DBUILDING_FOR_R -DYY_NEVER_INTERACTIVE -DUSRDLL -DCLOCKTIME -DRoleIsExternalInvEngine -DINVERSE_ACTIVE=INVERSE_LUSOL -DINLINE=static -DParanoia      -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c lp_presolve.c -o lp_presolve.o
+gcc -I"/usr/share/R/include" -DNDEBUG -I . -DINTEGERTIME -DPARSER_LP -DBUILDING_FOR_R -DYY_NEVER_INTERACTIVE -DUSRDLL -DCLOCKTIME -DRoleIsExternalInvEngine -DINVERSE_ACTIVE=INVERSE_LUSOL -DINLINE=static -DParanoia      -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c lp_price.c -o lp_price.o
+gcc -I"/usr/share/R/include" -DNDEBUG -I . -DINTEGERTIME -DPARSER_LP -DBUILDING_FOR_R -DYY_NEVER_INTERACTIVE -DUSRDLL -DCLOCKTIME -DRoleIsExternalInvEngine -DINVERSE_ACTIVE=INVERSE_LUSOL -DINLINE=static -DParanoia      -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c lp_pricePSE.c -o lp_pricePSE.o
+gcc -I"/usr/share/R/include" -DNDEBUG -I . -DINTEGERTIME -DPARSER_LP -DBUILDING_FOR_R -DYY_NEVER_INTERACTIVE -DUSRDLL -DCLOCKTIME -DRoleIsExternalInvEngine -DINVERSE_ACTIVE=INVERSE_LUSOL -DINLINE=static -DParanoia      -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c lp_report.c -o lp_report.o
+gcc -I"/usr/share/R/include" -DNDEBUG -I . -DINTEGERTIME -DPARSER_LP -DBUILDING_FOR_R -DYY_NEVER_INTERACTIVE -DUSRDLL -DCLOCKTIME -DRoleIsExternalInvEngine -DINVERSE_ACTIVE=INVERSE_LUSOL -DINLINE=static -DParanoia      -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c lp_rlp.c -o lp_rlp.o
+gcc -I"/usr/share/R/include" -DNDEBUG -I . -DINTEGERTIME -DPARSER_LP -DBUILDING_FOR_R -DYY_NEVER_INTERACTIVE -DUSRDLL -DCLOCKTIME -DRoleIsExternalInvEngine -DINVERSE_ACTIVE=INVERSE_LUSOL -DINLINE=static -DParanoia      -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c lp_scale.c -o lp_scale.o
+gcc -I"/usr/share/R/include" -DNDEBUG -I . -DINTEGERTIME -DPARSER_LP -DBUILDING_FOR_R -DYY_NEVER_INTERACTIVE -DUSRDLL -DCLOCKTIME -DRoleIsExternalInvEngine -DINVERSE_ACTIVE=INVERSE_LUSOL -DINLINE=static -DParanoia   
+   -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c lp_simplex.c -o lp_simplex.o
+gcc -I"/usr/share/R/include" -DNDEBUG -I . -DINTEGERTIME -DPARSER_LP -DBUILDING_FOR_R -DYY_NEVER_INTERACTIVE -DUSRDLL -DCLOCKTIME -DRoleIsExternalInvEngine -DINVERSE_ACTIVE=INVERSE_LUSOL -DINLINE=static -DParanoia      -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c lp_utils.c -o lp_utils.o
+gcc -I"/usr/share/R/include" -DNDEBUG -I . -DINTEGERTIME -DPARSER_LP -DBUILDING_FOR_R -DYY_NEVER_INTERACTIVE -DUSRDLL -DCLOCKTIME -DRoleIsExternalInvEngine -DINVERSE_ACTIVE=INVERSE_LUSOL -DINLINE=static -DParanoia      -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c lp_wlp.c -o lp_wlp.o
+gcc -I"/usr/share/R/include" -DNDEBUG -I . -DINTEGERTIME -DPARSER_LP -DBUILDING_FOR_R -DYY_NEVER_INTERACTIVE -DUSRDLL -DCLOCKTIME -DRoleIsExternalInvEngine -DINVERSE_ACTIVE=INVERSE_LUSOL -DINLINE=static -DParanoia      -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c lpslink56.c -o lpslink56.o
+gcc -I"/usr/share/R/include" -DNDEBUG -I . -DINTEGERTIME -DPARSER_LP -DBUILDING_FOR_R -DYY_NEVER_INTERACTIVE -DUSRDLL -DCLOCKTIME -DRoleIsExternalInvEngine -DINVERSE_ACTIVE=INVERSE_LUSOL -DINLINE=static -DParanoia      -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c lusol.c -o lusol.o
+gcc -I"/usr/share/R/include" -DNDEBUG -I . -DINTEGERTIME -DPARSER_LP -DBUILDING_FOR_R -DYY_NEVER_INTERACTIVE -DUSRDLL -DCLOCKTIME -DRoleIsExternalInvEngine -DINVERSE_ACTIVE=INVERSE_LUSOL -DINLINE=static -DParanoia      -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c lusolio.c -o lusolio.o
+gcc -I"/usr/share/R/include" -DNDEBUG -I . -DINTEGERTIME -DPARSER_LP -DBUILDING_FOR_R -DYY_NEVER_INTERACTIVE -DUSRDLL -DCLOCKTIME -DRoleIsExternalInvEngine -DINVERSE_ACTIVE=INVERSE_LUSOL -DINLINE=static -DParanoia      -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c mmio.c -o mmio.o
+gcc -I"/usr/share/R/include" -DNDEBUG -I . -DINTEGERTIME -DPARSER_LP -DBUILDING_FOR_R -DYY_NEVER_INTERACTIVE -DUSRDLL -DCLOCKTIME -DRoleIsExternalInvEngine -DINVERSE_ACTIVE=INVERSE_LUSOL -DINLINE=static -DParanoia      -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c myblas.c -o myblas.o
+gcc -I"/usr/share/R/include" -DNDEBUG -I . -DINTEGERTIME -DPARSER_LP -DBUILDING_FOR_R -DYY_NEVER_INTERACTIVE -DUSRDLL -DCLOCKTIME -DRoleIsExternalInvEngine -DINVERSE_ACTIVE=INVERSE_LUSOL -DINLINE=static -DParanoia      -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c sparselib.c -o sparselib.o
+gcc -I"/usr/share/R/include" -DNDEBUG -I . -DINTEGERTIME -DPARSER_LP -DBUILDING_FOR_R -DYY_NEVER_INTERACTIVE -DUSRDLL -DCLOCKTIME -DRoleIsExternalInvEngine -DINVERSE_ACTIVE=INVERSE_LUSOL -DINLINE=static -DParanoia      -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c yacc_read.c -o yacc_read.o
+gcc -shared -L/usr/lib/R/lib -Wl,-z,relro -o lpSolve.so colamd.o commonlib.o hbio.o ini.o init.o
+ isfixedvar.o lp_Hash.o lp_LUSOL.o lp_MDO.o lp_MPS.o lp_SOS.o lp_crash.o lp_lib.o lp_matrix.o lp_mipbb.o lp_params.o lp_presolve.o lp_price.o lp_pricePSE.o lp_report.o lp_rlp.o lp_scale.o lp_simplex.o lp_utils.o lp_wlp.o lpslink56.o lusol.o lusolio.o mmio.o myblas.o sparselib.o yacc_read.o -L/usr/lib/R/lib -lR
+make[1]: Leaving directory '/tmp/Rtmp5aTIjV/R.INSTALL174ea322c2/pak/src/library/lpSolve/src'
+installing to /usr/local/lib/R/site-library/00LOCK-pak/00new/pak/library/lpSolve/libs
+
+Compiling ps 
+using C compiler: ‘gcc (Debian 10.2.1-6) 10.2.1 20210110’
+make[1]: Entering directory '/tmp/Rtmp5aTIjV/R.INSTALL174ea322c2/pak/src/library/ps/src'
+gcc -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -Wl,-z,relro -Wall px.c -o px
+gcc -I"/usr/share/R/include" -DNDEBUG       -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c init.c -o init.o
+gcc -I"/usr/share/R/include" -DNDEBUG       -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c api-common.c -o api-common.o
+gcc -I"/usr/share/R/include" -DNDEBUG       -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c common.c -o common.o
+gcc -I"/usr/share/R/include" -DNDEBUG       -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c extra.c -o extra.o
+gcc -I"/usr/share/R/include" -DNDEBUG       -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c dummy.c -o dummy.o
+gcc -I"/usr/share/R/include" -DNDEBUG       -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c error-codes.c -o error-codes.o
+gcc -I"/usr/share/R/include" -DNDEBUG       -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c posix.c -o posix.o
+gcc -I"/usr/share/R/include" -DNDEBUG       -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c api-posix.c -o api-posix.o
+gcc -I"/usr/share/R/include" -DNDEBUG       -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c linux.c -o linux.o
+gcc -I"/usr/share/R/include" -DNDEBUG       -fpic  -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c api-linux.c -o api-linux.o
+gcc -shared -L/usr/lib/R/lib -Wl,-z,relro -o ps.so init.o api-common.o common.o extra.o dummy.o error-codes.o posix.o api-posix.o linux.o api-linux.o -L/usr/lib/R/lib -lR
+make[1]: Leaving directory '/tmp/Rtmp5aTIjV/R.INSTALL174ea322c2/pak/src/library/ps/src'
+installing via 'install.libs.R' to /usr/local/lib/R/site-library/00LOCK-pak/00new/pak/library/ps
+
+Compiling zip 
+using C compiler: ‘gcc (Debian 10.2.1-6) 10.2.1 20210110’
+make[1]: Entering directory '/tmp/Rtmp5aTIjV/R.INSTALL174ea322c2/pak/src/library/zip/src'
+gcc -g -O2 -ffile-prefix-map=/home/jranke/git/r-backports/bullseye/r-base-4.3.2=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  miniz.c zip.c unixutils.c tools/cmdzip.c -o tools/cmdzip
+gcc -g -O2 -ffile-prefix

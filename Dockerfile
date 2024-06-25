@@ -33,20 +33,26 @@ run echo "deb http://cloud.r-project.org/bin/linux/debian bullseye-cran40/" | te
 COPY latch_environment.R /tmp/docker-build/work/latch_environment.R
 RUN Rscript /tmp/docker-build/work/latch_environment.R
 
+# COPY clusterProfiler_4.12.0.tar.gz /tmp/docker-build/work/clusterProfiler_4.12.0.tar.gz
+# RUN R -e "install.packages('/tmp/docker-build/work/clusterProfiler_4.12.0.tar.gz', repos = NULL, type='source')"
+
+# COPY KEGG.db_2.8.0.tar.gz /tmp/docker-build/work/KEGG.db_2.8.0.tar.gz
+# RUN R -e "install.packages('/tmp/docker-build/work/KEGG.db_2.8.0.tar.gz', repos = NULL, type='source')"
+
+RUN pip install pandas
+
 # Latch SDK
 # DO NOT REMOVE
-run pip install latch==2.46.7
+run pip install latch==2.47.3
 run mkdir /opt/latch
 run apt-get update && apt-get install -y default-jre-headless
 
 
 # Copy workflow data (use .dockerignore to skip files)
-
 copy . /root/
 
 # Latch nextflow workflow entrypoint
 # DO NOT CHANGE
-
 run ln -s /root/.latch/bin/nextflow /root/nextflow
 run ln -s /root/.latch/.nextflow /root/.nextflow
 

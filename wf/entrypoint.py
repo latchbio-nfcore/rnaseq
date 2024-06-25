@@ -19,12 +19,12 @@ from latch_cli.nextflow.utils import _get_execution_name
 from latch_cli.nextflow.workflow import get_flag
 from latch_cli.services.register.utils import import_module_by_path
 from latch_cli.utils import urljoins
-from wf.differential_gene_expression import dge
+from wf.prep_dge import prep_dge
 
 meta = Path("latch_metadata") / "__init__.py"
 import_module_by_path(meta)
 
-with open("README.md", "r") as readme_file:
+with open("./README.md", "r") as readme_file:
     readme_contents = readme_file.read()
 
 
@@ -34,7 +34,6 @@ class SampleSheet:
     fastq_1: LatchFile
     fastq_2: Optional[LatchFile]
     strandedness: str
-    differential_condition: Optional[str]
 
 
 class Reference_Type(Enum):
@@ -407,7 +406,6 @@ def nextflow_runtime(
             *get_flag_defaults("skip_qc", skip_qc, False),
             *get_flag_defaults("email", email, None),
             *get_flag_defaults("multiqc_title", multiqc_title, None),
-            # *get_flag_defaults("condition_file", condition_file, None),
         ]
 
         print("Launching Nextflow Runtime")
@@ -482,7 +480,6 @@ def nf_nf_core_rnaseq(
     extra_kallisto_quant_args: typing.Optional[str],
     email: typing.Optional[str],
     multiqc_title: typing.Optional[str],
-    run_latch_dge: Optional[DifferentialGeneTool] = None,
     outdir: LatchOutputDir = LatchOutputDir("latch:///Bulk_RNAseq"),
     latch_genome: Reference_Type = Reference_Type.homo_sapiens,
     hisat2_build_memory: int = 200,
@@ -535,12 +532,13 @@ def nf_nf_core_rnaseq(
     skip_deseq2_qc: bool = False,
     skip_multiqc: bool = False,
     skip_qc: bool = False,
-) -> Optional[LatchOutputDir]:
-    """
+) -> LatchOutputDir:
+    f"""
     nf-core/rnaseq
 
+    test test
     {readme_contents}
-    """.format(readme_contents=readme_contents)
+    """
 
     pvc_name: str = initialize()
     run_name = nextflow_runtime(
@@ -631,9 +629,8 @@ def nf_nf_core_rnaseq(
         multiqc_title=multiqc_title,
     )
 
-    return dge(
-        input=input,
+    return prep_dge(
         run_name=run_name,
-        run_latch_dge=run_latch_dge,
+        latch_genome=latch_genome,
         outdir=outdir,
     )

@@ -1,0 +1,1354 @@
+Step 1/21 : from 812206152185.dkr.ecr.us-west-2.amazonaws.com/latch-base:fe0b-main
+
+
+ ---> f23c37efcd53
+
+Step 2/21 : workdir /tmp/docker-build/work/
+
+
+ ---> Using cache
+
+ ---> dd16c2d4f334
+
+Step 3/21 : shell [     "/usr/bin/env", "bash",     "-o", "errexit",     "-o", "pipefail",     "-o", "nounset",     "-o", "verbose",     "-o", "errtrace",     "-O", "inherit_errexit",     "-O", "shift_verbose",     "-c" ]
+
+
+ ---> Using cache
+
+ ---> aaada0c60239
+
+Step 4/21 : env TZ='Etc/UTC'
+
+
+ ---> Using cache
+
+ ---> d6869bc03deb
+
+Step 5/21 : env LANG='en_US.UTF-8'
+
+
+ ---> Using cache
+
+ ---> ae2f7ca65880
+
+Step 6/21 : arg DEBIAN_FRONTEND=noninteractive
+
+
+ ---> Using cache
+
+ ---> f029b3f36a86
+
+Step 7/21 : run apt-get update --yes &&     apt-get install --yes dirmngr apt-transport-https gnupg2 &&     gpg --keyserver keyserver.ubuntu.com --recv-key '95C0FAF38DB3CCAD0C080A7BDC78B2DDEABC47B7' &&     gpg --armor --export '95C0FAF38DB3CCAD0C080A7BDC78B2DDEABC47B7' | tee /etc/apt/trusted.gpg.d/cran_debian_key.asc
+
+
+ ---> Using cache
+
+ ---> 37cda4773e06
+
+Step 8/21 : run echo "deb http://cloud.r-project.org/bin/linux/debian bullseye-cran40/" | tee /etc/apt/sources.list.d/cran.list &&     apt-get update --yes &&     DEBIAN_FRONTEND=noninteractive apt-get install --yes r-base r-base-dev libxml2-dev libcurl4-openssl-dev libssl-dev wget
+
+
+ ---> Using cache
+
+ ---> e386aca7bd1c
+
+Step 9/21 : COPY latch_environment.R /tmp/docker-build/work/latch_environment.R
+
+
+ ---> Using cache
+
+ ---> 91ad4aa16e48
+
+Step 10/21 : RUN Rscript /tmp/docker-build/work/latch_environment.R
+
+
+ ---> Using cache
+
+ ---> 564d449a26ce
+
+Step 11/21 : COPY KEGG.db_2.8.0.tar.gz /tmp/docker-build/work/KEGG.db_2.8.0.tar.gz
+
+
+ ---> 76a899ca126c
+
+Step 12/21 : RUN R -e "install.packages('/tmp/docker-build/work/KEGG.db_2.8.0.tar.gz', repos = NULL, type='source')"
+
+
+ ---> Running in f8c468ced9b2
+
+[91mR -e "install.packages('/tmp/docker-build/work/KEGG.db_2.8.0.tar.gz', repos = NULL, type='source')"
+[0m
+
+R version 4.3.2 (2023-10-31) -- "Eye Holes"
+Copyright (C) 2023 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+
+> install.packages('/tmp/docker-build/work/KEGG.db_2.8.0.tar.gz', repos = NULL, type='source')
+
+[91mInstalling package into ‘/usr/local/lib/R/site-library’
+(as ‘lib’ is unspecified)
+[0m
+[91m* installing *source* package ‘KEGG.db’ ...
+[0m
+[91m** using staged installation
+[0m
+[91m** R
+[0m
+[91m** inst
+[0m
+[91m** byte-compile and prepare package for lazy loading
+[0m
+[91m** help
+[0m
+[91m*** installing help indices
+[0m
+[91m** building package indices
+[0m
+[91m** testing if installed package can be loaded from temporary location
+[0m
+[91m** testing if installed package can be loaded from final location
+[0m
+[91m** testing if installed package keeps a record of temporary installation path
+[0m
+[91m* DONE (KEGG.db)
+[0m
+> 
+> 
+
+ ---> 992fda5dabaf
+
+Step 13/21 : run pip install latch==2.46.7
+
+
+ ---> Running in f3a61e35af57
+
+[91mpip install latch==2.46.7
+[0m
+Collecting latch==2.46.7
+
+  Downloading latch-2.46.7-py3-none-any.whl (235 kB)
+
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 235.6/235.6 kB 5.5 MB/s eta 0:00:00
+
+
+Collecting watchfiles==0.19.0
+
+  Downloading watchfiles-0.19.0-cp37-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (1.3 MB)
+
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.3/1.3 MB 28.4 MB/s eta 0:00:00
+
+
+Collecting tqdm>=4.63.0
+
+  Downloading tqdm-4.66.4-py3-none-any.whl (78 kB)
+
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 78.3/78.3 kB 3.2 MB/s eta 0:00:00
+
+
+Collecting docker>=7.1.0
+
+  Downloading docker-7.1.0-py3-none-any.whl (147 kB)
+
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 147.8/147.8 kB 6.9 MB/s eta 0:00:00
+
+
+Collecting gql==3.4.0
+
+  Downloading gql-3.4.0-py2.py3-none-any.whl (65 kB)
+
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 65.2/65.2 kB 2.9 MB/s eta 0:00:00
+
+
+Collecting lytekitplugins-pods==0.6.2
+
+  Downloading lytekitplugins_pods-0.6.2-py3-none-any.whl (4.3 kB)
+
+Collecting paramiko>=3.2.0
+
+  Downloading paramiko-3.4.0-py3-none-any.whl (225 kB)
+
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 225.9/225.9 kB 10.5 MB/s eta 0:00:00
+
+
+Collecting graphql-core==3.2.3
+
+  Downloading graphql_core-3.2.3-py3-none-any.whl (202 kB)
+
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 202.9/202.9 kB 8.9 MB/s eta 0:00:00
+
+
+Requirement already satisfied: boto3>=1.26.0 in /usr/local/lib/python3.9/site-packages (from latch==2.46.7) (1.26.161)
+
+Collecting kubernetes>=24.2.0
+
+  Downloading kubernetes-30.1.0-py2.py3-none-any.whl (1.7 MB)
+
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.7/1.7 MB 39.7 MB/s eta 0:00:00
+
+
+Collecting latch-sdk-gql==0.0.6
+
+  Downloading latch_sdk_gql-0.0.6-py3-none-any.whl (4.0 kB)
+
+Collecting lytekit==0.15.8
+
+  Downloading lytekit-0.15.8-py3-none-any.whl (388 kB)
+
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 389.0/389.0 kB 13.3 MB/s eta 0:00:00
+
+
+Collecting click>=8.0
+
+  Downloading click-8.1.7-py3-none-any.whl (97 kB)
+
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 97.9/97.9 kB 2.9 MB/s eta 0:00:00
+
+
+Collecting requests>=2.28.1
+
+  Downloading requests-2.32.3-py3-none-any.whl (64 kB)
+
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 64.9/64.9 kB 2.7 MB/s eta 0:00:00
+
+
+Collecting typing-extensions==4.7.1
+
+  Downloading typing_extensions-4.7.1-py3-none-any.whl (33 kB)
+
+Collecting aioconsole==0.6.1
+
+  Downloading aioconsole-0.6.1-py3-none-any.whl (30 kB)
+
+Collecting apscheduler==3.9.1
+
+  Downloading APScheduler-3.9.1-py2.py3-none-any.whl (59 kB)
+
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 59.5/59.5 kB 1.6 MB/s eta 0:00:00
+
+
+Collecting requests-toolbelt==0.10.1
+
+  Downloading requests_toolbelt-0.10.1-py2.py3-none-any.whl (54 kB)
+
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 54.5/54.5 kB 2.4 MB/s eta 0:00:00
+
+
+Requirement already satisfied: python-dateutil>=2.8 in /usr/local/lib/python3.9/site-packages (from latch==2.46.7) (2.8.2)
+
+Collecting asyncssh==2.13.2
+
+  Downloading asyncssh-2.13.2-py3-none-any.whl (349 kB)
+
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 349.3/349.3 kB 13.3 MB/s eta 0:00:00
+
+
+Collecting scp>=0.14.0
+
+  Downloading scp-0.15.0-py2.py3-none-any.whl (8.8 kB)
+
+Collecting websockets==11.0.3
+
+  Downloading websockets-11.0.3-cp39-cp39-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl (129 kB)
+
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 129.7/129.7 kB 5.5 MB/s eta 0:00:00
+
+
+Collecting latch-sdk-config==0.0.4
+
+  Downloading latch_sdk_config-0.0.4-py3-none-any.whl (4.5 kB)
+
+Collecting pyjwt>=0.2.0
+
+  Downloading PyJWT-2.8.0-py3-none-any.whl (22 kB)
+
+Collecting pytz
+
+  Downloading pytz-2024.1-py2.py3-none-any.whl (505 kB)
+
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 505.5/505.5 kB 16.0 MB/s eta 0:00:00
+
+
+Requirement already satisfied: setuptools>=0.7 in /usr/local/lib/python3.9/site-packages (from apscheduler==3.9.1->latch==2.46.7) (58.1.0)
+
+Requirement already satisfied: six>=1.4.0 in /usr/local/lib/python3.9/site-packages (from apscheduler==3.9.1->latch==2.46.7) (1.16.0)
+
+Collecting tzlocal!=3.*,>=2.0
+
+  Downloading tzlocal-5.2-py3-none-any.whl (17 kB)
+
+Collecting cryptography>=3.1
+
+  Downloading cryptography-42.0.8-cp39-abi3-manylinux_2_28_x86_64.whl (3.9 MB)
+
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 3.9/3.9 MB 55.4 MB/s eta 0:00:00
+
+
+Collecting backoff<3.0,>=1.11.1
+
+  Downloading backoff-2.2.1-py3-none-any.whl (15 kB)
+
+Collecting yarl<2.0,>=1.6
+
+  Downloading yarl-1.9.4-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (304 kB)
+
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 304.3/304.3 kB 13.9 MB/s eta 0:00:00
+
+
+Requirement already satisfied: wheel<1.0.0,>=0.30.0 in /usr/local/lib/python3.9/site-packages (from lytekit==0.15.8->latch==2.46.7) (0.40.0)
+
+Collecting cookiecutter>=1.7.3
+
+  Downloading cookiecutter-2.6.0-py3-none-any.whl (39 kB)
+
+Collecting docker-image-py>=0.1.10
+
+  Downloading docker-image-py-0.1.12.tar.gz (8.2 kB)
+
+  Preparing metadata (setup.py): started
+
+  Preparing metadata (setup.py): finished with status 'done'
+
+Collecting marshmallow-jsonschema>=0.12.0
+
+  Downloading marshmallow_jsonschema-0.13.0-py3-none-any.whl (11 kB)
+
+Collecting grpcio-status!=1.45.0,>=1.43
+
+  Downloading grpcio_status-1.64.1-py3-none-any.whl (14 kB)
+
+Collecting sortedcontainers<3.0.0,>=1.5.9
+
+  Downloading sortedcontainers-2.4.0-py2.py3-none-any.whl (29 kB)
+
+Collecting marshmallow-enum
+
+  Downloading marshmallow_enum-1.5.1-py2.py3-none-any.whl (4.2 kB)
+
+Collecting croniter<4.0.0,>=0.3.20
+
+  Downloading croniter-2.0.5-py2.py3-none-any.whl (20 kB)
+
+Collecting pytimeparse<2.0.0,>=1.1.8
+
+  Downloading pytimeparse-1.1.8-py2.py3-none-any.whl (10.0 kB)
+
+Collecting deprecated<2.0,>=1.0
+
+  Downloading Deprecated-1.2.14-py2.py3-none-any.whl (9.6 kB)
+
+Collecting keyring>=18.0.1
+
+  Downloading keyring-25.2.1-py3-none-any.whl (38 kB)
+
+Collecting lyteidl==0.2.0a0
+
+  Downloading lyteidl-0.2.0a0-py3-none-any.whl (162 kB)
+
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 162.2/162.2 kB 9.1 MB/s eta 0:00:00
+
+
+Requirement already satisfied: urllib3<2.0.0,>=1.22 in /usr/local/lib/python3.9/site-packages (from lytekit==0.15.8->latch==2.46.7) (1.26.16)
+
+Collecting retry==0.9.2
+
+  Downloading retry-0.9.2-py2.py3-none-any.whl (8.0 kB)
+
+Collecting docstring-parser>=0.9.0
+
+  Downloading docstring_parser-0.16-py3-none-any.whl (36 kB)
+
+Collecting diskcache>=5.2.1
+
+  Downloading diskcache-5.6.3-py3-none-any.whl (45 kB)
+
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 45.5/45.5 kB 1.6 MB/s eta 0:00:00
+
+
+Collecting python-json-logger>=2.0.0
+
+  Downloading python_json_logger-2.0.7-py3-none-any.whl (8.1 kB)
+
+Collecting cloudpickle>=2.0.0
+
+  Downloading cloudpickle-3.0.0-py3-none-any.whl (20 kB)
+
+Collecting responses>=0.10.7
+
+  Downloading responses-0.25.3-py3-none-any.whl (55 kB)
+
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 55.2/55.2 kB 1.8 MB/s eta 0:00:00
+
+
+Collecting statsd<4.0.0,>=3.0.0
+
+  Downloading statsd-3.3.0-py2.py3-none-any.whl (11 kB)
+
+Collecting natsort>=7.0.1
+
+  Downloading natsort-8.4.0-py3-none-any.whl (38 kB)
+
+Collecting jsonschema>=4.5.1
+
+  Downloading jsonschema-4.22.0-py3-none-any.whl (88 kB)
+
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 88.3/88.3 kB 3.8 MB/s eta 0:00:00
+
+
+Collecting grpcio!=1.45.0,<2.0,>=1.43.0
+
+  Downloading grpcio-1.64.1-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (5.6 MB)
+
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 5.6/5.6 MB 58.3 MB/s eta 0:00:00
+
+
+Collecting dataclasses-json<=0.5.6,>=0.5.2
+
+  Downloading dataclasses_json-0.5.6-py3-none-any.whl (25 kB)
+
+Collecting wrapt<2.0.0,>=1.0.0
+
+  Downloading wrapt-1.16.0-cp39-cp39-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl (80 kB)
+
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 80.1/80.1 kB 4.1 MB/s eta 0:00:00
+
+
+Collecting protobuf<4,>=3.6.1
+
+  Downloading protobuf-3.20.3-cp39-cp39-manylinux_2_5_x86_64.manylinux1_x86_64.whl (1.0 MB)
+
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.0/1.0 MB 32.2 MB/s eta 0:00:00
+
+
+Collecting anyio>=3.0.0
+
+  Downloading anyio-4.4.0-py3-none-any.whl (86 kB)
+
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 86.8/86.8 kB 4.4 MB/s eta 0:00:00
+
+
+Collecting googleapis-common-protos
+
+  Downloading googleapis_common_protos-1.63.1-py2.py3-none-any.whl (229 kB)
+
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 229.2/229.2 kB 9.7 MB/s eta 0:00:00
+
+
+Collecting protoc-gen-swagger
+
+  Downloading protoc_gen_swagger-0.1.0-py2.py3-none-any.whl (9.4 kB)
+
+Collecting decorator>=3.4.2
+
+  Downloading decorator-5.1.1-py3-none-any.whl (9.1 kB)
+
+Collecting py<2.0.0,>=1.4.26
+
+  Downloading py-1.11.0-py2.py3-none-any.whl (98 kB)
+
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 98.7/98.7 kB 3.8 MB/s eta 0:00:00
+
+
+Requirement already satisfied: jmespath<2.0.0,>=0.7.1 in /usr/local/lib/python3.9/site-packages (from boto3>=1.26.0->latch==2.46.7) (1.0.1)
+
+Requirement already satisfied: s3transfer<0.7.0,>=0.6.0 in /usr/local/lib/python3.9/site-packages (from boto3>=1.26.0->latch==2.46.7) (0.6.1)
+
+Requirement already satisfied: botocore<1.30.0,>=1.29.161 in /usr/local/lib/python3.9/site-packages (from boto3>=1.26.0->latch==2.46.7) (1.29.161)
+
+Collecting google-auth>=1.0.1
+
+  Downloading google_auth-2.30.0-py2.py3-none-any.whl (193 kB)
+
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 193.7/193.7 kB 8.8 MB/s eta 0:00:00
+
+
+Collecting certifi>=14.05.14
+
+  Downloading certifi-2024.6.2-py3-none-any.whl (164 kB)
+
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 164.4/164.4 kB 7.7 MB/s eta 0:00:00
+
+
+Requirement already satisfied: pyyaml>=5.4.1 in /usr/local/lib/python3.9/site-packages (from kubernetes>=24.2.0->latch==2.46.7) (5.4.1)
+
+Collecting websocket-client!=0.40.0,!=0.41.*,!=0.42.*,>=0.32.0
+
+  Downloading websocket_client-1.8.0-py3-none-any.whl (58 kB)
+
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 58.8/58.8 kB 2.7 MB/s eta 0:00:00
+
+
+Collecting requests-oauthlib
+
+  Downloading requests_oauthlib-2.0.0-py2.py3-none-any.whl (24 kB)
+
+Collecting oauthlib>=3.2.2
+
+  Downloading oauthlib-3.2.2-py3-none-any.whl (151 kB)
+
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 151.7/151.7 kB 8.0 MB/s eta 0:00:00
+
+
+Collecting bcrypt>=3.2
+
+  Downloading bcrypt-4.1.3-cp39-abi3-manylinux_2_28_x86_64.whl (283 kB)
+
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 283.7/283.7 kB 12.9 MB/s eta 0:00:00
+
+
+Collecting pynacl>=1.5
+
+  Downloading PyNaCl-1.5.0-cp36-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.manylinux_2_24_x86_64.whl (856 kB)
+
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 856.7/856.7 kB 26.0 MB/s eta 0:00:00
+
+
+Collecting idna<4,>=2.5
+
+  Downloading idna-3.7-py3-none-any.whl (66 kB)
+
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 66.8/66.8 kB 2.9 MB/s eta 0:00:00
+
+
+Collecting charset-normalizer<4,>=2
+
+  Downloading charset_normalizer-3.3.2-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (142 kB)
+
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 142.3/142.3 kB 8.1 MB/s eta 0:00:00
+
+
+Collecting sniffio>=1.1
+
+  Downloading sniffio-1.3.1-py3-none-any.whl (10 kB)
+
+Collecting exceptiongroup>=1.0.2
+
+  Downloading exceptiongroup-1.2.1-py3-none-any.whl (16 kB)
+
+Collecting python-slugify>=4.0.0
+
+  Downloading python_slugify-8.0.4-py2.py3-none-any.whl (10 kB)
+
+Collecting binaryornot>=0.4.4
+
+  Downloading binaryornot-0.4.4-py2.py3-none-any.whl (9.0 kB)
+
+Collecting arrow
+
+  Downloading arrow-1.3.0-py3-none-any.whl (66 kB)
+
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 66.4/66.4 kB 2.4 MB/s eta 0:00:00
+
+
+Collecting Jinja2<4.0.0,>=2.7
+
+  Downloading jinja2-3.1.4-py3-none-any.whl (133 kB)
+
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 133.3/133.3 kB 6.8 MB/s eta 0:00:00
+
+
+Collecting rich
+
+  Downloading rich-13.7.1-py3-none-any.whl (240 kB)
+
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 240.7/240.7 kB 11.1 MB/s eta 0:00:00
+
+
+Collecting cffi>=1.12
+
+  Downloading cffi-1.16.0-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (443 kB)
+
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 443.4/443.4 kB 17.0 MB/s eta 0:00:00
+
+
+Collecting typing-inspect>=0.4.0
+
+  Downloading typing_inspect-0.9.0-py3-none-any.whl (8.8 kB)
+
+Collecting marshmallow<4.0.0,>=3.3.0
+
+  Downloading marshmallow-3.21.3-py3-none-any.whl (49 kB)
+
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 49.2/49.2 kB 2.3 MB/s eta 0:00:00
+
+
+Collecting regex>=2019.4.14
+
+  Downloading regex-2024.5.15-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (774 kB)
+
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 774.6/774.6 kB 26.1 MB/s eta 0:00:00
+
+
+Collecting cachetools<6.0,>=2.0.0
+
+  Downloading cachetools-5.3.3-py3-none-any.whl (9.3 kB)
+
+Collecting pyasn1-modules>=0.2.1
+
+  Downloading pyasn1_modules-0.4.0-py3-none-any.whl (181 kB)
+
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 181.2/181.2 kB 8.9 MB/s eta 0:00:00
+
+
+Requirement already satisfied: rsa<5,>=3.1.4 in /usr/local/lib/python3.9/site-packages (from google-auth>=1.0.1->kubernetes>=24.2.0->latch==2.46.7) (4.7.2)
+
+Collecting grpcio-status!=1.45.0,>=1.43
+
+  Downloading grpcio_status-1.64.0-py3-none-any.whl (14 kB)
+
+  Downloading grpcio_status-1.63.0-py3-none-any.whl (14 kB)
+
+  Downloading grpcio_status-1.62.2-py3-none-any.whl (14 kB)
+
+  Downloading grpcio_status-1.62.1-py3-none-any.whl (14 kB)
+
+  Downloading grpcio_status-1.62.0-py3-none-any.whl (14 kB)
+
+  Downloading grpcio_status-1.60.1-py3-none-any.whl (14 kB)
+
+  Downloading grpcio_status-1.60.0-py3-none-any.whl (14 kB)
+
+  Downloading grpcio_status-1.59.3-py3-none-any.whl (14 kB)
+
+  Downloading grpcio_status-1.59.2-py3-none-any.whl (14 kB)
+
+  Downloading grpcio_status-1.59.0-py3-none-any.whl (14 kB)
+
+  Downloading grpcio_status-1.58.0-py3-none-any.whl (14 kB)
+
+  Downloading grpcio_status-1.57.0-py3-none-any.whl (5.1 kB)
+
+  Downloading grpcio_status-1.56.2-py3-none-any.whl (5.1 kB)
+
+  Downloading grpcio_status-1.56.0-py3-none-any.whl (5.1 kB)
+
+  Downloading grpcio_status-1.55.3-py3-none-any.whl (5.1 kB)
+
+  Downloading grpcio_status-1.54.3-py3-none-any.whl (5.1 kB)
+
+  Downloading grpcio_status-1.54.2-py3-none-any.whl (5.1 kB)
+
+  Downloading grpcio_status-1.54.0-py3-none-any.whl (5.1 kB)
+
+  Downloading grpcio_status-1.53.2-py3-none-any.whl (5.1 kB)
+
+  Downloading grpcio_status-1.53.1-py3-none-any.whl (5.1 kB)
+
+  Downloading grpcio_status-1.53.0-py3-none-any.whl (5.1 kB)
+
+  Downloading grpcio_status-1.51.3-py3-none-any.whl (5.1 kB)
+
+  Downloading grpcio_status-1.51.1-py3-none-any.whl (5.1 kB)
+
+  Downloading grpcio_status-1.50.0-py3-none-any.whl (14 kB)
+
+  Downloading grpcio_status-1.49.1-py3-none-any.whl (14 kB)
+
+  Downloading grpcio_status-1.48.2-py3-none-any.whl (14 kB)
+
+Collecting referencing>=0.28.4
+
+  Downloading referencing-0.35.1-py3-none-any.whl (26 kB)
+
+Collecting rpds-py>=0.7.1
+
+  Downloading rpds_py-0.18.1-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (1.1 MB)
+
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.1/1.1 MB 39.1 MB/s eta 0:00:00
+
+
+Collecting attrs>=22.2.0
+
+  Downloading attrs-23.2.0-py3-none-any.whl (60 kB)
+
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 60.8/60.8 kB 3.4 MB/s eta 0:00:00
+
+
+Collecting jsonschema-specifications>=2023.03.6
+
+  Downloading jsonschema_specifications-2023.12.1-py3-none-any.whl (18 kB)
+
+Collecting jaraco.classes
+
+  Downloading jaraco.classes-3.4.0-py3-none-any.whl (6.8 kB)
+
+Collecting jeepney>=0.4.2
+
+  Downloading jeepney-0.8.0-py3-none-any.whl (48 kB)
+
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 48.4/48.4 kB 2.3 MB/s eta 0:00:00
+
+
+Collecting jaraco.context
+
+  Downloading jaraco.context-5.3.0-py3-none-any.whl (6.5 kB)
+
+Collecting SecretStorage>=3.2
+
+  Downloading SecretStorage-3.3.3-py3-none-any.whl (15 kB)
+
+Collecting jaraco.functools
+
+  Downloading jaraco.functools-4.0.1-py3-none-any.whl (9.8 kB)
+
+Collecting importlib-metadata>=4.11.4
+
+  Downloading importlib_metadata-7.2.0-py3-none-any.whl (24 kB)
+
+Collecting multidict>=4.0
+
+  Downloading multidict-6.0.5-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (123 kB)
+
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 123.8/123.8 kB 7.0 MB/s eta 0:00:00
+
+
+Collecting chardet>=3.0.2
+
+  Downloading chardet-5.2.0-py3-none-any.whl (199 kB)
+
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 199.4/199.4 kB 11.2 MB/s eta 0:00:00
+
+
+Collecting pycparser
+
+  Downloading pycparser-2.22-py3-none-any.whl (117 kB)
+
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 117.6/117.6 kB 6.0 MB/s eta 0:00:00
+
+
+Collecting zipp>=0.5
+
+  Downloading zipp-3.19.2-py3-none-any.whl (9.0 kB)
+
+Collecting MarkupSafe>=2.0
+
+  Downloading MarkupSafe-2.1.5-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (25 kB)
+
+Collecting packaging>=17.0
+
+  Downloading packaging-24.1-py3-none-any.whl (53 kB)
+
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 54.0/54.0 kB 2.8 MB/s eta 0:00:00
+
+
+Requirement already satisfied: pyasn1<0.7.0,>=0.4.6 in /usr/local/lib/python3.9/site-packages (from pyasn1-modules>=0.2.1->google-auth>=1.0.1->kubernetes>=24.2.0->latch==2.46.7) (0.5.0)
+
+Collecting text-unidecode>=1.3
+
+  Downloading text_unidecode-1.3-py2.py3-none-any.whl (78 kB)
+
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 78.2/78.2 kB 6.3 MB/s eta 0:00:00
+
+
+Collecting mypy-extensions>=0.3.0
+
+  Downloading mypy_extensions-1.0.0-py3-none-any.whl (4.7 kB)
+
+Collecting types-python-dateutil>=2.8.10
+
+  Downloading types_python_dateutil-2.9.0.20240316-py3-none-any.whl (9.7 kB)
+
+Collecting more-itertools
+
+  Downloading more_itertools-10.3.0-py3-none-any.whl (59 kB)
+
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 59.2/59.2 kB 2.9 MB/s eta 0:00:00
+
+
+Collecting backports.tarfile
+
+  Downloading backports.tarfile-1.2.0-py3-none-any.whl (30 kB)
+
+Collecting pygments<3.0.0,>=2.13.0
+
+  Downloading pygments-2.18.0-py3-none-any.whl (1.2 MB)
+
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.2/1.2 MB 29.1 MB/s eta 0:00:00
+
+
+Collecting markdown-it-py>=2.2.0
+
+  Downloading markdown_it_py-3.0.0-py3-none-any.whl (87 kB)
+
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 87.5/87.5 kB 4.5 MB/s eta 0:00:00
+
+
+Collecting mdurl~=0.1
+
+  Downloading mdurl-0.1.2-py3-none-any.whl (10.0 kB)
+
+[91mWARNING: The candidate selected for download or install is a yanked version: 'apscheduler' candidate (version 3.9.1 at https://files.pythonhosted.org/packages/e4/9f/c3937d4babe62504b874d4bf2c0d85aa69c7f59fa84cf6050f3b9dc5d83e/APScheduler-3.9.1-py2.py3-none-any.whl (from https://pypi.org/simple/apscheduler/) (requires-python:>=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*, <4))
+Reason for being yanked: Not compatible with Python 2.7
+[0m
+Building wheels for collected packages: docker-image-py
+
+  Building wheel for docker-image-py (setup.py): started
+
+  Building wheel for docker-image-py (setup.py): finished with status 'done'
+
+  Created wheel for docker-image-py: filename=docker_image_py-0.1.12-py3-none-any.whl size=8835 sha256=b78388284e9540109559fd593b8e0cf9aabff661511fe1b3257a0207752891a1
+
+  Stored in directory: /root/.cache/pip/wheels/32/35/e8/11eecb60c93baea12949e2257f87301a4365c48291d612632b
+
+Successfully built docker-image-py
+
+Installing collected packages: text-unidecode, statsd, sortedcontainers, pytz, pytimeparse, zipp, wrapt, websockets, websocket-client, tzlocal, typing-extensions, types-python-dateutil, tqdm, sniffio, rpds-py, regex, python-slugify, python-json-logger, pyjwt, pygments, pycparser, pyasn1-modules, py, protobuf, packaging, oauthlib, natsort, mypy-extensions, multidict, more-itertools, mdurl, MarkupSafe, latch-sdk-config, jeepney, idna, grpcio, graphql-core, exceptiongroup, docstring-parser, diskcache, decorator, cloudpickle, click, charset-normalizer, chardet, certifi, cachetools, bcrypt, backports.tarfile, backoff, attrs, aioconsole, yarl, typing-inspect, retry, requests, referencing, protoc-gen-swagger, marshmallow, markdown-it-py, Jinja2, jaraco.functools, jaraco.context, jaraco.classes, importlib-metadata, googleapis-common-protos, google-auth, docker-image-py, deprecated, croniter, cffi, binaryornot, arrow, apscheduler, anyio, watchfiles, rich, responses, requests-toolbelt, requests-oauthlib, pynacl, marshmallow-jsonschema, marshmallow-enum, lyteidl, jsonschema-specifications, grpcio-status, gql, docker, cryptography, SecretStorage, paramiko, latch-sdk-gql, kubernetes, jsonschema, dataclasses-json, cookiecutter, asyncssh, scp, keyring, lytekit, lytekitplugins-pods, latch
+
+Successfully installed Jinja2-3.1.4 MarkupSafe-2.1.5 SecretStorage-3.3.3 aioconsole-0.6.1 anyio-4.4.0 apscheduler-3.9.1 arrow-1.3.0 asyncssh-2.13.2 attrs-23.2.0 backoff-2.2.1 backports.tarfile-1.2.0 bcrypt-4.1.3 binaryornot-0.4.4 cachetools-5.3.3 certifi-2024.6.2 cffi-1.16.0 chardet-5.2.0 charset-normalizer-3.3.2 click-8.1.7 cloudpickle-3.0.0 cookiecutter-2.6.0 croniter-2.0.5 cryptography-42.0.8 dataclasses-json-0.5.6 decorator-5.1.1 deprecated-1.2.14 diskcache-5.6.3 docker-7.1.0 docker-image-py-0.1.12 docstring-parser-0.16 exceptiongroup-1.2.1 google-auth-2.30.0 googleapis-common-protos-1.63.1 gql-3.4.0 graphql-core-3.2.3 grpcio-1.64.1 grpcio-status-1.48.2 idna-3.7 importlib-metadata-7.2.0 jaraco.classes-3.4.0 jaraco.context-5.3.0 jaraco.functools-4.0.1 jeepney-0.8.0 jsonschema-4.22.0 jsonschema-specifications-2023.12.1 keyring-25.2.1 kubernetes-30.1.0 latch-2.46.7 latch-sdk-config-0.0.4 latch-sdk-gql-0.0.6 lyteidl-0.2.0a0 lytekit-0.15.8 lytekitplugins-pods-0.6.2 markdown-it-py-3.0.0 marshmallow-3.21.3 marshmallow-enum-1.5.1 marshmallow-jsonschema-0.13.0 mdurl-0.1.2 more-itertools-10.3.0 multidict-6.0.5 mypy-extensions-1.0.0 natsort-8.4.0 oauthlib-3.2.2 packaging-24.1 paramiko-3.4.0 protobuf-3.20.3 protoc-gen-swagger-0.1.0 py-1.11.0 pyasn1-modules-0.4.0 pycparser-2.22 pygments-2.18.0 pyjwt-2.8.0 pynacl-1.5.0 python-json-logger-2.0.7 python-slugify-8.0.4 pytimeparse-1.1.8 pytz-2024.1 referencing-0.35.1 regex-2024.5.15 requests-2.32.3 requests-oauthlib-2.0.0 requests-toolbelt-0.10.1 responses-0.25.3 retry-0.9.2 rich-13.7.1 rpds-py-0.18.1 scp-0.15.0 sniffio-1.3.1 sortedcontainers-2.4.0 statsd-3.3.0 text-unidecode-1.3 tqdm-4.66.4 types-python-dateutil-2.9.0.20240316 typing-extensions-4.7.1 typing-inspect-0.9.0 tzlocal-5.2 watchfiles-0.19.0 websocket-client-1.8.0 websockets-11.0.3 wrapt-1.16.0 yarl-1.9.4 zipp-3.19.2
+
+[91mWARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+[0m
+[91m
+[notice] A new release of pip is available: 23.0.1 -> 24.1
+[notice] To update, run: pip install --upgrade pip
+[0m
+ ---> 98ab47bdc0b9
+
+Step 14/21 : run mkdir /opt/latch
+
+
+ ---> Running in bf28abbde342
+
+[91mmkdir /opt/latch
+[0m
+ ---> f68a10f7af1e
+
+Step 15/21 : run apt-get update && apt-get install -y default-jre-headless
+
+
+ ---> Running in 99f11a67d67d
+
+[91mapt-get update && apt-get install -y default-jre-headless
+[0m
+Hit:1 http://deb.debian.org/debian bullseye InRelease
+Hit:2 http://deb.debian.org/debian-security bullseye-security InRelease
+Hit:3 http://deb.debian.org/debian bullseye-updates InRelease
+
+Get:4 https://download.docker.com/linux/ubuntu bionic InRelease [64.4 kB]
+
+Hit:5 http://cloud.r-project.org/bin/linux/debian bullseye-cran40/ InRelease
+
+Fetched 64.4 kB in 1s (74.6 kB/s)
+Reading package lists...
+
+
+Reading package lists...
+
+
+Building dependency tree...
+
+Reading state information...
+
+
+The following additional packages will be installed:
+
+  alsa-topology-conf alsa-ucm-conf ca-certificates-java java-common libasound2
+
+  libasound2-data libnspr4 libnss3 libpcsclite1 openjdk-11-jre-headless
+
+Suggested packages:
+  default-jre libasound2-plugins alsa-utils pcscd libnss-mdns
+  fonts-dejavu-extra fonts-ipafont-gothic fonts-ipafont-mincho
+  fonts-wqy-microhei | fonts-wqy-zenhei fonts-indic
+
+The following NEW packages will be installed:
+
+  alsa-topology-conf alsa-ucm-conf ca-certificates-java default-jre-headless
+
+  java-common libasound2 libasound2-data libnspr4 libnss3 libpcsclite1
+
+  openjdk-11-jre-headless
+
+0 upgraded, 11 newly installed, 0 to remove and 71 not upgraded.
+Need to get 40.2 MB of archives.
+After this operation, 182 MB of additional disk space will be used.
+Get:1 http://deb.debian.org/debian bullseye/main amd64 alsa-topology-conf all 1.2.4-1 [12.8 kB]
+
+Get:2 http://deb.debian.org/debian bullseye/main amd64 libasound2-data all 1.2.4-1.1 [38.2 kB]
+
+Get:3 http://deb.debian.org/debian bullseye/main amd64 libasound2 amd64 1.2.4-1.1 [356 kB]
+
+Get:4 http://deb.debian.org/debian bullseye/main amd64 alsa-ucm-conf all 1.2.4-2 [28.1 kB]
+
+Get:5 http://deb.debian.org/debian bullseye/main amd64 java-common all 0.72 [14.5 kB]
+
+Get:6 http://deb.debian.org/debian bullseye/main amd64 libnspr4 amd64 2:4.29-1 [112 kB]
+
+Get:7 http://deb.debian.org/debian bullseye/main amd64 libnss3 amd64 2:3.61-1+deb11u3 [1305 kB]
+
+Get:8 http://deb.debian.org/debian bullseye/main amd64 libpcsclite1 amd64 1.9.1-1 [60.2 kB]
+
+Get:9 http://deb.debian.org/debian-security bullseye-security/main amd64 openjdk-11-jre-headless amd64 11.0.23+9-1~deb11u1 [38.2 MB]
+
+Get:10 http://deb.debian.org/debian bullseye/main amd64 default-jre-headless amd64 2:1.11-72 [10.9 kB]
+
+Get:11 http://deb.debian.org/debian bullseye/main amd64 ca-certificates-java all 20190909+deb11u1 [15.9 kB]
+
+[91mdebconf: delaying package configuration, since apt-utils is not installed
+[0m
+Fetched 40.2 MB in 0s (94.3 MB/s)
+
+Selecting previously unselected package alsa-topology-conf.
+(Reading database ... 
+(Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%
+(Reading database ... 60%
+(Reading database ... 65%
+(Reading database ... 70%
+(Reading database ... 75%
+(Reading database ... 80%
+(Reading database ... 85%
+(Reading database ... 90%
+(Reading database ... 95%
+(Reading database ... 100%(Reading database ... 44721 files and directories currently installed.)
+
+Preparing to unpack .../00-alsa-topology-conf_1.2.4-1_all.deb ...
+
+Unpacking alsa-topology-conf (1.2.4-1) ...
+
+Selecting previously unselected package libasound2-data.
+
+Preparing to unpack .../01-libasound2-data_1.2.4-1.1_all.deb ...
+
+Unpacking libasound2-data (1.2.4-1.1) ...
+
+Selecting previously unselected package libasound2:amd64.
+
+Preparing to unpack .../02-libasound2_1.2.4-1.1_amd64.deb ...
+
+Unpacking libasound2:amd64 (1.2.4-1.1) ...
+
+Selecting previously unselected package alsa-ucm-conf.
+
+Preparing to unpack .../03-alsa-ucm-conf_1.2.4-2_all.deb ...
+
+Unpacking alsa-ucm-conf (1.2.4-2) ...
+
+Selecting previously unselected package java-common.
+
+Preparing to unpack .../04-java-common_0.72_all.deb ...
+
+Unpacking java-common (0.72) ...
+
+Selecting previously unselected package libnspr4:amd64.
+
+Preparing to unpack .../05-libnspr4_2%3a4.29-1_amd64.deb ...
+
+Unpacking libnspr4:amd64 (2:4.29-1) ...
+
+Selecting previously unselected package libnss3:amd64.
+
+Preparing to unpack .../06-libnss3_2%3a3.61-1+deb11u3_amd64.deb ...
+
+Unpacking libnss3:amd64 (2:3.61-1+deb11u3) ...
+
+Selecting previously unselected package libpcsclite1:amd64.
+
+Preparing to unpack .../07-libpcsclite1_1.9.1-1_amd64.deb ...
+
+Unpacking libpcsclite1:amd64 (1.9.1-1) ...
+
+Selecting previously unselected package openjdk-11-jre-headless:amd64.
+
+Preparing to unpack .../08-openjdk-11-jre-headless_11.0.23+9-1~deb11u1_amd64.deb ...
+
+Unpacking openjdk-11-jre-headless:amd64 (11.0.23+9-1~deb11u1) ...
+
+Selecting previously unselected package default-jre-headless.
+
+Preparing to unpack .../09-default-jre-headless_2%3a1.11-72_amd64.deb ...
+
+Unpacking default-jre-headless (2:1.11-72) ...
+
+Selecting previously unselected package ca-certificates-java.
+
+Preparing to unpack .../10-ca-certificates-java_20190909+deb11u1_all.deb ...
+
+Unpacking ca-certificates-java (20190909+deb11u1) ...
+
+Setting up java-common (0.72) ...
+
+Setting up libasound2-data (1.2.4-1.1) ...
+
+Setting up libnspr4:amd64 (2:4.29-1) ...
+
+Setting up libpcsclite1:amd64 (1.9.1-1) ...
+
+Setting up alsa-topology-conf (1.2.4-1) ...
+
+Setting up libasound2:amd64 (1.2.4-1.1) ...
+
+Setting up alsa-ucm-conf (1.2.4-2) ...
+
+Setting up libnss3:amd64 (2:3.61-1+deb11u3) ...
+
+Setting up ca-certificates-java (20190909+deb11u1) ...
+
+'/etc/java-11-openjdk/security/java.security.dpkg-new' -> '/etc/java-11-openjdk/security/java.security'
+
+head: cannot open '/etc/ssl/certs/java/cacerts' for reading: No such file or directory
+
+Adding debian:GTS_Root_R3.pem
+
+Adding debian:Hellenic_Academic_and_Research_Institutions_ECC_RootCA_2015.pem
+
+Adding debian:TrustCor_ECA-1.pem
+
+Adding debian:SSL.com_EV_Root_Certification_Authority_RSA_R2.pem
+
+
+Adding debian:ISRG_Root_X1.pem
+
+Adding debian:E-Tugra_Certification_Authority.pem
+
+Adding debian:IdenTrust_Commercial_Root_CA_1.pem
+
+Adding debian:QuoVadis_Root_CA_2_G3.pem
+
+Adding debian:emSign_ECC_Root_CA_-_C3.pem
+
+Adding debian:certSIGN_Root_CA_G2.pem
+
+Adding debian:COMODO_ECC_Certification_Authority.pem
+
+Adding debian:GTS_Root_R4.pem
+
+Adding debian:GTS_Root_R1.pem
+
+Adding debian:SSL.com_Root_Certification_Authority_RSA.pem
+
+Adding debian:ePKI_Root_Certification_Authority.pem
+
+Adding debian:Hellenic_Academic_and_Research_Institutions_RootCA_2011.pem
+
+Adding debian:Atos_TrustedRoot_2011.pem
+
+
+Adding debian:AffirmTrust_Premium_ECC.pem
+
+Adding debian:Staat_der_Nederlanden_EV_Root_CA.pem
+
+Adding debian:QuoVadis_Root_CA_3.pem
+
+Adding debian:DigiCert_High_Assurance_EV_Root_CA.pem
+
+Adding debian:AffirmTrust_Networking.pem
+
+Adding debian:Autoridad_de_Certificacion_Firmaprofesional_CIF_A62634068.pem
+
+Adding debian:TrustCor_RootCert_CA-1.pem
+
+Adding debian:GlobalSign_Root_CA_-_R6.pem
+
+
+Adding debian:emSign_Root_CA_-_G1.pem
+
+Adding debian:DigiCert_Assured_ID_Root_CA.pem
+
+Adding debian:D-TRUST_Root_Class_3_CA_2_2009.pem
+
+Adding debian:GlobalSign_Root_CA_-_R3.pem
+
+Adding debian:Amazon_Root_CA_3.pem
+
+Adding debian:COMODO_Certification_Authority.pem
+
+
+Adding debian:Hellenic_Academic_and_Research_Institutions_RootCA_2015.pem
+
+Adding debian:Buypass_Class_2_Root_CA.pem
+
+Adding debian:Sonera_Class_2_Root_CA.pem
+
+Adding debian:Baltimore_CyberTrust_Root.pem
+
+Adding debian:QuoVadis_Root_CA_2.pem
+
+Adding debian:DigiCert_Global_Root_G2.pem
+
+Adding debian:Amazon_Root_CA_4.pem
+
+Adding debian:Starfield_Services_Root_Certificate_Authority_-_G2.pem
+
+Adding debian:Hongkong_Post_Root_CA_3.pem
+
+Adding debian:Security_Communication_RootCA2.pem
+
+Adding debian:TWCA_Global_Root_CA.pem
+
+Adding debian:Starfield_Class_2_CA.pem
+
+Adding debian:DigiCert_Assured_ID_Root_G3.pem
+
+Adding debian:Staat_der_Nederlanden_Root_CA_-_G3.pem
+
+Adding debian:Trustwave_Global_ECC_P384_Certification_Authority.pem
+
+Adding debian:QuoVadis_Root_CA.pem
+
+Adding debian:Amazon_Root_CA_2.pem
+
+Adding debian:QuoVadis_Root_CA_3_G3.pem
+
+Adding debian:GeoTrust_Primary_Certification_Authority_-_G2.pem
+
+Adding debian:Certigna.pem
+
+Adding debian:USERTrust_ECC_Certification_Authority.pem
+
+Adding debian:DigiCert_Global_Root_CA.pem
+
+Adding debian:TeliaSonera_Root_CA_v1.pem
+
+Adding debian:Certum_Trusted_Network_CA.pem
+
+Adding debian:Go_Daddy_Root_Certificate_Authority_-_G2.pem
+
+Adding debian:COMODO_RSA_Certification_Authority.pem
+
+Adding debian:GlobalSign_ECC_Root_CA_-_R5.pem
+
+Adding debian:Network_Solutions_Certificate_Authority.pem
+
+Adding debian:Global_Chambersign_Root_-_2008.pem
+
+Adding debian:CA_Disig_Root_R2.pem
+
+
+Adding debian:SSL.com_EV_Root_Certification_Authority_ECC.pem
+
+Adding debian:Entrust_Root_Certification_Authority_-_G2.pem
+
+Adding debian:Buypass_Class_3_Root_CA.pem
+
+Adding debian:TUBITAK_Kamu_SM_SSL_Kok_Sertifikasi_-_Surum_1.pem
+
+Adding debian:EC-ACC.pem
+
+Adding debian:OISTE_WISeKey_Global_Root_GB_CA.pem
+
+Adding debian:UCA_Global_G2_Root.pem
+
+Adding debian:Izenpe.com.pem
+
+Adding debian:AffirmTrust_Commercial.pem
+
+Adding debian:Entrust_Root_Certification_Authority_-_EC1.pem
+
+Adding debian:Trustwave_Global_Certification_Authority.pem
+
+Adding debian:TrustCor_RootCert_CA-2.pem
+
+Adding debian:GlobalSign_Root_CA_-_R2.pem
+
+Warning: there was a problem reading the certificate file /etc/ssl/certs/NetLock_Arany_=Class_Gold=_F?tan?s?tv?ny.pem. Message:
+  /etc/ssl/certs/NetLock_Arany_=Class_Gold=_F?tan?s?tv?ny.pem (No such file or directory)
+
+Adding debian:DigiCert_Global_Root_G3.pem
+
+
+Adding debian:Microsoft_ECC_Root_Certificate_Authority_2017.pem
+
+Adding debian:SecureTrust_CA.pem
+
+Adding debian:ACCVRAIZ1.pem
+
+Adding debian:emSign_Root_CA_-_C1.pem
+
+Adding debian:Amazon_Root_CA_1.pem
+
+Adding debian:e-Szigno_Root_CA_2017.pem
+
+Adding debian:T-TeleSec_GlobalRoot_Class_2.pem
+
+Adding debian:Trustwave_Global_ECC_P256_Certification_Authority.pem
+
+Adding debian:DigiCert_Trusted_Root_G4.pem
+
+Adding debian:SecureSign_RootCA11.pem
+
+Adding debian:GlobalSign_Root_CA.pem
+
+Adding debian:Secure_Global_CA.pem
+
+Adding debian:Certum_Trusted_Network_CA_2.pem
+
+Adding debian:certSIGN_ROOT_CA.pem
+
+Adding debian:Entrust_Root_Certification_Authority.pem
+
+Adding debian:IdenTrust_Public_Sector_Root_CA_1.pem
+
+Adding debian:Certigna_Root_CA.pem
+
+Adding debian:GTS_Root_R2.pem
+
+Adding debian:SZAFIR_ROOT_CA2.pem
+
+Adding debian:TWCA_Root_Certification_Authority.pem
+
+Adding debian:Comodo_AAA_Services_root.pem
+
+
+Adding debian:Go_Daddy_Class_2_CA.pem
+
+
+Adding debian:USERTrust_RSA_Certification_Authority.pem
+
+Adding debian:Hongkong_Post_Root_CA_1.pem
+
+Adding debian:CFCA_EV_ROOT.pem
+
+Adding debian:Entrust.net_Premium_2048_Secure_Server_CA.pem
+
+Adding debian:Microsec_e-Szigno_Root_CA_2009.pem
+
+Adding debian:AC_RAIZ_FNMT-RCM.pem
+
+Adding debian:VeriSign_Universal_Root_Certification_Authority.pem
+
+Adding debian:GlobalSign_ECC_Root_CA_-_R4.pem
+
+Adding debian:D-TRUST_Root_Class_3_CA_2_EV_2009.pem
+
+Adding debian:T-TeleSec_GlobalRoot_Class_3.pem
+
+Adding debian:DigiCert_Assured_ID_Root_G2.pem
+
+Adding debian:NAVER_Global_Root_Certification_Authority.pem
+
+Adding debian:Cybertrust_Global_Root.pem
+
+Adding debian:Trustis_FPS_Root_CA.pem
+
+Adding debian:QuoVadis_Root_CA_1_G3.pem
+
+Adding debian:SwissSign_Silver_CA_-_G2.pem
+
+Adding debian:GDCA_TrustAUTH_R5_ROOT.pem
+
+Adding debian:Security_Communication_Root_CA.pem
+
+Adding debian:XRamp_Global_CA_Root.pem
+
+Adding debian:Chambers_of_Commerce_Root_-_2008.pem
+
+Adding debian:Entrust_Root_Certification_Authority_-_G4.pem
+
+Adding debian:emSign_ECC_Root_CA_-_G3.pem
+
+Adding debian:Actalis_Authentication_Root_CA.pem
+
+Adding debian:AffirmTrust_Premium.pem
+
+Adding debian:SSL.com_Root_Certification_Authority_ECC.pem
+
+Adding debian:OISTE_WISeKey_Global_Root_GC_CA.pem
+
+Adding debian:SwissSign_Gold_CA_-_G2.pem
+
+Adding debian:Starfield_Root_Certificate_Authority_-_G2.pem
+
+Adding debian:Microsoft_RSA_Root_Certificate_Authority_2017.pem
+
+Adding debian:DST_Root_CA_X3.pem
+
+Adding debian:UCA_Extended_Validation_Root.pem
+
+done.
+
+Setting up default-jre-headless (2:1.11-72) ...
+
+Processing triggers for libc-bin (2.31-13+deb11u6) ...
+
+Processing triggers for ca-certificates (20210119) ...
+
+Updating certificates in /etc/ssl/certs...
+
+0 added, 0 removed; done.
+Running hooks in /etc/ca-certificates/update.d...
+
+
+
+done.
+done.
+
+Setting up openjdk-11-jre-headless:amd64 (11.0.23+9-1~deb11u1) ...
+
+update-alternatives: using /usr/lib/jvm/java-11-openjdk-amd64/bin/java to provide /usr/bin/java (java) in auto mode
+
+update-alternatives: using /usr/lib/jvm/java-11-openjdk-amd64/bin/jjs to provide /usr/bin/jjs (jjs) in auto mode
+
+update-alternatives: using /usr/lib/jvm/java-11-openjdk-amd64/bin/keytool to provide /usr/bin/keytool (keytool) in auto mode
+
+update-alternatives: using /usr/lib/jvm/java-11-openjdk-amd64/bin/rmid to provide /usr/bin/rmid (rmid) in auto mode
+
+update-alternatives: using /usr/lib/jvm/java-11-openjdk-amd64/bin/rmiregistry to provide /usr/bin/rmiregistry (rmiregistry) in auto mode
+
+update-alternatives: using /usr/lib/jvm/java-11-openjdk-amd64/bin/pack200 to provide /usr/bin/pack200 (pack200) in auto mode
+
+update-alternatives: using /usr/lib/jvm/java-11-openjdk-amd64/bin/unpack200 to provide /usr/bin/unpack200 (unpack200) in auto mode
+
+update-alternatives: using /usr/lib/jvm/java-11-openjdk-amd64/lib/jexec to provide /usr/bin/jexec (jexec) in auto mode
+
+ ---> 9f8772cb43b3
+
+Step 16/21 : copy . /root/
+
+
+ ---> 941dc442793b
+
+Step 17/21 : run ln -s /root/.latch/bin/nextflow /root/nextflow
+
+
+ ---> Running in 2ddc8b1b15b0
+
+[91mln -s /root/.latch/bin/nextflow /root/nextflow
+[0m
+ ---> afc022a4e6be
+
+Step 18/21 : run ln -s /root/.latch/.nextflow /root/.nextflow
+
+
+ ---> Running in be197d4e5c95
+
+[91mln -s /root/.latch/.nextflow /root/.nextflow
+[0m
+ ---> e93f6a7b6725
+
+Step 19/21 : arg tag
+
+
+ ---> Running in 6bcc90e88792
+
+ ---> bf6913a8c07a
+
+Step 20/21 : env FLYTE_INTERNAL_IMAGE $tag
+
+
+ ---> Running in 090300aa072a
+
+ ---> 8a33dc1f46a7
+
+Step 21/21 : workdir /root
+
+
+ ---> Running in bbfe87faed42
+
+ ---> 24ee616b4486
+
+Successfully built 24ee616b4486
+
+Successfully tagged 812206152185.dkr.ecr.us-west-2.amazonaws.com/18440_nf_nf_core_rnaseq:0.0.4-fe3021
+

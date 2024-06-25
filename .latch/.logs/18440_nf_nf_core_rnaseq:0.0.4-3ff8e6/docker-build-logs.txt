@@ -1,0 +1,165 @@
+Step 1/23 : from 812206152185.dkr.ecr.us-west-2.amazonaws.com/latch-base:fe0b-main
+
+
+ ---> f23c37efcd53
+
+Step 2/23 : workdir /tmp/docker-build/work/
+
+
+ ---> Using cache
+
+ ---> dd16c2d4f334
+
+Step 3/23 : shell [     "/usr/bin/env", "bash",     "-o", "errexit",     "-o", "pipefail",     "-o", "nounset",     "-o", "verbose",     "-o", "errtrace",     "-O", "inherit_errexit",     "-O", "shift_verbose",     "-c" ]
+
+
+ ---> Using cache
+
+ ---> aaada0c60239
+
+Step 4/23 : env TZ='Etc/UTC'
+
+
+ ---> Using cache
+
+ ---> d6869bc03deb
+
+Step 5/23 : env LANG='en_US.UTF-8'
+
+
+ ---> Using cache
+
+ ---> ae2f7ca65880
+
+Step 6/23 : arg DEBIAN_FRONTEND=noninteractive
+
+
+ ---> Using cache
+
+ ---> f029b3f36a86
+
+Step 7/23 : run apt-get update --yes &&     apt-get install --yes dirmngr apt-transport-https gnupg2 &&     gpg --keyserver keyserver.ubuntu.com --recv-key '95C0FAF38DB3CCAD0C080A7BDC78B2DDEABC47B7' &&     gpg --armor --export '95C0FAF38DB3CCAD0C080A7BDC78B2DDEABC47B7' | tee /etc/apt/trusted.gpg.d/cran_debian_key.asc
+
+
+ ---> Using cache
+
+ ---> 37cda4773e06
+
+Step 8/23 : run echo "deb http://cloud.r-project.org/bin/linux/debian bullseye-cran40/" | tee /etc/apt/sources.list.d/cran.list &&     apt-get update --yes &&     DEBIAN_FRONTEND=noninteractive apt-get install --yes r-base r-base-dev libxml2-dev libcurl4-openssl-dev libssl-dev wget
+
+
+ ---> Using cache
+
+ ---> e386aca7bd1c
+
+Step 9/23 : COPY latch_environment.R /tmp/docker-build/work/latch_environment.R
+
+
+ ---> Using cache
+
+ ---> 5abea30b3e07
+
+Step 10/23 : RUN Rscript /tmp/docker-build/work/latch_environment.R
+
+
+ ---> Using cache
+
+ ---> 4bfb3ed80f93
+
+Step 11/23 : COPY clusterProfiler_4.12.0.tar.gz /tmp/docker-build/work/clusterProfiler_4.12.0.tar.gz
+
+
+ ---> Using cache
+
+ ---> 538735f39ee5
+
+Step 12/23 : RUN R -e "install.packages('/tmp/docker-build/work/clusterProfiler_4.12.0.tar.gz', repos = NULL, type='source')"
+
+
+ ---> Using cache
+
+ ---> e19a7a6045c2
+
+Step 13/23 : COPY KEGG.db_2.8.0.tar.gz /tmp/docker-build/work/KEGG.db_2.8.0.tar.gz
+
+
+ ---> Using cache
+
+ ---> 698d551d3c48
+
+Step 14/23 : RUN R -e "install.packages('/tmp/docker-build/work/KEGG.db_2.8.0.tar.gz', repos = NULL, type='source')"
+
+
+ ---> Using cache
+
+ ---> cd562ccb7466
+
+Step 15/23 : run pip install latch==2.46.7
+
+
+ ---> Using cache
+
+ ---> fcfe40aae2d6
+
+Step 16/23 : run mkdir /opt/latch
+
+
+ ---> Using cache
+
+ ---> c401230505b5
+
+Step 17/23 : run apt-get update && apt-get install -y default-jre-headless
+
+
+ ---> Using cache
+
+ ---> 165eec97821b
+
+Step 18/23 : copy . /root/
+
+
+ ---> 9da4844720be
+
+Step 19/23 : run ln -s /root/.latch/bin/nextflow /root/nextflow
+
+
+ ---> Running in 35e86274cd9c
+
+[91mln -s /root/.latch/bin/nextflow /root/nextflow
+[0m
+ ---> d61a1f07219d
+
+Step 20/23 : run ln -s /root/.latch/.nextflow /root/.nextflow
+
+
+ ---> Running in 23ea72a3eb9c
+
+[91mln -s /root/.latch/.nextflow /root/.nextflow
+[0m
+ ---> e85d74886d68
+
+Step 21/23 : arg tag
+
+
+ ---> Running in 64d2cc71f680
+
+ ---> ab98ec5b2ec9
+
+Step 22/23 : env FLYTE_INTERNAL_IMAGE $tag
+
+
+ ---> Running in 3a036a31b0f2
+
+ ---> 2fd110439619
+
+Step 23/23 : workdir /root
+
+
+ ---> Running in 6dda0452eb66
+
+ ---> 62d145c64674
+
+Successfully built 62d145c64674
+
+Successfully tagged 812206152185.dkr.ecr.us-west-2.amazonaws.com/18440_nf_nf_core_rnaseq:0.0.4-3ff8e6
+

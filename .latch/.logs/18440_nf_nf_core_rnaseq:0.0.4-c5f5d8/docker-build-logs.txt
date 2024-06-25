@@ -1,0 +1,151 @@
+Step 1/21 : from 812206152185.dkr.ecr.us-west-2.amazonaws.com/latch-base:fe0b-main
+
+
+ ---> f23c37efcd53
+
+Step 2/21 : workdir /tmp/docker-build/work/
+
+
+ ---> Using cache
+
+ ---> dd16c2d4f334
+
+Step 3/21 : shell [     "/usr/bin/env", "bash",     "-o", "errexit",     "-o", "pipefail",     "-o", "nounset",     "-o", "verbose",     "-o", "errtrace",     "-O", "inherit_errexit",     "-O", "shift_verbose",     "-c" ]
+
+
+ ---> Using cache
+
+ ---> aaada0c60239
+
+Step 4/21 : env TZ='Etc/UTC'
+
+
+ ---> Using cache
+
+ ---> d6869bc03deb
+
+Step 5/21 : env LANG='en_US.UTF-8'
+
+
+ ---> Using cache
+
+ ---> ae2f7ca65880
+
+Step 6/21 : arg DEBIAN_FRONTEND=noninteractive
+
+
+ ---> Using cache
+
+ ---> f029b3f36a86
+
+Step 7/21 : run apt-get update --yes &&     apt-get install --yes dirmngr apt-transport-https gnupg2 &&     gpg --keyserver keyserver.ubuntu.com --recv-key '95C0FAF38DB3CCAD0C080A7BDC78B2DDEABC47B7' &&     gpg --armor --export '95C0FAF38DB3CCAD0C080A7BDC78B2DDEABC47B7' | tee /etc/apt/trusted.gpg.d/cran_debian_key.asc
+
+
+ ---> Using cache
+
+ ---> 37cda4773e06
+
+Step 8/21 : run echo "deb http://cloud.r-project.org/bin/linux/debian bullseye-cran40/" | tee /etc/apt/sources.list.d/cran.list &&     apt-get update --yes &&     DEBIAN_FRONTEND=noninteractive apt-get install --yes r-base r-base-dev libxml2-dev libcurl4-openssl-dev libssl-dev wget
+
+
+ ---> Using cache
+
+ ---> e386aca7bd1c
+
+Step 9/21 : COPY latch_environment.R /tmp/docker-build/work/latch_environment.R
+
+
+ ---> Using cache
+
+ ---> 91ad4aa16e48
+
+Step 10/21 : RUN Rscript /tmp/docker-build/work/latch_environment.R
+
+
+ ---> Using cache
+
+ ---> 564d449a26ce
+
+Step 11/21 : COPY KEGG.db_2.8.0.tar.gz /tmp/docker-build/work/KEGG.db_2.8.0.tar.gz
+
+
+ ---> Using cache
+
+ ---> 76a899ca126c
+
+Step 12/21 : RUN R -e "install.packages('/tmp/docker-build/work/KEGG.db_2.8.0.tar.gz', repos = NULL, type='source')"
+
+
+ ---> Using cache
+
+ ---> 992fda5dabaf
+
+Step 13/21 : run pip install latch==2.46.7
+
+
+ ---> Using cache
+
+ ---> 98ab47bdc0b9
+
+Step 14/21 : run mkdir /opt/latch
+
+
+ ---> Using cache
+
+ ---> f68a10f7af1e
+
+Step 15/21 : run apt-get update && apt-get install -y default-jre-headless
+
+
+ ---> Using cache
+
+ ---> 9f8772cb43b3
+
+Step 16/21 : copy . /root/
+
+
+ ---> ee5c403e37c6
+
+Step 17/21 : run ln -s /root/.latch/bin/nextflow /root/nextflow
+
+
+ ---> Running in 747560d80dd5
+
+[91mln -s /root/.latch/bin/nextflow /root/nextflow
+[0m
+ ---> 18c375480dd2
+
+Step 18/21 : run ln -s /root/.latch/.nextflow /root/.nextflow
+
+
+ ---> Running in 6f4e4ef610b0
+
+[91mln -s /root/.latch/.nextflow /root/.nextflow
+[0m
+ ---> acb81cb608e8
+
+Step 19/21 : arg tag
+
+
+ ---> Running in 229409cef330
+
+ ---> 7083aa3b30ec
+
+Step 20/21 : env FLYTE_INTERNAL_IMAGE $tag
+
+
+ ---> Running in 3131527cbf33
+
+ ---> ff1c5b22953a
+
+Step 21/21 : workdir /root
+
+
+ ---> Running in fddabbca1061
+
+ ---> 7da89f9c30ea
+
+Successfully built 7da89f9c30ea
+
+Successfully tagged 812206152185.dkr.ecr.us-west-2.amazonaws.com/18440_nf_nf_core_rnaseq:0.0.4-c5f5d8
+

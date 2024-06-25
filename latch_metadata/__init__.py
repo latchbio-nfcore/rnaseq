@@ -22,7 +22,9 @@ from latch.types.metadata import (
 flow = [
     Section(
         "Samples",
-        Params("input"),
+        Params(
+            "input",
+        ),
     ),
     Section(
         "Reference Genome",
@@ -69,12 +71,6 @@ flow = [
                     "pseudo_aligner",
                 ),
             ),
-        ),
-    ),
-    Section(
-        "Differential Gene Expression",
-        Params(
-            "run_latch_dge",
         ),
     ),
     Section(
@@ -215,7 +211,6 @@ class SampleSheet:
     fastq_1: LatchFile
     fastq_2: Optional[LatchFile]
     strandedness: str
-    differential_condition: Optional[str]
 
 
 class Reference_Type(Enum):
@@ -270,12 +265,6 @@ class PseudoAligner(Enum):
     kallisto = "kallisto"
 
 
-class DifferentialGeneTool(Enum):
-    deseq2 = "deseq2"
-    # sleuth = "sleuth"
-    # edgeR = "edgeR"
-
-
 def custom_samplesheet_constructor(samples: List[SampleSheet]) -> Path:
     samplesheet = Path("/root/samplesheet.csv")
 
@@ -323,11 +312,6 @@ NextflowMetadata(
             description="The output directory where the results will be saved. You have to use absolute paths to storage on Cloud infrastructure.",
             batch_table_column=True,
             default=LatchOutputDir("latch:///Bulk_RNAseq"),
-        ),
-        "run_latch_dge": NextflowParameter(
-            type=Optional[DifferentialGeneTool],
-            display_name="Differential Gene Expression",
-            description="Run differential gene expression.",
         ),
         "genome_source": NextflowParameter(
             type=str,

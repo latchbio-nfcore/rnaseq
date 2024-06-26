@@ -1,9 +1,13 @@
 import csv
+import typing
 from dataclasses import dataclass
 from enum import Enum
 from pathlib import Path
 from typing import List, Optional
 
+from latch.resources.launch_plan import LaunchPlan
+from latch.resources.workflow import workflow
+from latch.types import metadata
 from latch.types.directory import LatchOutputDir
 from latch.types.file import LatchFile
 from latch.types.metadata import (
@@ -18,6 +22,8 @@ from latch.types.metadata import (
     Spoiler,
     Text,
 )
+from wf.entrypoint import initialize, nextflow_runtime
+from wf.prep_dge import prep_dge
 
 flow = [
     Section(
@@ -102,6 +108,7 @@ flow = [
                 "rsem_index",
                 "salmon_index",
                 "kallisto_index",
+                "tx2gene_file",
                 "hisat2_build_memory",
                 "gencode",
                 "gtf_extra_attributes",
@@ -383,6 +390,11 @@ NextflowMetadata(
             type=Optional[LatchFile],
             display_name="Kallisto Index",
             description="Path to directory or tar.gz archive for pre-built Kallisto index.",
+        ),
+        "tx2gene_file": NextflowParameter(
+            type=Optional[LatchFile],
+            display_name="Tx2gene TSV File",
+            description="Tx2Gene file for tximport grouping before Deseq file generation for RSEM runs.",
         ),
         "hisat2_build_memory": NextflowParameter(
             type=int,
@@ -773,4 +785,258 @@ NextflowMetadata(
     runtime_resources=NextflowRuntimeResources(cpus=4, memory=16, storage_gib=100),
     log_dir=LatchOutputDir("latch:///Bulk_RNAseq_logs"),
     flow=flow,
+    about_page_path=Path("./README.md"),
+)
+
+
+with open("README.md", "r") as readme_file:
+    readme_contents = readme_file.read()
+
+
+@workflow(metadata._nextflow_metadata)
+def nf_nf_core_rnaseq(
+    input: typing.List[SampleSheet],
+    run_name: str,
+    genome_source: str,
+    fasta: typing.Optional[LatchFile],
+    gtf: typing.Optional[LatchFile],
+    gff: typing.Optional[LatchFile],
+    gene_bed: typing.Optional[LatchFile],
+    transcript_fasta: typing.Optional[LatchFile],
+    additional_fasta: typing.Optional[LatchFile],
+    splicesites: typing.Optional[LatchFile],
+    star_index: typing.Optional[LatchFile],
+    hisat2_index: typing.Optional[LatchFile],
+    rsem_index: typing.Optional[LatchFile],
+    salmon_index: typing.Optional[LatchFile],
+    kallisto_index: typing.Optional[LatchFile],
+    extra_trimgalore_args: typing.Optional[str],
+    extra_fastp_args: typing.Optional[str],
+    bbsplit_fasta_list: typing.Optional[LatchFile],
+    bbsplit_index: typing.Optional[LatchFile],
+    ribo_database_manifest: typing.Optional[LatchFile],
+    umitools_bc_pattern: typing.Optional[str],
+    umitools_bc_pattern2: typing.Optional[str],
+    umi_discard_read: typing.Optional[int],
+    umitools_umi_separator: typing.Optional[str],
+    pseudo_aligner: typing.Optional[PseudoAligner],
+    salmon_quant_libtype: typing.Optional[SalmonQuantLibType],
+    seq_center: typing.Optional[str],
+    extra_star_align_args: typing.Optional[str],
+    extra_salmon_quant_args: typing.Optional[str],
+    extra_kallisto_quant_args: typing.Optional[str],
+    email: typing.Optional[str],
+    multiqc_title: typing.Optional[str],
+    tx2gene_file: Optional[LatchFile],
+    outdir: LatchOutputDir = LatchOutputDir("latch:///Bulk_RNAseq"),
+    latch_genome: Reference_Type = Reference_Type.homo_sapiens,
+    hisat2_build_memory: int = 200,
+    gencode: bool = False,
+    gtf_extra_attributes: str = "gene_name",
+    gtf_group_features: str = "gene_id",
+    featurecounts_group_type: str = "gene_biotype",
+    featurecounts_feature_type: str = "exon",
+    trimmer: Trimmer = Trimmer.trimgalore,
+    min_trimmed_reads: int = 10000,
+    remove_ribo_rna: bool = False,
+    with_umi: bool = False,
+    umitools_extract_method: str = "string",
+    umitools_grouping_method: UMIToolsGrouping = UMIToolsGrouping.directional,
+    umitools_dedup_stats: bool = False,
+    aligner: Aligner = Aligner.star_salmon,
+    pseudo_aligner_kmer_size: int = 31,
+    bam_csi_index: bool = False,
+    star_ignore_sjdbgtf: bool = False,
+    min_mapped_reads: float = 5.0,
+    stringtie_ignore_gtf: bool = False,
+    kallisto_quant_fraglen: int = 200,
+    kallisto_quant_fraglen_sd: int = 200,
+    save_merged_fastq: bool = False,
+    save_umi_intermeds: bool = False,
+    save_non_ribo_reads: bool = False,
+    save_bbsplit_reads: bool = False,
+    save_reference: bool = False,
+    save_trimmed: bool = False,
+    save_align_intermeds: bool = False,
+    save_unaligned: bool = False,
+    deseq2_vst: bool = True,
+    rseqc_modules: str = "bam_stat,inner_distance,infer_experiment,junction_annotation,junction_saturation,read_distribution,read_duplication",
+    skip_gtf_filter: bool = False,
+    skip_gtf_transcript_filter: bool = False,
+    skip_bbsplit: bool = True,
+    skip_umi_extract: bool = False,
+    skip_trimming: bool = False,
+    skip_alignment: bool = False,
+    skip_pseudo_alignment: bool = False,
+    skip_markduplicates: bool = False,
+    skip_bigwig: bool = False,
+    skip_stringtie: bool = False,
+    skip_fastqc: bool = False,
+    skip_preseq: bool = True,
+    skip_dupradar: bool = False,
+    skip_qualimap: bool = False,
+    skip_rseqc: bool = False,
+    skip_biotype_qc: bool = False,
+    skip_deseq2_qc: bool = False,
+    skip_multiqc: bool = False,
+    skip_qc: bool = False,
+) -> LatchOutputDir:
+    f"""
+    nf-core/rnaseq
+
+    {readme_contents}
+    """
+
+    pvc_name: str = initialize()
+    run_name = nextflow_runtime(
+        pvc_name=pvc_name,
+        input=input,
+        run_name=run_name,
+        outdir=outdir,
+        genome_source=genome_source,
+        latch_genome=latch_genome,
+        fasta=fasta,
+        gtf=gtf,
+        gff=gff,
+        gene_bed=gene_bed,
+        transcript_fasta=transcript_fasta,
+        additional_fasta=additional_fasta,
+        splicesites=splicesites,
+        star_index=star_index,
+        hisat2_index=hisat2_index,
+        rsem_index=rsem_index,
+        salmon_index=salmon_index,
+        kallisto_index=kallisto_index,
+        hisat2_build_memory=hisat2_build_memory,
+        gencode=gencode,
+        gtf_extra_attributes=gtf_extra_attributes,
+        gtf_group_features=gtf_group_features,
+        featurecounts_group_type=featurecounts_group_type,
+        featurecounts_feature_type=featurecounts_feature_type,
+        trimmer=trimmer,
+        extra_trimgalore_args=extra_trimgalore_args,
+        extra_fastp_args=extra_fastp_args,
+        min_trimmed_reads=min_trimmed_reads,
+        bbsplit_fasta_list=bbsplit_fasta_list,
+        bbsplit_index=bbsplit_index,
+        remove_ribo_rna=remove_ribo_rna,
+        ribo_database_manifest=ribo_database_manifest,
+        with_umi=with_umi,
+        umitools_extract_method=umitools_extract_method,
+        umitools_bc_pattern=umitools_bc_pattern,
+        umitools_bc_pattern2=umitools_bc_pattern2,
+        umi_discard_read=umi_discard_read,
+        umitools_umi_separator=umitools_umi_separator,
+        umitools_grouping_method=umitools_grouping_method,
+        umitools_dedup_stats=umitools_dedup_stats,
+        aligner=aligner,
+        pseudo_aligner=pseudo_aligner,
+        pseudo_aligner_kmer_size=pseudo_aligner_kmer_size,
+        bam_csi_index=bam_csi_index,
+        star_ignore_sjdbgtf=star_ignore_sjdbgtf,
+        salmon_quant_libtype=salmon_quant_libtype,
+        min_mapped_reads=min_mapped_reads,
+        seq_center=seq_center,
+        stringtie_ignore_gtf=stringtie_ignore_gtf,
+        extra_star_align_args=extra_star_align_args,
+        extra_salmon_quant_args=extra_salmon_quant_args,
+        extra_kallisto_quant_args=extra_kallisto_quant_args,
+        kallisto_quant_fraglen=kallisto_quant_fraglen,
+        kallisto_quant_fraglen_sd=kallisto_quant_fraglen_sd,
+        save_merged_fastq=save_merged_fastq,
+        save_umi_intermeds=save_umi_intermeds,
+        save_non_ribo_reads=save_non_ribo_reads,
+        save_bbsplit_reads=save_bbsplit_reads,
+        save_reference=save_reference,
+        save_trimmed=save_trimmed,
+        save_align_intermeds=save_align_intermeds,
+        save_unaligned=save_unaligned,
+        deseq2_vst=deseq2_vst,
+        rseqc_modules=rseqc_modules,
+        skip_gtf_filter=skip_gtf_filter,
+        skip_gtf_transcript_filter=skip_gtf_transcript_filter,
+        skip_bbsplit=skip_bbsplit,
+        skip_umi_extract=skip_umi_extract,
+        skip_trimming=skip_trimming,
+        skip_alignment=skip_alignment,
+        skip_pseudo_alignment=skip_pseudo_alignment,
+        skip_markduplicates=skip_markduplicates,
+        skip_bigwig=skip_bigwig,
+        skip_stringtie=skip_stringtie,
+        skip_fastqc=skip_fastqc,
+        skip_preseq=skip_preseq,
+        skip_dupradar=skip_dupradar,
+        skip_qualimap=skip_qualimap,
+        skip_rseqc=skip_rseqc,
+        skip_biotype_qc=skip_biotype_qc,
+        skip_deseq2_qc=skip_deseq2_qc,
+        skip_multiqc=skip_multiqc,
+        skip_qc=skip_qc,
+        email=email,
+        multiqc_title=multiqc_title,
+    )
+
+    return prep_dge(
+        run_name=run_name,
+        latch_genome=latch_genome,
+        tx2gene_file=tx2gene_file,
+        outdir=outdir,
+    )
+
+
+LaunchPlan(
+    nf_nf_core_rnaseq,
+    "Test Data",
+    {
+        "input": [
+            SampleSheet(
+                sample="WT_REP1",
+                fastq_1=LatchFile(
+                    "s3://latch-public/nf-core/rnaseq/nfcore_test/SRR6357070_1.fastq.gz"
+                ),
+                fastq_2=LatchFile(
+                    "s3://latch-public/nf-core/rnaseq/nfcore_test/SRR6357070_2.fastq.gz"
+                ),
+                strandedness="auto",
+            ),
+            SampleSheet(
+                sample="WT_REP2",
+                fastq_1=LatchFile(
+                    "s3://latch-public/nf-core/rnaseq/nfcore_test/SRR6357072_1.fastq.gz"
+                ),
+                fastq_2=LatchFile(
+                    "s3://latch-public/nf-core/rnaseq/nfcore_test/SRR6357072_2.fastq.gz"
+                ),
+                strandedness="reverse",
+            ),
+            SampleSheet(
+                sample="RAP1_UNINDUCED_REP1",
+                fastq_1=LatchFile(
+                    "s3://latch-public/nf-core/rnaseq/nfcore_test/SRR6357073_1.fastq.gz"
+                ),
+                fastq_2=None,
+                strandedness="reverse",
+            ),
+            SampleSheet(
+                sample="RAP1_IAA_30M_REP1",
+                fastq_1=LatchFile(
+                    "s3://latch-public/nf-core/rnaseq/nfcore_test/SRR6357076_1.fastq.gz"
+                ),
+                fastq_2=LatchFile(
+                    "s3://latch-public/nf-core/rnaseq/nfcore_test/SRR6357076_2.fastq.gz"
+                ),
+                strandedness="reverse",
+            ),
+        ],
+        "genome_source": "custom",
+        "fasta": "s3://latch-public/nf-core/rnaseq/nfcore_test/reference/genome.fasta",
+        "gtf": "s3://latch-public/nf-core/rnaseq/nfcore_test/reference/genes_with_empty_tid.gtf.gz",
+        "gff": "s3://latch-public/nf-core/rnaseq/nfcore_test/reference/genes.gff.gz",
+        "transcript_fasta": "s3://latch-public/nf-core/rnaseq/nfcore_test/reference/transcriptome.fasta",
+        "additional_fasta": "s3://latch-public/nf-core/rnaseq/nfcore_test/reference/gfp.fa.gz",
+        "hisat2_index": "s3://latch-public/nf-core/rnaseq/nfcore_test/reference/hisat2.tar.gz",
+        "rsem_index": "s3://latch-public/nf-core/rnaseq/nfcore_test/reference/rsem.tar.gz",
+        "salmon_index": "s3://latch-public/nf-core/rnaseq/nfcore_test/reference/salmon.tar.gz",
+        "run_name": "Test",
+    },
 )

@@ -83,6 +83,7 @@ def detect_method_type(selected_run_path: LPath):
 def prep_dge(
     run_name: str,
     latch_genome: Reference_Type,
+    tx2gene_file: Optional[LatchFile],
     outdir: LatchOutputDir,
 ) -> LatchOutputDir:
     print("Setting up local directories")
@@ -95,11 +96,18 @@ def prep_dge(
 
     if method == "rsem":
         try:
+            if tx2gene_file:
+                tx2gene_file_p = Path(tx2gene_file)
+            else:
+                tx2gene_file_p = Path(
+                    f"/root/assets/latch_tx2gene/tx2gene_{latch_genome.name}.tsv"
+                )
+
             prep_cmd = [
                 "Rscript",
                 "/root/latch_scripts/prep_deseq2_rsem.R",
                 str(gene_count_object),
-                f"/root/assets/latch_tx2gene/tx2gene_{latch_genome.name}.tsv",
+                str(tx2gene_file_p),
                 str(local_output_directory),
             ]
             subprocess.run(prep_cmd, check=True, cwd=local_output_directory)

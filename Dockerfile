@@ -43,7 +43,7 @@ RUN pip install pandas
 
 # Latch SDK
 # DO NOT REMOVE
-run pip install latch==2.47.3
+run pip install latch==2.47.8
 run mkdir /opt/latch
 run apt-get update && apt-get install -y default-jre-headless
 

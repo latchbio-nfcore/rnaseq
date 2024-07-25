@@ -12,11 +12,22 @@ from latch.resources.tasks import small_task
 from latch.types.directory import LatchOutputDir
 from latch.types.file import LatchFile
 
+# Configure stdout for line buffering
 sys.stdout.reconfigure(line_buffering=True)
 
 
 @dataclass
 class SampleSheet:
+    """
+    Represents a sample in the RNA-seq analysis.
+
+    Attributes:
+        sample (str): The name or identifier of the sample.
+        fastq_1 (LatchFile): The first FASTQ file for the sample.
+        fastq_2 (Optional[LatchFile]): The second FASTQ file for paired-end data (optional).
+        strandedness (str): The strandedness of the library preparation.
+    """
+
     sample: str
     fastq_1: LatchFile
     fastq_2: Optional[LatchFile]
@@ -24,6 +35,12 @@ class SampleSheet:
 
 
 class Reference_Type(Enum):
+    """
+    Enumeration of supported reference genomes.
+
+    Each enum value represents a different species and its corresponding reference genome.
+    """
+
     homo_sapiens = "Homo sapiens (RefSeq GRCh38.p14)"
     mus_musculus = "Mus musculus (RefSeq GRCm39)"
     rattus_norvegicus = "Rattus norvegicus (RefSeq GRCr8)"
@@ -33,6 +50,15 @@ class Reference_Type(Enum):
 
 
 def detect_method_type(selected_run_path: LPath):
+    """
+    Detects the quantification method used in the RNA-seq analysis and locates the gene count file.
+
+    Args:
+        selected_run_path (LPath): The path to the analysis run directory.
+
+    Returns:
+        tuple: A tuple containing the path to the gene count file and the detected method.
+    """
     run_contents = [str(dir.path.split("/")[-1]) for dir in selected_run_path.iterdir()]
 
     print(run_contents)
@@ -86,6 +112,21 @@ def prep_dge(
     tx2gene_file: Optional[LatchFile],
     outdir: LatchOutputDir,
 ) -> LatchOutputDir:
+    """
+    Prepares differential gene expression (DGE) analysis input files.
+
+    This function processes the gene count data from various quantification methods
+    and prepares it for use in differential expression analysis tools like DESeq2.
+
+    Args:
+        run_name (str): The name of the analysis run.
+        latch_genome (Reference_Type): The reference genome used in the analysis.
+        tx2gene_file (Optional[LatchFile]): A file mapping transcripts to genes (optional).
+        outdir (LatchOutputDir): The output directory for the analysis results.
+
+    Returns:
+        LatchOutputDir: The directory containing the prepared DGE input files.
+    """
     print("Setting up local directories")
     local_output_directory = Path(f"/root/output/{run_name}/deseq2_counts")
     local_output_directory.mkdir(parents=True, exist_ok=True)

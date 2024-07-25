@@ -1,0 +1,94 @@
+Step 1/17 : FROM 812206152185.dkr.ecr.us-west-2.amazonaws.com/latch-base-nextflow:v1.1.5
+
+
+ ---> a7ebb447d94e
+
+Step 2/17 : WORKDIR /tmp/docker-build/work/
+
+
+ ---> Using cache
+
+ ---> 416ded9895d6
+
+Step 3/17 : SHELL [     "/usr/bin/env", "bash",     "-o", "errexit",     "-o", "pipefail",     "-o", "nounset",     "-o", "verbose",     "-o", "errtrace",     "-O", "inherit_errexit",     "-O", "shift_verbose",     "-c" ]
+
+
+ ---> Using cache
+
+ ---> 5b24c39f1846
+
+Step 4/17 : ENV TZ='Etc/UTC'
+
+
+ ---> Using cache
+
+ ---> 27dd55b8d338
+
+Step 5/17 : ENV LANG='en_US.UTF-8'
+
+
+ ---> Using cache
+
+ ---> a4c213f3d20d
+
+Step 6/17 : ARG DEBIAN_FRONTEND=noninteractive
+
+
+ ---> Using cache
+
+ ---> 7eed5569a303
+
+Step 7/17 : RUN apt-get update --yes &&     apt-get install --yes dirmngr apt-transport-https gnupg2 &&     gpg --keyserver keyserver.ubuntu.com --recv-key '95C0FAF38DB3CCAD0C080A7BDC78B2DDEABC47B7' &&     gpg --armor --export '95C0FAF38DB3CCAD0C080A7BDC78B2DDEABC47B7' | tee /etc/apt/trusted.gpg.d/cran_debian_key.asc
+
+
+ ---> Using cache
+
+ ---> 1cb71cc0887a
+
+Step 8/17 : RUN echo "deb http://cloud.r-project.org/bin/linux/debian bullseye-cran40/" | tee /etc/apt/sources.list.d/cran.list &&     apt-get update --yes &&     DEBIAN_FRONTEND=noninteractive apt-get install --yes r-base r-base-dev libxml2-dev libcurl4-openssl-dev libssl-dev wget
+
+
+ ---> Running in cfc77d513d08
+
+[91mecho "deb http://cloud.r-project.org/bin/linux/debian bullseye-cran40/" | tee /etc/apt/sources.list.d/cran.list &&     apt-get update --yes &&     DEBIAN_FRONTEND=noninteractive apt-get install --yes r-base r-base-dev libxml2-dev libcurl4-openssl-dev libssl-dev wget
+[0m
+deb http://cloud.r-project.org/bin/linux/debian bullseye-cran40/
+
+Hit:1 http://deb.debian.org/debian bookworm InRelease
+
+Hit:2 http://deb.debian.org/debian bookworm-updates InRelease
+
+Hit:3 http://deb.debian.org/debian-security bookworm-security InRelease
+
+Hit:4 https://download.docker.com/linux/debian bookworm InRelease
+
+Get:5 http://cloud.r-project.org/bin/linux/debian bullseye-cran40/ InRelease [4367 B]
+
+Get:6 http://cloud.r-project.org/bin/linux/debian bullseye-cran40/ Packages [23.5 kB]
+
+Fetched 27.8 kB in 1s (48.9 kB/s)
+Reading package lists...
+
+
+Reading package lists...
+
+
+Building dependency tree...
+
+Reading state information...
+
+
+Some packages could not be installed. This may mean that you have
+requested an impossible situation or if you are using the unstable
+distribution that some required packages have not yet been created
+or been moved out of Incoming.
+The following information may help to resolve the situation:
+
+The following packages have unmet dependencies:
+
+ r-base-core : Depends: libicu67 (>= 67.1-1~) but it is not installable
+               Depends: libtiff5 (>= 4.0.3) but it is not installable
+
+[91mE: Unable to correct problems, you have held broken packages.
+[0m
+The command '/usr/bin/env bash -o errexit -o pipefail -o nounset -o verbose -o errtrace -O inherit_errexit -O shift_verbose -c echo "deb http://cloud.r-project.org/bin/linux/debian bullseye-cran40/" | tee /etc/apt/sources.list.d/cran.list &&     apt-get update --yes &&     DEBIAN_FRONTEND=noninteractive apt-get install --yes r-base r-base-dev libxml2-dev libcurl4-openssl-dev libssl-dev wget' returned a non-zero code: 100

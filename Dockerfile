@@ -1,9 +1,9 @@
 # DO NOT CHANGE
-from 812206152185.dkr.ecr.us-west-2.amazonaws.com/latch-base:fe0b-main
+FROM 812206152185.dkr.ecr.us-west-2.amazonaws.com/latch-base-nextflow:v1.1.5
 
-workdir /tmp/docker-build/work/
+WORKDIR /tmp/docker-build/work/
 
-shell [ \
+SHELL [ \
     "/usr/bin/env", "bash", \
     "-o", "errexit", \
     "-o", "pipefail", \
@@ -14,53 +14,47 @@ shell [ \
     "-O", "shift_verbose", \
     "-c" \
 ]
-env TZ='Etc/UTC'
-env LANG='en_US.UTF-8'
+ENV TZ='Etc/UTC'
+ENV LANG='en_US.UTF-8'
 
-arg DEBIAN_FRONTEND=noninteractive
+ARG DEBIAN_FRONTEND=noninteractive
 
-# Get secure apt key for CRAN
-run apt-get update --yes && \
-    apt-get install --yes dirmngr apt-transport-https gnupg2 && \
-    gpg --keyserver keyserver.ubuntu.com --recv-key '95C0FAF38DB3CCAD0C080A7BDC78B2DDEABC47B7' && \
-    gpg --armor --export '95C0FAF38DB3CCAD0C080A7BDC78B2DDEABC47B7' | tee /etc/apt/trusted.gpg.d/cran_debian_key.asc
+# Install rig the R installation manager
+RUN \
+    curl \
+        --location \
+        --fail \
+        --remote-name \
+        https://github.com/r-lib/rig/releases/download/latest/rig-linux-latest.tar.gz && \
+    tar \
+        --extract \
+        --gunzip \
+        --file rig-linux-latest.tar.gz \
+        --directory /usr/local/ && \
+    rm rig-linux-latest.tar.gz
 
-# install R requirements
-run echo "deb http://cloud.r-project.org/bin/linux/debian bullseye-cran40/" | tee /etc/apt/sources.list.d/cran.list && \
-    apt-get update --yes && \
-    DEBIAN_FRONTEND=noninteractive apt-get install --yes r-base r-base-dev libxml2-dev libcurl4-openssl-dev libssl-dev wget
+# Install R
+RUN rig add release
 
 COPY latch_environment.R /tmp/docker-build/work/latch_environment.R
 RUN Rscript /tmp/docker-build/work/latch_environment.R
 
-# COPY clusterProfiler_4.12.0.tar.gz /tmp/docker-build/work/clusterProfiler_4.12.0.tar.gz
-# RUN R -e "install.packages('/tmp/docker-build/work/clusterProfiler_4.12.0.tar.gz', repos = NULL, type='source')"
-
-# COPY KEGG.db_2.8.0.tar.gz /tmp/docker-build/work/KEGG.db_2.8.0.tar.gz
-# RUN R -e "install.packages('/tmp/docker-build/work/KEGG.db_2.8.0.tar.gz', repos = NULL, type='source')"
-
-RUN pip install pandas
+# Install needed packages
+RUN pip install pandas && \
+    apt-get update && apt-get install -y pigz
 
 # Latch SDK
 # DO NOT REMOVE
-run pip install latch==2.47.8
-run mkdir /opt/latch
-run apt-get update && apt-get install -y default-jre-headless
-
+RUN pip install latch==2.49.6
+RUN mkdir /opt/latch
 
 # Copy workflow data (use .dockerignore to skip files)
-copy . /root/
-
-# Latch nextflow workflow entrypoint
-# DO NOT CHANGE
-run ln -s /root/.latch/bin/nextflow /root/nextflow
-run ln -s /root/.latch/.nextflow /root/.nextflow
-
+COPY . /root/
 
 # Latch workflow registration metadata
 # DO NOT CHANGE
-arg tag
+ARG tag
 # DO NOT CHANGE
-env FLYTE_INTERNAL_IMAGE $tag
+ENV FLYTE_INTERNAL_IMAGE $tag
 
-workdir /root
+WORKDIR /root

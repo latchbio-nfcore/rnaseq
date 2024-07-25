@@ -1,0 +1,1720 @@
+Step 1/17 : FROM 812206152185.dkr.ecr.us-west-2.amazonaws.com/latch-base-nextflow:v1.1.5
+
+
+ ---> a7ebb447d94e
+
+Step 2/17 : WORKDIR /tmp/docker-build/work/
+
+
+ ---> Using cache
+
+ ---> 416ded9895d6
+
+Step 3/17 : SHELL [     "/usr/bin/env", "bash",     "-o", "errexit",     "-o", "pipefail",     "-o", "nounset",     "-o", "verbose",     "-o", "errtrace",     "-O", "inherit_errexit",     "-O", "shift_verbose",     "-c" ]
+
+
+ ---> Using cache
+
+ ---> 5b24c39f1846
+
+Step 4/17 : ENV TZ='Etc/UTC'
+
+
+ ---> Using cache
+
+ ---> 27dd55b8d338
+
+Step 5/17 : ENV LANG='en_US.UTF-8'
+
+
+ ---> Using cache
+
+ ---> a4c213f3d20d
+
+Step 6/17 : ARG DEBIAN_FRONTEND=noninteractive
+
+
+ ---> Using cache
+
+ ---> 7eed5569a303
+
+Step 7/17 : RUN     curl         --location         --fail         --remote-name         https://github.com/r-lib/rig/releases/download/latest/rig-linux-latest.tar.gz &&     tar         --extract         --gunzip         --file rig-linux-latest.tar.gz         --directory /usr/local/ &&     rm rig-linux-latest.tar.gz
+
+
+ ---> Running in 3f61fc85884b
+
+[91mcurl         --location         --fail         --remote-name         https://github.com/r-lib/rig/releases/download/latest/rig-linux-latest.tar.gz &&     tar         --extract         --gunzip         --file rig-linux-latest.tar.gz         --directory /usr/local/ &&     rm rig-linux-latest.tar.gz
+[0m
+[91m  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+       [0m
+[91m                          Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0[0m
+[91m  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+[0m
+[91m  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0[0m
+[91m100 3520k  100 3520k    0     0  5310k      0 --:--:-- --:--:-- --:--:-- 13.8M
+[0m
+ ---> bfdccf73351c
+
+Step 8/17 : RUN rig add release
+
+
+ ---> Running in 808f3defb705
+
+[91mrig add release
+[0m
+[91m[INFO] Downloading https://cdn.posit.co/r/debian-12/pkgs/r-4.4.1_1_amd64.deb -> /tmp/rig/r-4.4.1_1_amd64.deb
+[0m
+[91m[INFO] Running "apt-get update"
+[0m
+[91m[INFO] [36m>[0m Hit:1 http://deb.debian.org/debian bookworm InRelease
+[INFO] [36m>[0m Get:2 http://deb.debian.org/debian bookworm-updates InRelease [55.4 kB]
+[0m
+[91m[INFO] [36m>[0m Get:3 https://download.docker.com/linux/debian bookworm InRelease [43.3 kB]
+[0m
+[91m[INFO] [36m>[0m Get:4 http://deb.debian.org/debian-security bookworm-security InRelease [48.0 kB]
+[0m
+[91m[INFO] [36m>[0m Get:5 https://download.docker.com/linux/debian bookworm/stable amd64 Packages [27.7 kB]
+[0m
+[91m[INFO] [36m>[0m Get:6 http://deb.debian.org/debian-security bookworm-security/main amd64 Packages [169 kB]
+[0m
+[91m[INFO] [36m>[0m Fetched 343 kB in 0s (773 kB/s)
+[0m
+[91m[INFO] [36m>[0m Reading package lists...
+[0m
+[91m[INFO] Running "apt install --reinstall -y -o=Dpkg::Use-Pty=0 -o=Apt::Cmd::Disable-Script-Warning=1 /tmp/rig/r-4.4.1_1_amd64.deb"
+[0m
+[91m[INFO] [36m>[0m Reading package lists...
+[0m
+[91m[INFO] [36m>[0m Building dependency tree...
+[0m
+[91m[INFO] [36m>[0m Reading state information...
+[0m
+[91m[INFO] [36m>[0m The following additional packages will be installed:
+[INFO] [36m>[0m   bzip2-doc curl fontconfig gfortran gfortran-12 icu-devtools libbz2-dev
+[0m
+[91m[INFO] [36m>[0m   libcairo2 libcurl4 libcurl4-openssl-dev libdatrie1 libdeflate-dev
+[0m
+[91m[INFO] [36m>[0m   libfribidi0 libgfortran-12-dev libgfortran5 libicu-dev liblzma-dev
+[0m
+[91m[INFO] [36m>[0m   libopenblas-dev libopenblas-pthread-dev libopenblas0 libopenblas0-pthread
+[INFO] [36m>[0m   libpango-1.0-0 libpangocairo-1.0-0 libpangoft2-1.0-0 libpaper-utils
+[INFO] [36m>[0m   libpaper1 libpcre2-16-0 libpcre2-32-0 libpcre2-dev libpcre2-posix3
+[0m
+[91m[INFO] [36m>[0m   libpixman-1-0 libtcl8.6 libthai-data libthai0 libtk8.6 libxcb-render0
+[0m
+[91m[INFO] [36m>[0m   libxcb-shm0 libxft2 libxss1 libxt6 unzip zip zlib1g-dev
+[0m
+[91m[INFO] [36m>[0m Suggested packages:
+[INFO] [36m>[0m   gfortran-multilib gfortran-doc gfortran-12-multilib gfortran-12-doc
+[INFO] [36m>[0m   libcoarrays-dev libcurl4-doc libidn-dev libkrb5-dev libldap2-dev librtmp-dev
+[INFO] [36m>[0m   libssh2-1-dev libssl-dev pkg-config icu-doc liblzma-doc tcl8.6 tk8.6
+[0m
+[91m[INFO] [36m>[0m The following NEW packages will be installed:
+[0m
+[91m[INFO] [36m>[0m   bzip2-doc fontconfig gfortran gfortran-12 icu-devtools libbz2-dev libcairo2
+[INFO] [36m>[0m   libcurl4-openssl-dev libdatrie1 libdeflate-dev libfribidi0
+[0m
+[91m[INFO] [36m>[0m   libgfortran-12-dev libgfortran5 libicu-dev liblzma-dev libopenblas-dev
+[INFO] [36m>[0m   libopenblas-pthread-dev libopenblas0 libopenblas0-pthread libpango-1.0-0
+[INFO] [36m>[0m   libpangocairo-1.0-0 libpangoft2-1.0-0 libpaper-utils libpaper1 libpcre2-16-0
+[0m
+[91m[INFO] [36m>[0m   libpcre2-32-0 libpcre2-dev libpcre2-posix3 libpixman-1-0 libtcl8.6
+[INFO] [36m>[0m   libthai-data libthai0 libtk8.6 libxcb-render0 libxcb-shm0 libxft2 libxss1
+[0m
+[91m[INFO] [36m>[0m   libxt6 r-4.4.1 unzip zip zlib1g-dev
+[0m
+[91m[INFO] [36m>[0m The following packages will be upgraded:
+[0m
+[91m[INFO] [36m>[0m   curl libcurl4
+[0m
+[91m[INFO] [36m>[0m 2 upgraded, 42 newly installed, 0 to remove and 26 not upgraded.
+[INFO] [36m>[0m Need to get 43.3 MB/108 MB of archives.
+[INFO] [36m>[0m After this operation, 318 MB of additional disk space will be used.
+[INFO] [36m>[0m Get:1 http://deb.debian.org/debian bookworm/main amd64 bzip2-doc all 1.0.8-5 [514 kB]
+[0m
+[91m[INFO] [36m>[0m Get:2 http://deb.debian.org/debian bookworm/main amd64 curl amd64 7.88.1-10+deb12u6 [314 kB]
+[0m
+[91m[INFO] [36m>[0m Get:3 http://deb.debian.org/debian bookworm/main amd64 libcurl4 amd64 7.88.1-10+deb12u6 [390 kB]
+[0m
+[91m[INFO] [36m>[0m Get:4 http://deb.debian.org/debian bookworm/main amd64 fontconfig amd64 2.14.1-4 [449 kB]
+[0m
+[91m[INFO] [36m>[0m Get:5 http://deb.debian.org/debian bookworm/main amd64 libgfortran5 amd64 12.2.0-14 [793 kB]
+[0m
+[91m[INFO] [36m>[0m Get:6 http://deb.debian.org/debian bookworm/main amd64 libgfortran-12-dev amd64 12.2.0-14 [834 kB]
+[0m
+[91m[INFO] [36m>[0m Get:7 http://deb.debian.org/debian bookworm/main amd64 gfortran-12 amd64 12.2.0-14 [10.2 MB]
+[0m
+[91m[INFO] [36m>[0m Get:8 http://deb.debian.org/debian bookworm/main amd64 gfortran amd64 4:12.2.0-3 [1428 B]
+[0m
+[91m[INFO] [36m>[0m Get:9 http://deb.debian.org/debian bookworm/main amd64 icu-devtools amd64 72.1-3 [206 kB]
+[0m
+[91m[INFO] [36m>[0m Get:10 http://deb.debian.org/debian bookworm/main amd64 libbz2-dev amd64 1.0.8-5+b1 [30.9 kB]
+[0m
+[91m[INFO] [36m>[0m Get:11 http://deb.debian.org/debian bookworm/main amd64 libpixman-1-0 amd64 0.42.2-1 [546 kB]
+[0m
+[91m[INFO] [36m>[0m Get:12 http://deb.debian.org/debian bookworm/main amd64 libxcb-render0 amd64 1.15-1 [115 kB]
+[0m
+[91m[INFO] [36m>[0m Get:13 http://deb.debian.org/debian bookworm/main amd64 libxcb-shm0 amd64 1.15-1 [105 kB]
+[0m
+[91m[INFO] [36m>[0m Get:14 http://deb.debian.org/debian bookworm/main amd64 libcairo2 amd64 1.16.0-7 [575 kB]
+[0m
+[91m[INFO] [36m>[0m Get:15 http://deb.debian.org/debian bookworm/main amd64 libcurl4-openssl-dev amd64 7.88.1-10+deb12u6 [491 kB]
+[0m
+[91m[INFO] [36m>[0m Get:16 http://deb.debian.org/debian bookworm/main amd64 libdatrie1 amd64 0.2.13-2+b1 [43.3 kB]
+[0m
+[91m[INFO] [36m>[0m Get:17 http://deb.debian.org/debian bookworm/main amd64 libdeflate-dev amd64 1.14-1 [53.3 kB]
+[0m
+[91m[INFO] [36m>[0m Get:18 http://deb.debian.org/debian bookworm/main amd64 libfribidi0 amd64 1.0.8-2.1 [65.0 kB]
+[0m
+[91m[INFO] [36m>[0m Get:19 http://deb.debian.org/debian bookworm/main amd64 libicu-dev amd64 72.1-3 [10.3 MB]
+[0m
+[91m[INFO] [36m>[0m Get:20 http://deb.debian.org/debian bookworm/main amd64 liblzma-dev amd64 5.4.1-0.2 [260 kB]
+[0m
+[91m[INFO] [36m>[0m Get:21 http://deb.debian.org/debian bookworm/main amd64 libopenblas0-pthread amd64 0.3.21+ds-4 [6709 kB]
+[0m
+[91m[INFO] [36m>[0m Get:22 http://deb.debian.org/debian bookworm/main amd64 libopenblas0 amd64 0.3.21+ds-4 [32.6 kB]
+[0m
+[91m[INFO] [36m>[0m Get:23 http://deb.debian.org/debian bookworm/main amd64 libopenblas-pthread-dev amd64 0.3.21+ds-4 [4971 kB]
+[0m
+[91m[INFO] [36m>[0m Get:24 http://deb.debian.org/debian bookworm/main amd64 libopenblas-dev amd64 0.3.21+ds-4 [44.9 kB]
+[0m
+[91m[INFO] [36m>[0m Get:25 http://deb.debian.org/debian bookworm/main amd64 libthai-data all 0.1.29-1 [176 kB]
+[0m
+[91m[INFO] [36m>[0m Get:26 http://deb.debian.org/debian bookworm/main amd64 libthai0 amd64 0.1.29-1 [57.5 kB]
+[0m
+[91m[INFO] [36m>[0m Get:27 http://deb.debian.org/debian bookworm/main amd64 libpango-1.0-0 amd64 1.50.12+ds-1 [212 kB]
+[0m
+[91m[INFO] [36m>[0m Get:28 http://deb.debian.org/debian bookworm/main amd64 libpangoft2-1.0-0 amd64 1.50.12+ds-1 [47.4 kB]
+[0m
+[91m[INFO] [36m>[0m Get:29 http://deb.debian.org/debian bookworm/main amd64 libpangocairo-1.0-0 amd64 1.50.12+ds-1 [34.2 kB]
+[0m
+[91m[INFO] [36m>[0m Get:30 http://deb.debian.org/debian bookworm/main amd64 libpaper1 amd64 1.1.29 [12.5 kB]
+[0m
+[91m[INFO] [36m>[0m Get:31 http://deb.debian.org/debian bookworm/main amd64 libpaper-utils amd64 1.1.29 [8868 B]
+[0m
+[91m[INFO] [36m>[0m Get:32 http://deb.debian.org/debian bookworm/main amd64 libpcre2-16-0 amd64 10.42-1 [245 kB]
+[0m
+[91m[INFO] [36m>[0m Get:33 http://deb.debian.org/debian bookworm/main amd64 libpcre2-32-0 amd64 10.42-1 [234 kB]
+[0m
+[91m[INFO] [36m>[0m Get:34 http://deb.debian.org/debian bookworm/main amd64 libpcre2-posix3 amd64 10.42-1 [55.4 kB]
+[0m
+[91m[INFO] [36m>[0m Get:35 http://deb.debian.org/debian bookworm/main amd64 libpcre2-dev amd64 10.42-1 [753 kB]
+[0m
+[91m[INFO] [36m>[0m Get:36 http://deb.debian.org/debian bookworm/main amd64 libtcl8.6 amd64 8.6.13+dfsg-2 [1035 kB]
+[0m
+[91m[INFO] [36m>[0m Get:37 http://deb.debian.org/debian bookworm/main amd64 libxft2 amd64 2.3.6-1 [61.8 kB]
+[0m
+[91m[INFO] [36m>[0m Get:38 http://deb.debian.org/debian bookworm/main amd64 libxss1 amd64 1:1.2.3-1 [17.8 kB]
+[0m
+[91m[INFO] [36m>[0m Get:39 http://deb.debian.org/debian bookworm/main amd64 libtk8.6 amd64 8.6.13-2 [781 kB]
+[0m
+[91m[INFO] [36m>[0m Get:40 http://deb.debian.org/debian bookworm/main amd64 libxt6 amd64 1:1.2.1-1.1 [186 kB]
+[0m
+[91m[INFO] [36m>[0m Get:41 http://deb.debian.org/debian bookworm/main amd64 unzip amd64 6.0-28 [166 kB]
+[0m
+[91m[INFO] [36m>[0m Get:42 http://deb.debian.org/debian bookworm/main amd64 zip amd64 3.0-13 [230 kB]
+[0m
+[91m[INFO] [36m>[0m Get:43 http://deb.debian.org/debian bookworm/main amd64 zlib1g-dev amd64 1:1.2.13.dfsg-1 [916 kB]
+[0m
+[91m[INFO] [36m>[0m Get:44 /tmp/rig/r-4.4.1_1_amd64.deb r-4.4.1 amd64 1 [64.7 MB]
+[0m
+[91m[INFO] [36m>[0m debconf: delaying package configuration, since apt-utils is not installed
+[0m
+[91m[INFO] [36m>[0m Fetched 43.3 MB in 1s (72.3 MB/s)
+[0m
+[91m[INFO] [36m>[0m Selecting previously unselected package bzip2-doc.
+[0m
+[91m[INFO] [36m>[0m (Reading database ... 23273 files and directories currently installed.)
+[0m
+[91m[INFO] [36m>[0m Preparing to unpack .../00-bzip2-doc_1.0.8-5_all.deb ...
+[0m
+[91m[INFO] [36m>[0m Unpacking bzip2-doc (1.0.8-5) ...
+[0m
+[91m[INFO] [36m>[0m Preparing to unpack .../01-curl_7.88.1-10+deb12u6_amd64.deb ...
+[0m
+[91m[INFO] [36m>[0m Unpacking curl (7.88.1-10+deb12u6) over (7.88.1-10+deb12u5) ...
+[0m
+[91m[INFO] [36m>[0m Preparing to unpack .../02-libcurl4_7.88.1-10+deb12u6_amd64.deb ...
+[0m
+[91m[INFO] [36m>[0m Unpacking libcurl4:amd64 (7.88.1-10+deb12u6) over (7.88.1-10+deb12u5) ...
+[0m
+[91m[INFO] [36m>[0m Selecting previously unselected package fontconfig.
+[0m
+[91m[INFO] [36m>[0m Preparing to unpack .../03-fontconfig_2.14.1-4_amd64.deb ...
+[0m
+[91m[INFO] [36m>[0m Unpacking fontconfig (2.14.1-4) ...
+[0m
+[91m[INFO] [36m>[0m Selecting previously unselected package libgfortran5:amd64.
+[0m
+[91m[INFO] [36m>[0m Preparing to unpack .../04-libgfortran5_12.2.0-14_amd64.deb ...
+[0m
+[91m[INFO] [36m>[0m Unpacking libgfortran5:amd64 (12.2.0-14) ...
+[0m
+[91m[INFO] [36m>[0m Selecting previously unselected package libgfortran-12-dev:amd64.
+[0m
+[91m[INFO] [36m>[0m Preparing to unpack .../05-libgfortran-12-dev_12.2.0-14_amd64.deb ...
+[0m
+[91m[INFO] [36m>[0m Unpacking libgfortran-12-dev:amd64 (12.2.0-14) ...
+[0m
+[91m[INFO] [36m>[0m Selecting previously unselected package gfortran-12.
+[0m
+[91m[INFO] [36m>[0m Preparing to unpack .../06-gfortran-12_12.2.0-14_amd64.deb ...
+[0m
+[91m[INFO] [36m>[0m Unpacking gfortran-12 (12.2.0-14) ...
+[0m
+[91m[INFO] [36m>[0m Selecting previously unselected package gfortran.
+[0m
+[91m[INFO] [36m>[0m Preparing to unpack .../07-gfortran_4%3a12.2.0-3_amd64.deb ...
+[0m
+[91m[INFO] [36m>[0m Unpacking gfortran (4:12.2.0-3) ...
+[0m
+[91m[INFO] [36m>[0m Selecting previously unselected package icu-devtools.
+[0m
+[91m[INFO] [36m>[0m Preparing to unpack .../08-icu-devtools_72.1-3_amd64.deb ...
+[0m
+[91m[INFO] [36m>[0m Unpacking icu-devtools (72.1-3) ...
+[0m
+[91m[INFO] [36m>[0m Selecting previously unselected package libbz2-dev:amd64.
+[0m
+[91m[INFO] [36m>[0m Preparing to unpack .../09-libbz2-dev_1.0.8-5+b1_amd64.deb ...
+[0m
+[91m[INFO] [36m>[0m Unpacking libbz2-dev:amd64 (1.0.8-5+b1) ...
+[0m
+[91m[INFO] [36m>[0m Selecting previously unselected package libpixman-1-0:amd64.
+[0m
+[91m[INFO] [36m>[0m Preparing to unpack .../10-libpixman-1-0_0.42.2-1_amd64.deb ...
+[0m
+[91m[INFO] [36m>[0m Unpacking libpixman-1-0:amd64 (0.42.2-1) ...
+[0m
+[91m[INFO] [36m>[0m Selecting previously unselected package libxcb-render0:amd64.
+[0m
+[91m[INFO] [36m>[0m Preparing to unpack .../11-libxcb-render0_1.15-1_amd64.deb ...
+[0m
+[91m[INFO] [36m>[0m Unpacking libxcb-render0:amd64 (1.15-1) ...
+[0m
+[91m[INFO] [36m>[0m Selecting previously unselected package libxcb-shm0:amd64.
+[0m
+[91m[INFO] [36m>[0m Preparing to unpack .../12-libxcb-shm0_1.15-1_amd64.deb ...
+[0m
+[91m[INFO] [36m>[0m Unpacking libxcb-shm0:amd64 (1.15-1) ...
+[0m
+[91m[INFO] [36m>[0m Selecting previously unselected package libcairo2:amd64.
+[0m
+[91m[INFO] [36m>[0m Preparing to unpack .../13-libcairo2_1.16.0-7_amd64.deb ...
+[0m
+[91m[INFO] [36m>[0m Unpacking libcairo2:amd64 (1.16.0-7) ...
+[0m
+[91m[INFO] [36m>[0m Selecting previously unselected package libcurl4-openssl-dev:amd64.
+[0m
+[91m[INFO] [36m>[0m Preparing to unpack .../14-libcurl4-openssl-dev_7.88.1-10+deb12u6_amd64.deb ...
+[0m
+[91m[INFO] [36m>[0m Unpacking libcurl4-openssl-dev:amd64 (7.88.1-10+deb12u6) ...
+[0m
+[91m[INFO] [36m>[0m Selecting previously unselected package libdatrie1:amd64.
+[0m
+[91m[INFO] [36m>[0m Preparing to unpack .../15-libdatrie1_0.2.13-2+b1_amd64.deb ...
+[0m
+[91m[INFO] [36m>[0m Unpacking libdatrie1:amd64 (0.2.13-2+b1) ...
+[0m
+[91m[INFO] [36m>[0m Selecting previously unselected package libdeflate-dev:amd64.
+[0m
+[91m[INFO] [36m>[0m Preparing to unpack .../16-libdeflate-dev_1.14-1_amd64.deb ...
+[0m
+[91m[INFO] [36m>[0m Unpacking libdeflate-dev:amd64 (1.14-1) ...
+[0m
+[91m[INFO] [36m>[0m Selecting previously unselected package libfribidi0:amd64.
+[0m
+[91m[INFO] [36m>[0m Preparing to unpack .../17-libfribidi0_1.0.8-2.1_amd64.deb ...
+[0m
+[91m[INFO] [36m>[0m Unpacking libfribidi0:amd64 (1.0.8-2.1) ...
+[0m
+[91m[INFO] [36m>[0m Selecting previously unselected package libicu-dev:amd64.
+[0m
+[91m[INFO] [36m>[0m Preparing to unpack .../18-libicu-dev_72.1-3_amd64.deb ...
+[0m
+[91m[INFO] [36m>[0m Unpacking libicu-dev:amd64 (72.1-3) ...
+[0m
+[91m[INFO] [36m>[0m Selecting previously unselected package liblzma-dev:amd64.
+[0m
+[91m[INFO] [36m>[0m Preparing to unpack .../19-liblzma-dev_5.4.1-0.2_amd64.deb ...
+[0m
+[91m[INFO] [36m>[0m Unpacking liblzma-dev:amd64 (5.4.1-0.2) ...
+[0m
+[91m[INFO] [36m>[0m Selecting previously unselected package libopenblas0-pthread:amd64.
+[0m
+[91m[INFO] [36m>[0m Preparing to unpack .../20-libopenblas0-pthread_0.3.21+ds-4_amd64.deb ...
+[0m
+[91m[INFO] [36m>[0m Unpacking libopenblas0-pthread:amd64 (0.3.21+ds-4) ...
+[0m
+[91m[INFO] [36m>[0m Selecting previously unselected package libopenblas0:amd64.
+[0m
+[91m[INFO] [36m>[0m Preparing to unpack .../21-libopenblas0_0.3.21+ds-4_amd64.deb ...
+[0m
+[91m[INFO] [36m>[0m Unpacking libopenblas0:amd64 (0.3.21+ds-4) ...
+[0m
+[91m[INFO] [36m>[0m Selecting previously unselected package libopenblas-pthread-dev:amd64.
+[0m
+[91m[INFO] [36m>[0m Preparing to unpack .../22-libopenblas-pthread-dev_0.3.21+ds-4_amd64.deb ...
+[0m
+[91m[INFO] [36m>[0m Unpacking libopenblas-pthread-dev:amd64 (0.3.21+ds-4) ...
+[0m
+[91m[INFO] [36m>[0m Selecting previously unselected package libopenblas-dev:amd64.
+[0m
+[91m[INFO] [36m>[0m Preparing to unpack .../23-libopenblas-dev_0.3.21+ds-4_amd64.deb ...
+[0m
+[91m[INFO] [36m>[0m Unpacking libopenblas-dev:amd64 (0.3.21+ds-4) ...
+[0m
+[91m[INFO] [36m>[0m Selecting previously unselected package libthai-data.
+[0m
+[91m[INFO] [36m>[0m Preparing to unpack .../24-libthai-data_0.1.29-1_all.deb ...
+[0m
+[91m[INFO] [36m>[0m Unpacking libthai-data (0.1.29-1) ...
+[0m
+[91m[INFO] [36m>[0m Selecting previously unselected package libthai0:amd64.
+[0m
+[91m[INFO] [36m>[0m Preparing to unpack .../25-libthai0_0.1.29-1_amd64.deb ...
+[0m
+[91m[INFO] [36m>[0m Unpacking libthai0:amd64 (0.1.29-1) ...
+[0m
+[91m[INFO] [36m>[0m Selecting previously unselected package libpango-1.0-0:amd64.
+[0m
+[91m[INFO] [36m>[0m Preparing to unpack .../26-libpango-1.0-0_1.50.12+ds-1_amd64.deb ...
+[0m
+[91m[INFO] [36m>[0m Unpacking libpango-1.0-0:amd64 (1.50.12+ds-1) ...
+[0m
+[91m[INFO] [36m>[0m Selecting previously unselected package libpangoft2-1.0-0:amd64.
+[0m
+[91m[INFO] [36m>[0m Preparing to unpack .../27-libpangoft2-1.0-0_1.50.12+ds-1_amd64.deb ...
+[0m
+[91m[INFO] [36m>[0m Unpacking libpangoft2-1.0-0:amd64 (1.50.12+ds-1) ...
+[0m
+[91m[INFO] [36m>[0m Selecting previously unselected package libpangocairo-1.0-0:amd64.
+[0m
+[91m[INFO] [36m>[0m Preparing to unpack .../28-libpangocairo-1.0-0_1.50.12+ds-1_amd64.deb ...
+[0m
+[91m[INFO] [36m>[0m Unpacking libpangocairo-1.0-0:amd64 (1.50.12+ds-1) ...
+[0m
+[91m[INFO] [36m>[0m Selecting previously unselected package libpaper1:amd64.
+[0m
+[91m[INFO] [36m>[0m Preparing to unpack .../29-libpaper1_1.1.29_amd64.deb ...
+[0m
+[91m[INFO] [36m>[0m Unpacking libpaper1:amd64 (1.1.29) ...
+[0m
+[91m[INFO] [36m>[0m Selecting previously unselected package libpaper-utils.
+[0m
+[91m[INFO] [36m>[0m Preparing to unpack .../30-libpaper-utils_1.1.29_amd64.deb ...
+[0m
+[91m[INFO] [36m>[0m Unpacking libpaper-utils (1.1.29) ...
+[0m
+[91m[INFO] [36m>[0m Selecting previously unselected package libpcre2-16-0:amd64.
+[0m
+[91m[INFO] [36m>[0m Preparing to unpack .../31-libpcre2-16-0_10.42-1_amd64.deb ...
+[0m
+[91m[INFO] [36m>[0m Unpacking libpcre2-16-0:amd64 (10.42-1) ...
+[0m
+[91m[INFO] [36m>[0m Selecting previously unselected package libpcre2-32-0:amd64.
+[0m
+[91m[INFO] [36m>[0m Preparing to unpack .../32-libpcre2-32-0_10.42-1_amd64.deb ...
+[0m
+[91m[INFO] [36m>[0m Unpacking libpcre2-32-0:amd64 (10.42-1) ...
+[0m
+[91m[INFO] [36m>[0m Selecting previously unselected package libpcre2-posix3:amd64.
+[0m
+[91m[INFO] [36m>[0m Preparing to unpack .../33-libpcre2-posix3_10.42-1_amd64.deb ...
+[0m
+[91m[INFO] [36m>[0m Unpacking libpcre2-posix3:amd64 (10.42-1) ...
+[0m
+[91m[INFO] [36m>[0m Selecting previously unselected package libpcre2-dev:amd64.
+[0m
+[91m[INFO] [36m>[0m Preparing to unpack .../34-libpcre2-dev_10.42-1_amd64.deb ...
+[0m
+[91m[INFO] [36m>[0m Unpacking libpcre2-dev:amd64 (10.42-1) ...
+[0m
+[91m[INFO] [36m>[0m Selecting previously unselected package libtcl8.6:amd64.
+[0m
+[91m[INFO] [36m>[0m Preparing to unpack .../35-libtcl8.6_8.6.13+dfsg-2_amd64.deb ...
+[0m
+[91m[INFO] [36m>[0m Unpacking libtcl8.6:amd64 (8.6.13+dfsg-2) ...
+[0m
+[91m[INFO] [36m>[0m Selecting previously unselected package libxft2:amd64.
+[0m
+[91m[INFO] [36m>[0m Preparing to unpack .../36-libxft2_2.3.6-1_amd64.deb ...
+[0m
+[91m[INFO] [36m>[0m Unpacking libxft2:amd64 (2.3.6-1) ...
+[0m
+[91m[INFO] [36m>[0m Selecting previously unselected package libxss1:amd64.
+[0m
+[91m[INFO] [36m>[0m Preparing to unpack .../37-libxss1_1%3a1.2.3-1_amd64.deb ...
+[0m
+[91m[INFO] [36m>[0m Unpacking libxss1:amd64 (1:1.2.3-1) ...
+[0m
+[91m[INFO] [36m>[0m Selecting previously unselected package libtk8.6:amd64.
+[0m
+[91m[INFO] [36m>[0m Preparing to unpack .../38-libtk8.6_8.6.13-2_amd64.deb ...
+[0m
+[91m[INFO] [36m>[0m Unpacking libtk8.6:amd64 (8.6.13-2) ...
+[0m
+[91m[INFO] [36m>[0m Selecting previously unselected package libxt6:amd64.
+[0m
+[91m[INFO] [36m>[0m Preparing to unpack .../39-libxt6_1%3a1.2.1-1.1_amd64.deb ...
+[0m
+[91m[INFO] [36m>[0m Unpacking libxt6:amd64 (1:1.2.1-1.1) ...
+[0m
+[91m[INFO] [36m>[0m Selecting previously unselected package unzip.
+[0m
+[91m[INFO] [36m>[0m Preparing to unpack .../40-unzip_6.0-28_amd64.deb ...
+[0m
+[91m[INFO] [36m>[0m Unpacking unzip (6.0-28) ...
+[0m
+[91m[INFO] [36m>[0m Selecting previously unselected package zip.
+[0m
+[91m[INFO] [36m>[0m Preparing to unpack .../41-zip_3.0-13_amd64.deb ...
+[0m
+[91m[INFO] [36m>[0m Unpacking zip (3.0-13) ...
+[0m
+[91m[INFO] [36m>[0m Selecting previously unselected package zlib1g-dev:amd64.
+[0m
+[91m[INFO] [36m>[0m Preparing to unpack .../42-zlib1g-dev_1%3a1.2.13.dfsg-1_amd64.deb ...
+[0m
+[91m[INFO] [36m>[0m Unpacking zlib1g-dev:amd64 (1:1.2.13.dfsg-1) ...
+[0m
+[91m[INFO] [36m>[0m Selecting previously unselected package r-4.4.1.
+[0m
+[91m[INFO] [36m>[0m Preparing to unpack .../43-r-4.4.1_1_amd64.deb ...
+[0m
+[91m[INFO] [36m>[0m Unpacking r-4.4.1 (1) ...
+[0m
+[91m[INFO] [36m>[0m Setting up libpixman-1-0:amd64 (0.42.2-1) ...
+[0m
+[91m[INFO] [36m>[0m Setting up bzip2-doc (1.0.8-5) ...
+[0m
+[91m[INFO] [36m>[0m Setting up libpaper1:amd64 (1.1.29) ...
+[0m
+[91m[INFO] [36m>[0m 
+[INFO] [36m>[0m Creating config file /etc/papersize with new version
+[0m
+[91m[INFO] [36m>[0m Setting up fontconfig (2.14.1-4) ...
+[0m
+[91m[INFO] [36m>[0m Regenerating fonts cache... done.
+[0m
+[91m[INFO] [36m>[0m Setting up libxft2:amd64 (2.3.6-1) ...
+[0m
+[91m[INFO] [36m>[0m Setting up libdatrie1:amd64 (0.2.13-2+b1) ...
+[0m
+[91m[INFO] [36m>[0m Setting up libxcb-render0:amd64 (1.15-1) ...
+[0m
+[91m[INFO] [36m>[0m Setting up unzip (6.0-28) ...
+[0m
+[91m[INFO] [36m>[0m Setting up libxcb-shm0:amd64 (1.15-1) ...
+[0m
+[91m[INFO] [36m>[0m Setting up libpaper-utils (1.1.29) ...
+[0m
+[91m[INFO] [36m>[0m Setting up libcairo2:amd64 (1.16.0-7) ...
+[0m
+[91m[INFO] [36m>[0m Setting up libpcre2-16-0:amd64 (10.42-1) ...
+[0m
+[91m[INFO] [36m>[0m Setting up zip (3.0-13) ...
+[0m
+[91m[INFO] [36m>[0m Setting up libpcre2-32-0:amd64 (10.42-1) ...
+[0m
+[91m[INFO] [36m>[0m Setting up libfribidi0:amd64 (1.0.8-2.1) ...
+[0m
+[91m[INFO] [36m>[0m Setting up libtcl8.6:amd64 (8.6.13+dfsg-2) ...
+[0m
+[91m[INFO] [36m>[0m Setting up icu-devtools (72.1-3) ...
+[0m
+[91m[INFO] [36m>[0m Setting up libxt6:amd64 (1:1.2.1-1.1) ...
+[0m
+[91m[INFO] [36m>[0m Setting up libgfortran5:amd64 (12.2.0-14) ...
+[0m
+[91m[INFO] [36m>[0m Setting up liblzma-dev:amd64 (5.4.1-0.2) ...
+[0m
+[91m[INFO] [36m>[0m Setting up zlib1g-dev:amd64 (1:1.2.13.dfsg-1) ...
+[0m
+[91m[INFO] [36m>[0m Setting up libpcre2-posix3:amd64 (10.42-1) ...
+[0m
+[91m[INFO] [36m>[0m Setting up libcurl4:amd64 (7.88.1-10+deb12u6) ...
+[0m
+[91m[INFO] [36m>[0m Setting up libthai-data (0.1.29-1) ...
+[0m
+[91m[INFO] [36m>[0m Setting up curl (7.88.1-10+deb12u6) ...
+[0m
+[91m[INFO] [36m>[0m Setting up libxss1:amd64 (1:1.2.3-1) ...
+[0m
+[91m[INFO] [36m>[0m Setting up libdeflate-dev:amd64 (1.14-1) ...
+[0m
+[91m[INFO] [36m>[0m Setting up libicu-dev:amd64 (72.1-3) ...
+[0m
+[91m[INFO] [36m>[0m Setting up libbz2-dev:amd64 (1.0.8-5+b1) ...
+[0m
+[91m[INFO] [36m>[0m Setting up libopenblas0-pthread:amd64 (0.3.21+ds-4) ...
+[0m
+[91m[INFO] [36m>[0m update-alternatives: using /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 to provide /usr/lib/x86_64-linux-gnu/libblas.so.3 (libblas.so.3-x86_64-linux-gnu) in auto mode
+[0m
+[91m[INFO] [36m>[0m update-alternatives: using /usr/lib/x86_64-linux-gnu/openblas-pthread/liblapack.so.3 to provide /usr/lib/x86_64-linux-gnu/liblapack.so.3 (liblapack.so.3-x86_64-linux-gnu) in auto mode
+[0m
+[91m[INFO] [36m>[0m update-alternatives: using /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblas.so.0 to provide /usr/lib/x86_64-linux-gnu/libopenblas.so.0 (libopenblas.so.0-x86_64-linux-gnu) in auto mode
+[0m
+[91m[INFO] [36m>[0m Setting up libpcre2-dev:amd64 (10.42-1) ...
+[0m
+[91m[INFO] [36m>[0m Setting up libtk8.6:amd64 (8.6.13-2) ...
+[0m
+[91m[INFO] [36m>[0m Setting up libgfortran-12-dev:amd64 (12.2.0-14) ...
+[0m
+[91m[INFO] [36m>[0m Setting up libthai0:amd64 (0.1.29-1) ...
+[0m
+[91m[INFO] [36m>[0m Setting up gfortran-12 (12.2.0-14) ...
+[0m
+[91m[INFO] [36m>[0m Setting up libcurl4-openssl-dev:amd64 (7.88.1-10+deb12u6) ...
+[0m
+[91m[INFO] [36m>[0m Setting up libopenblas0:amd64 (0.3.21+ds-4) ...
+[0m
+[91m[INFO] [36m>[0m Setting up libopenblas-pthread-dev:amd64 (0.3.21+ds-4) ...
+[0m
+[91m[INFO] [36m>[0m update-alternatives: using /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so to provide /usr/lib/x86_64-linux-gnu/libblas.so (libblas.so-x86_64-linux-gnu) in auto mode
+[0m
+[91m[INFO] [36m>[0m update-alternatives: using /usr/lib/x86_64-linux-gnu/openblas-pthread/liblapack.so to provide /usr/lib/x86_64-linux-gnu/liblapack.so (liblapack.so-x86_64-linux-gnu) in auto mode
+[0m
+[91m[INFO] [36m>[0m update-alternatives: using /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblas.so to provide /usr/lib/x86_64-linux-gnu/libopenblas.so (libopenblas.so-x86_64-linux-gnu) in auto mode
+[0m
+[91m[INFO] [36m>[0m Setting up libpango-1.0-0:amd64 (1.50.12+ds-1) ...
+[0m
+[91m[INFO] [36m>[0m Setting up gfortran (4:12.2.0-3) ...
+[0m
+[91m[INFO] [36m>[0m update-alternatives: using /usr/bin/gfortran to provide /usr/bin/f95 (f95) in auto mode
+[0m
+[91m[INFO] [36m>[0m update-alternatives: using /usr/bin/gfortran to provide /usr/bin/f77 (f77) in auto mode
+[0m
+[91m[INFO] [36m>[0m Setting up libopenblas-dev:amd64 (0.3.21+ds-4) ...
+[0m
+[91m[INFO] [36m>[0m Setting up libpangoft2-1.0-0:amd64 (1.50.12+ds-1) ...
+[0m
+[91m[INFO] [36m>[0m Setting up libpangocairo-1.0-0:amd64 (1.50.12+ds-1) ...
+[0m
+[91m[INFO] [36m>[0m Setting up r-4.4.1 (1) ...
+[0m
+[91m[INFO] [36m>[0m Processing triggers for libc-bin (2.36-9+deb12u7) ...
+[0m
+[91m[INFO] Adding /usr/local/bin/R-4.4.1 -> /opt/R/4.4.1/bin/R
+[0m
+[91m[INFO] Adding R-release alias to R 4.4.1
+[0m
+[91m[INFO] Setting default CRAN mirror
+[0m
+[91m[INFO] Setting up P3M
+[0m
+[91m[INFO] Installing pak for R 4.4.1 (if not installed yet)
+[0m
+[91m[INFO] [36m>[0m Installing package into ‘/root/R/x86_64-pc-linux-gnu-library/4.4’
+[INFO] [36m>[0m (as ‘lib’ is unspecified)
+[0m
+[91m[INFO] [36m>[0m trying URL 'https://r-lib.github.io/p/pak/stable/source/linux-gnu/x86_64/src/contrib/../../../../../linux/x86_64/pak_0.7.2_R-4-4_x86_64-linux.tar.gz'
+[0m
+[91m[INFO] [36m>[0m Content type 'application/gzip' length 8039794 bytes (7.7 MB)
+[0m
+[91m[INFO] [36m>[0m ==================================================
+[INFO] [36m>[0m downloaded 7.7 MB
+[INFO] [36m>[0m 
+[0m
+[91m[INFO] [36m>[0m * installing *binary* package ‘pak’ ...
+[0m
+[91m[INFO] [36m>[0m * DONE (pak)
+[0m
+[91m[INFO] [36m>[0m 
+[INFO] [36m>[0m The downloaded source packages are in
+[INFO] [36m>[0m 	‘/tmp/RtmpJftDCn/downloaded_packages’
+[0m
+ ---> 4a8d999eeab2
+
+Step 9/17 : COPY latch_environment.R /tmp/docker-build/work/latch_environment.R
+
+
+ ---> 3c6f64d4b476
+
+Step 10/17 : RUN Rscript /tmp/docker-build/work/latch_environment.R
+
+
+ ---> Running in e21ea84b49f2
+
+[91mRscript /tmp/docker-build/work/latch_environment.R
+[0m
+[91m
+[0m
+[91m✔ Updated metadata database: 5.15 MB in 10 files.
+[0m
+[91m
+[0m
+[91mℹ Updating metadata database
+[0m
+[91m✔ Updating metadata database ... done
+[0m
+[91m
+[0m
+[91m 
+[0m
+[91m→ Will install 1 package.
+[0m
+[91m→ Will download 1 package with unknown size.
+[0m
+[91m+ tximport   1.32.0 [bld][dl]
+[0m
+[91m  
+[0m
+[91mℹ Getting 1 pkg with unknown size
+[0m
+[91m✔ Got tximport 1.32.0 (source) (315.23 kB)
+[0m
+[91mℹ Building tximport 1.32.0
+[0m
+[91m✔ Built tximport 1.32.0 (2.1s)
+[0m
+[91m✔ Installed tximport 1.32.0  (59ms)
+[0m
+[91m✔ 1 pkg: added 1, dld 1 (315.23 kB) [21.2s]
+[0m
+ ---> f7ea29112e47
+
+Step 11/17 : RUN pip install pandas &&     apt-get update && apt-get install -y pigz
+
+
+ ---> Running in 82f51730fdf0
+
+[91mpip install pandas &&     apt-get update && apt-get install -y pigz
+[0m
+Collecting pandas
+
+  Downloading pandas-2.2.2-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (19 kB)
+
+Collecting numpy>=1.23.2 (from pandas)
+
+  Downloading numpy-2.0.1-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (60 kB)
+
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 60.9/60.9 kB 2.7 MB/s eta 0:00:00
+
+
+Requirement already satisfied: python-dateutil>=2.8.2 in /usr/local/lib/python3.11/site-packages (from pandas) (2.9.0.post0)
+
+Collecting pytz>=2020.1 (from pandas)
+
+  Downloading pytz-2024.1-py2.py3-none-any.whl.metadata (22 kB)
+
+Collecting tzdata>=2022.7 (from pandas)
+
+  Downloading tzdata-2024.1-py2.py3-none-any.whl.metadata (1.4 kB)
+
+Requirement already satisfied: six>=1.5 in /usr/local/lib/python3.11/site-packages (from python-dateutil>=2.8.2->pandas) (1.16.0)
+
+Downloading pandas-2.2.2-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (13.0 MB)
+
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 13.0/13.0 MB 83.7 MB/s eta 0:00:00
+
+
+Downloading numpy-2.0.1-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (19.5 MB)
+
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 19.5/19.5 MB 76.3 MB/s eta 0:00:00
+
+
+Downloading pytz-2024.1-py2.py3-none-any.whl (505 kB)
+
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 505.5/505.5 kB 37.1 MB/s eta 0:00:00
+
+
+Downloading tzdata-2024.1-py2.py3-none-any.whl (345 kB)
+
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 345.4/345.4 kB 29.0 MB/s eta 0:00:00
+
+
+Installing collected packages: pytz, tzdata, numpy, pandas
+
+Successfully installed numpy-2.0.1 pandas-2.2.2 pytz-2024.1 tzdata-2024.1
+
+[91mWARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+[0m
+[91m
+[notice] A new release of pip is available: 24.0 -> 24.1.2
+[notice] To update, run: pip install --upgrade pip
+[0m
+Hit:1 http://deb.debian.org/debian bookworm InRelease
+Hit:2 http://deb.debian.org/debian bookworm-updates InRelease
+Hit:3 https://download.docker.com/linux/debian bookworm InRelease
+
+Hit:4 http://deb.debian.org/debian-security bookworm-security InRelease
+
+Reading package lists...
+
+
+Reading package lists...
+
+
+Building dependency tree...
+
+Reading state information...
+
+
+The following NEW packages will be installed:
+  pigz
+
+0 upgraded, 1 newly installed, 0 to remove and 26 not upgraded.
+Need to get 64.0 kB of archives.
+After this operation, 162 kB of additional disk space will be used.
+Get:1 http://deb.debian.org/debian bookworm/main amd64 pigz amd64 2.6-1 [64.0 kB]
+
+[91mdebconf: delaying package configuration, since apt-utils is not installed
+[0m
+Fetched 64.0 kB in 0s (1642 kB/s)
+
+Selecting previously unselected package pigz.
+(Reading database ... 
+(Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%
+(Reading database ... 70%
+(Reading database ... 75%
+(Reading database ... 80%
+(Reading database ... 85%
+(Reading database ... 90%
+(Reading database ... 95%
+(Reading database ... 100%(Reading database ... 26784 files and directories currently installed.)
+
+Preparing to unpack .../archives/pigz_2.6-1_amd64.deb ...
+
+Unpacking pigz (2.6-1) ...
+
+Setting up pigz (2.6-1) ...
+
+ ---> f9804ee3c60c
+
+Step 12/17 : RUN pip install latch==2.49.6
+
+
+ ---> Running in 93c777faced8
+
+[91mpip install latch==2.49.6
+[0m
+Collecting latch==2.49.6
+
+  Downloading latch-2.49.6-py3-none-any.whl.metadata (1.4 kB)
+
+Collecting kubernetes>=24.2.0 (from latch==2.49.6)
+
+  Downloading kubernetes-30.1.0-py2.py3-none-any.whl.metadata (1.5 kB)
+
+Collecting pyjwt>=0.2.0 (from latch==2.49.6)
+
+  Downloading PyJWT-2.8.0-py3-none-any.whl.metadata (4.2 kB)
+
+Collecting requests>=2.28.1 (from latch==2.49.6)
+
+  Downloading requests-2.32.3-py3-none-any.whl.metadata (4.6 kB)
+
+Collecting click>=8.0 (from latch==2.49.6)
+
+  Downloading click-8.1.7-py3-none-any.whl.metadata (3.0 kB)
+
+Collecting docker>=7.1.0 (from latch==2.49.6)
+
+  Downloading docker-7.1.0-py3-none-any.whl.metadata (3.8 kB)
+
+Collecting paramiko>=3.2.0 (from latch==2.49.6)
+
+  Downloading paramiko-3.4.0-py3-none-any.whl.metadata (4.4 kB)
+
+Collecting scp>=0.14.0 (from latch==2.49.6)
+
+  Downloading scp-0.15.0-py2.py3-none-any.whl.metadata (4.3 kB)
+
+Requirement already satisfied: boto3>=1.26.0 in /usr/local/lib/python3.11/site-packages (from latch==2.49.6) (1.34.133)
+
+Collecting tqdm>=4.63.0 (from latch==2.49.6)
+
+  Downloading tqdm-4.66.4-py3-none-any.whl.metadata (57 kB)
+
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 57.6/57.6 kB 1.1 MB/s eta 0:00:00
+
+
+Collecting lytekit==0.15.10 (from latch==2.49.6)
+
+  Downloading lytekit-0.15.10-py3-none-any.whl.metadata (5.7 kB)
+
+Collecting lytekitplugins-pods==0.6.2 (from latch==2.49.6)
+
+  Downloading lytekitplugins_pods-0.6.2-py3-none-any.whl.metadata (915 bytes)
+
+Collecting typing-extensions==4.7.1 (from latch==2.49.6)
+
+  Downloading typing_extensions-4.7.1-py3-none-any.whl.metadata (3.1 kB)
+
+Collecting apscheduler==3.9.1 (from latch==2.49.6)
+
+  Downloading APScheduler-3.9.1-py2.py3-none-any.whl.metadata (6.2 kB)
+
+Collecting gql==3.4.0 (from latch==2.49.6)
+
+  Downloading gql-3.4.0-py2.py3-none-any.whl.metadata (9.2 kB)
+
+Collecting graphql-core==3.2.3 (from latch==2.49.6)
+
+  Downloading graphql_core-3.2.3-py3-none-any.whl.metadata (10 kB)
+
+Collecting requests-toolbelt==0.10.1 (from latch==2.49.6)
+
+  Downloading requests_toolbelt-0.10.1-py2.py3-none-any.whl.metadata (14 kB)
+
+Collecting latch-sdk-gql==0.0.6 (from latch==2.49.6)
+
+  Downloading latch_sdk_gql-0.0.6-py3-none-any.whl.metadata (593 bytes)
+
+Collecting latch-sdk-config==0.0.4 (from latch==2.49.6)
+
+  Downloading latch_sdk_config-0.0.4-py3-none-any.whl.metadata (448 bytes)
+
+Requirement already satisfied: python-dateutil>=2.8 in /usr/local/lib/python3.11/site-packages (from latch==2.49.6) (2.9.0.post0)
+
+Collecting aioconsole==0.6.1 (from latch==2.49.6)
+
+  Downloading aioconsole-0.6.1-py3-none-any.whl.metadata (5.2 kB)
+
+Collecting asyncssh==2.13.2 (from latch==2.49.6)
+
+  Downloading asyncssh-2.13.2-py3-none-any.whl.metadata (9.8 kB)
+
+Collecting websockets==11.0.3 (from latch==2.49.6)
+
+  Downloading websockets-11.0.3-cp311-cp311-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (6.6 kB)
+
+Collecting watchfiles==0.19.0 (from latch==2.49.6)
+
+  Downloading watchfiles-0.19.0-cp37-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (4.9 kB)
+
+Requirement already satisfied: setuptools>=0.7 in /usr/local/lib/python3.11/site-packages (from apscheduler==3.9.1->latch==2.49.6) (65.5.1)
+
+Requirement already satisfied: six>=1.4.0 in /usr/local/lib/python3.11/site-packages (from apscheduler==3.9.1->latch==2.49.6) (1.16.0)
+
+Requirement already satisfied: pytz in /usr/local/lib/python3.11/site-packages (from apscheduler==3.9.1->latch==2.49.6) (2024.1)
+
+Collecting tzlocal!=3.*,>=2.0 (from apscheduler==3.9.1->latch==2.49.6)
+
+  Downloading tzlocal-5.2-py3-none-any.whl.metadata (7.8 kB)
+
+Collecting cryptography>=3.1 (from asyncssh==2.13.2->latch==2.49.6)
+
+  Downloading cryptography-43.0.0-cp39-abi3-manylinux_2_28_x86_64.whl.metadata (5.4 kB)
+
+Collecting yarl<2.0,>=1.6 (from gql==3.4.0->latch==2.49.6)
+
+  Downloading yarl-1.9.4-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (31 kB)
+
+Collecting backoff<3.0,>=1.11.1 (from gql==3.4.0->latch==2.49.6)
+
+  Downloading backoff-2.2.1-py3-none-any.whl.metadata (14 kB)
+
+Collecting lyteidl==0.2.0a0 (from lytekit==0.15.10->latch==2.49.6)
+
+  Downloading lyteidl-0.2.0a0-py3-none-any.whl.metadata (405 bytes)
+
+Requirement already satisfied: wheel<1.0.0,>=0.30.0 in /usr/local/lib/python3.11/site-packages (from lytekit==0.15.10->latch==2.49.6) (0.43.0)
+
+Collecting croniter<4.0.0,>=0.3.20 (from lytekit==0.15.10->latch==2.49.6)
+
+  Downloading croniter-3.0.0-py2.py3-none-any.whl.metadata (28 kB)
+
+Collecting deprecated<2.0,>=1.0 (from lytekit==0.15.10->latch==2.49.6)
+
+  Downloading Deprecated-1.2.14-py2.py3-none-any.whl.metadata (5.4 kB)
+
+Collecting grpcio!=1.45.0,<2.0,>=1.43.0 (from lytekit==0.15.10->latch==2.49.6)
+
+  Downloading grpcio-1.65.1-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (3.3 kB)
+
+Collecting grpcio-status!=1.45.0,>=1.43 (from lytekit==0.15.10->latch==2.49.6)
+
+  Downloading grpcio_status-1.65.1-py3-none-any.whl.metadata (1.1 kB)
+
+Collecting protobuf<4,>=3.6.1 (from lytekit==0.15.10->latch==2.49.6)
+
+  Downloading protobuf-3.20.3-py2.py3-none-any.whl.metadata (720 bytes)
+
+Collecting python-json-logger>=2.0.0 (from lytekit==0.15.10->latch==2.49.6)
+
+  Downloading python_json_logger-2.0.7-py3-none-any.whl.metadata (6.5 kB)
+
+Collecting pytimeparse<2.0.0,>=1.1.8 (from lytekit==0.15.10->latch==2.49.6)
+
+  Downloading pytimeparse-1.1.8-py2.py3-none-any.whl.metadata (3.4 kB)
+
+Collecting keyring>=18.0.1 (from lytekit==0.15.10->latch==2.49.6)
+
+  Downloading keyring-25.2.1-py3-none-any.whl.metadata (20 kB)
+
+Collecting responses>=0.10.7 (from lytekit==0.15.10->latch==2.49.6)
+
+  Downloading responses-0.25.3-py3-none-any.whl.metadata (46 kB)
+
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 46.7/46.7 kB 1.7 MB/s eta 0:00:00
+
+
+Collecting sortedcontainers<3.0.0,>=1.5.9 (from lytekit==0.15.10->latch==2.49.6)
+
+  Downloading sortedcontainers-2.4.0-py2.py3-none-any.whl.metadata (10 kB)
+
+Collecting statsd<4.0.0,>=3.0.0 (from lytekit==0.15.10->latch==2.49.6)
+
+  Downloading statsd-3.3.0-py2.py3-none-any.whl.metadata (2.8 kB)
+
+Collecting urllib3<2.0.0,>=1.22 (from lytekit==0.15.10->latch==2.49.6)
+
+  Downloading urllib3-1.26.19-py2.py3-none-any.whl.metadata (49 kB)
+
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 49.3/49.3 kB 1.7 MB/s eta 0:00:00
+
+
+Collecting wrapt<2.0.0,>=1.0.0 (from lytekit==0.15.10->latch==2.49.6)
+
+  Downloading wrapt-1.16.0-cp311-cp311-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (6.6 kB)
+
+Collecting retry==0.9.2 (from lytekit==0.15.10->latch==2.49.6)
+
+  Downloading retry-0.9.2-py2.py3-none-any.whl.metadata (5.8 kB)
+
+Collecting dataclasses-json<=0.5.6,>=0.5.2 (from lytekit==0.15.10->latch==2.49.6)
+
+  Downloading dataclasses_json-0.5.6-py3-none-any.whl.metadata (22 kB)
+
+Collecting jsonschema>=4.5.1 (from lytekit==0.15.10->latch==2.49.6)
+
+  Downloading jsonschema-4.23.0-py3-none-any.whl.metadata (7.9 kB)
+
+Collecting marshmallow-jsonschema>=0.12.0 (from lytekit==0.15.10->latch==2.49.6)
+
+  Downloading marshmallow_jsonschema-0.13.0-py3-none-any.whl.metadata (7.5 kB)
+
+Collecting marshmallow-enum (from lytekit==0.15.10->latch==2.49.6)
+
+  Downloading marshmallow_enum-1.5.1-py2.py3-none-any.whl.metadata (2.5 kB)
+
+Collecting natsort>=7.0.1 (from lytekit==0.15.10->latch==2.49.6)
+
+  Downloading natsort-8.4.0-py3-none-any.whl.metadata (21 kB)
+
+Collecting docker-image-py>=0.1.10 (from lytekit==0.15.10->latch==2.49.6)
+
+  Downloading docker_image_py-0.1.13-py3-none-any.whl.metadata (223 bytes)
+
+Collecting docstring-parser>=0.9.0 (from lytekit==0.15.10->latch==2.49.6)
+
+  Downloading docstring_parser-0.16-py3-none-any.whl.metadata (3.0 kB)
+
+Collecting diskcache>=5.2.1 (from lytekit==0.15.10->latch==2.49.6)
+
+  Downloading diskcache-5.6.3-py3-none-any.whl.metadata (20 kB)
+
+Collecting cloudpickle>=2.0.0 (from lytekit==0.15.10->latch==2.49.6)
+
+  Downloading cloudpickle-3.0.0-py3-none-any.whl.metadata (7.0 kB)
+
+Collecting cookiecutter>=1.7.3 (from lytekit==0.15.10->latch==2.49.6)
+
+  Downloading cookiecutter-2.6.0-py3-none-any.whl.metadata (7.3 kB)
+
+Collecting anyio>=3.0.0 (from watchfiles==0.19.0->latch==2.49.6)
+
+  Downloading anyio-4.4.0-py3-none-any.whl.metadata (4.6 kB)
+
+Collecting googleapis-common-protos (from lyteidl==0.2.0a0->lytekit==0.15.10->latch==2.49.6)
+
+  Downloading googleapis_common_protos-1.63.2-py2.py3-none-any.whl.metadata (1.5 kB)
+
+Collecting protoc-gen-swagger (from lyteidl==0.2.0a0->lytekit==0.15.10->latch==2.49.6)
+
+  Downloading protoc_gen_swagger-0.1.0-py2.py3-none-any.whl.metadata (2.3 kB)
+
+Collecting decorator>=3.4.2 (from retry==0.9.2->lytekit==0.15.10->latch==2.49.6)
+
+  Downloading decorator-5.1.1-py3-none-any.whl.metadata (4.0 kB)
+
+Collecting py<2.0.0,>=1.4.26 (from retry==0.9.2->lytekit==0.15.10->latch==2.49.6)
+
+  Downloading py-1.11.0-py2.py3-none-any.whl.metadata (2.8 kB)
+
+Requirement already satisfied: botocore<1.35.0,>=1.34.133 in /usr/local/lib/python3.11/site-packages (from boto3>=1.26.0->latch==2.49.6) (1.34.133)
+
+Requirement already satisfied: jmespath<2.0.0,>=0.7.1 in /usr/local/lib/python3.11/site-packages (from boto3>=1.26.0->latch==2.49.6) (1.0.1)
+
+Requirement already satisfied: s3transfer<0.11.0,>=0.10.0 in /usr/local/lib/python3.11/site-packages (from boto3>=1.26.0->latch==2.49.6) (0.10.2)
+
+Collecting certifi>=14.05.14 (from kubernetes>=24.2.0->latch==2.49.6)
+
+  Downloading certifi-2024.7.4-py3-none-any.whl.metadata (2.2 kB)
+
+Requirement already satisfied: pyyaml>=5.4.1 in /usr/local/lib/python3.11/site-packages (from kubernetes>=24.2.0->latch==2.49.6) (6.0.1)
+
+Collecting google-auth>=1.0.1 (from kubernetes>=24.2.0->latch==2.49.6)
+
+  Downloading google_auth-2.32.0-py2.py3-none-any.whl.metadata (4.7 kB)
+
+Collecting websocket-client!=0.40.0,!=0.41.*,!=0.42.*,>=0.32.0 (from kubernetes>=24.2.0->latch==2.49.6)
+
+  Downloading websocket_client-1.8.0-py3-none-any.whl.metadata (8.0 kB)
+
+Collecting requests-oauthlib (from kubernetes>=24.2.0->latch==2.49.6)
+
+  Downloading requests_oauthlib-2.0.0-py2.py3-none-any.whl.metadata (11 kB)
+
+Collecting oauthlib>=3.2.2 (from kubernetes>=24.2.0->latch==2.49.6)
+
+  Downloading oauthlib-3.2.2-py3-none-any.whl.metadata (7.5 kB)
+
+Collecting bcrypt>=3.2 (from paramiko>=3.2.0->latch==2.49.6)
+
+  Downloading bcrypt-4.2.0-cp39-abi3-manylinux_2_28_x86_64.whl.metadata (9.6 kB)
+
+Collecting pynacl>=1.5 (from paramiko>=3.2.0->latch==2.49.6)
+
+  Downloading PyNaCl-1.5.0-cp36-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.manylinux_2_24_x86_64.whl.metadata (8.6 kB)
+
+Collecting charset-normalizer<4,>=2 (from requests>=2.28.1->latch==2.49.6)
+
+  Downloading charset_normalizer-3.3.2-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (33 kB)
+
+Collecting idna<4,>=2.5 (from requests>=2.28.1->latch==2.49.6)
+
+  Downloading idna-3.7-py3-none-any.whl.metadata (9.9 kB)
+
+Collecting sniffio>=1.1 (from anyio>=3.0.0->watchfiles==0.19.0->latch==2.49.6)
+
+  Downloading sniffio-1.3.1-py3-none-any.whl.metadata (3.9 kB)
+
+Collecting binaryornot>=0.4.4 (from cookiecutter>=1.7.3->lytekit==0.15.10->latch==2.49.6)
+
+  Downloading binaryornot-0.4.4-py2.py3-none-any.whl.metadata (6.0 kB)
+
+Collecting Jinja2<4.0.0,>=2.7 (from cookiecutter>=1.7.3->lytekit==0.15.10->latch==2.49.6)
+
+  Downloading jinja2-3.1.4-py3-none-any.whl.metadata (2.6 kB)
+
+Collecting python-slugify>=4.0.0 (from cookiecutter>=1.7.3->lytekit==0.15.10->latch==2.49.6)
+
+  Downloading python_slugify-8.0.4-py2.py3-none-any.whl.metadata (8.5 kB)
+
+Collecting arrow (from cookiecutter>=1.7.3->lytekit==0.15.10->latch==2.49.6)
+
+  Downloading arrow-1.3.0-py3-none-any.whl.metadata (7.5 kB)
+
+Collecting rich (from cookiecutter>=1.7.3->lytekit==0.15.10->latch==2.49.6)
+
+  Downloading rich-13.7.1-py3-none-any.whl.metadata (18 kB)
+
+Collecting cffi>=1.12 (from cryptography>=3.1->asyncssh==2.13.2->latch==2.49.6)
+
+  Downloading cffi-1.16.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (1.5 kB)
+
+Collecting marshmallow<4.0.0,>=3.3.0 (from dataclasses-json<=0.5.6,>=0.5.2->lytekit==0.15.10->latch==2.49.6)
+
+  Downloading marshmallow-3.21.3-py3-none-any.whl.metadata (7.1 kB)
+
+Collecting typing-inspect>=0.4.0 (from dataclasses-json<=0.5.6,>=0.5.2->lytekit==0.15.10->latch==2.49.6)
+
+  Downloading typing_inspect-0.9.0-py3-none-any.whl.metadata (1.5 kB)
+
+Collecting regex>=2019.4.14 (from docker-image-py>=0.1.10->lytekit==0.15.10->latch==2.49.6)
+
+  Downloading regex-2024.7.24-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (40 kB)
+
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 40.5/40.5 kB 1.5 MB/s eta 0:00:00
+
+
+Collecting cachetools<6.0,>=2.0.0 (from google-auth>=1.0.1->kubernetes>=24.2.0->latch==2.49.6)
+
+  Downloading cachetools-5.4.0-py3-none-any.whl.metadata (5.3 kB)
+
+Collecting pyasn1-modules>=0.2.1 (from google-auth>=1.0.1->kubernetes>=24.2.0->latch==2.49.6)
+
+  Downloading pyasn1_modules-0.4.0-py3-none-any.whl.metadata (3.4 kB)
+
+Requirement already satisfied: rsa<5,>=3.1.4 in /usr/local/lib/python3.11/site-packages (from google-auth>=1.0.1->kubernetes>=24.2.0->latch==2.49.6) (4.7.2)
+
+INFO: pip is looking at multiple versions of grpcio-status to determine which version is compatible with other requirements. This could take a while.
+
+Collecting grpcio-status!=1.45.0,>=1.43 (from lytekit==0.15.10->latch==2.49.6)
+
+  Downloading grpcio_status-1.64.1-py3-none-any.whl.metadata (1.1 kB)
+
+  Downloading grpcio_status-1.64.0-py3-none-any.whl.metadata (1.1 kB)
+
+  Downloading grpcio_status-1.63.0-py3-none-any.whl.metadata (1.1 kB)
+
+  Downloading grpcio_status-1.62.2-py3-none-any.whl.metadata (1.3 kB)
+
+  Downloading grpcio_status-1.62.1-py3-none-any.whl.metadata (1.3 kB)
+
+  Downloading grpcio_status-1.62.0-py3-none-any.whl.metadata (1.3 kB)
+
+  Downloading grpcio_status-1.60.1-py3-none-any.whl.metadata (1.3 kB)
+
+INFO: pip is still looking at multiple versions of grpcio-status to determine which version is compatible with other requirements. This could take a while.
+
+  Downloading grpcio_status-1.60.0-py3-none-any.whl.metadata (1.3 kB)
+
+  Downloading grpcio_status-1.59.3-py3-none-any.whl.metadata (1.3 kB)
+
+  Downloading grpcio_status-1.59.2-py3-none-any.whl.metadata (1.3 kB)
+
+  Downloading grpcio_status-1.59.0-py3-none-any.whl.metadata (1.3 kB)
+
+  Downloading grpcio_status-1.58.0-py3-none-any.whl.metadata (1.3 kB)
+
+INFO: This is taking longer than usual. You might need to provide the dependency resolver with stricter constraints to reduce runtime. See https://pip.pypa.io/warnings/backtracking for guidance. If you want to abort this run, press Ctrl + C.
+
+  Downloading grpcio_status-1.57.0-py3-none-any.whl.metadata (1.2 kB)
+
+  Downloading grpcio_status-1.56.2-py3-none-any.whl.metadata (1.3 kB)
+
+  Downloading grpcio_status-1.56.0-py3-none-any.whl.metadata (1.3 kB)
+
+  Downloading grpcio_status-1.55.3-py3-none-any.whl.metadata (1.3 kB)
+
+  Downloading grpcio_status-1.54.3-py3-none-any.whl.metadata (1.3 kB)
+
+  Downloading grpcio_status-1.54.2-py3-none-any.whl.metadata (1.3 kB)
+
+  Downloading grpcio_status-1.54.0-py3-none-any.whl.metadata (1.3 kB)
+
+  Downloading grpcio_status-1.53.2-py3-none-any.whl.metadata (1.3 kB)
+
+  Downloading grpcio_status-1.53.1-py3-none-any.whl.metadata (1.3 kB)
+
+  Downloading grpcio_status-1.53.0-py3-none-any.whl.metadata (1.3 kB)
+
+  Downloading grpcio_status-1.51.3-py3-none-any.whl.metadata (1.3 kB)
+
+  Downloading grpcio_status-1.51.1-py3-none-any.whl.metadata (1.3 kB)
+
+  Downloading grpcio_status-1.50.0-py3-none-any.whl.metadata (1.3 kB)
+
+  Downloading grpcio_status-1.49.1-py3-none-any.whl.metadata (1.3 kB)
+
+  Downloading grpcio_status-1.48.2-py3-none-any.whl.metadata (1.2 kB)
+
+Collecting attrs>=22.2.0 (from jsonschema>=4.5.1->lytekit==0.15.10->latch==2.49.6)
+
+  Downloading attrs-23.2.0-py3-none-any.whl.metadata (9.5 kB)
+
+Collecting jsonschema-specifications>=2023.03.6 (from jsonschema>=4.5.1->lytekit==0.15.10->latch==2.49.6)
+
+  Downloading jsonschema_specifications-2023.12.1-py3-none-any.whl.metadata (3.0 kB)
+
+Collecting referencing>=0.28.4 (from jsonschema>=4.5.1->lytekit==0.15.10->latch==2.49.6)
+
+  Downloading referencing-0.35.1-py3-none-any.whl.metadata (2.8 kB)
+
+Collecting rpds-py>=0.7.1 (from jsonschema>=4.5.1->lytekit==0.15.10->latch==2.49.6)
+
+  Downloading rpds_py-0.19.1-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (4.2 kB)
+
+Collecting jaraco.classes (from keyring>=18.0.1->lytekit==0.15.10->latch==2.49.6)
+
+  Downloading jaraco.classes-3.4.0-py3-none-any.whl.metadata (2.6 kB)
+
+Collecting jaraco.functools (from keyring>=18.0.1->lytekit==0.15.10->latch==2.49.6)
+
+  Downloading jaraco.functools-4.0.1-py3-none-any.whl.metadata (2.9 kB)
+
+Collecting jaraco.context (from keyring>=18.0.1->lytekit==0.15.10->latch==2.49.6)
+
+  Downloading jaraco.context-5.3.0-py3-none-any.whl.metadata (4.0 kB)
+
+Collecting importlib-metadata>=4.11.4 (from keyring>=18.0.1->lytekit==0.15.10->latch==2.49.6)
+
+  Downloading importlib_metadata-8.2.0-py3-none-any.whl.metadata (4.7 kB)
+
+Collecting SecretStorage>=3.2 (from keyring>=18.0.1->lytekit==0.15.10->latch==2.49.6)
+
+  Downloading SecretStorage-3.3.3-py3-none-any.whl.metadata (4.0 kB)
+
+Collecting jeepney>=0.4.2 (from keyring>=18.0.1->lytekit==0.15.10->latch==2.49.6)
+
+  Downloading jeepney-0.8.0-py3-none-any.whl.metadata (1.3 kB)
+
+Collecting multidict>=4.0 (from yarl<2.0,>=1.6->gql==3.4.0->latch==2.49.6)
+
+  Downloading multidict-6.0.5-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (4.2 kB)
+
+Collecting chardet>=3.0.2 (from binaryornot>=0.4.4->cookiecutter>=1.7.3->lytekit==0.15.10->latch==2.49.6)
+
+  Downloading chardet-5.2.0-py3-none-any.whl.metadata (3.4 kB)
+
+Collecting pycparser (from cffi>=1.12->cryptography>=3.1->asyncssh==2.13.2->latch==2.49.6)
+
+  Downloading pycparser-2.22-py3-none-any.whl.metadata (943 bytes)
+
+Collecting zipp>=0.5 (from importlib-metadata>=4.11.4->keyring>=18.0.1->lytekit==0.15.10->latch==2.49.6)
+
+  Downloading zipp-3.19.2-py3-none-any.whl.metadata (3.6 kB)
+
+Collecting MarkupSafe>=2.0 (from Jinja2<4.0.0,>=2.7->cookiecutter>=1.7.3->lytekit==0.15.10->latch==2.49.6)
+
+  Downloading MarkupSafe-2.1.5-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (3.0 kB)
+
+Collecting packaging>=17.0 (from marshmallow<4.0.0,>=3.3.0->dataclasses-json<=0.5.6,>=0.5.2->lytekit==0.15.10->latch==2.49.6)
+
+  Downloading packaging-24.1-py3-none-any.whl.metadata (3.2 kB)
+
+Requirement already satisfied: pyasn1<0.7.0,>=0.4.6 in /usr/local/lib/python3.11/site-packages (from pyasn1-modules>=0.2.1->google-auth>=1.0.1->kubernetes>=24.2.0->latch==2.49.6) (0.6.0)
+
+Collecting text-unidecode>=1.3 (from python-slugify>=4.0.0->cookiecutter>=1.7.3->lytekit==0.15.10->latch==2.49.6)
+
+  Downloading text_unidecode-1.3-py2.py3-none-any.whl.metadata (2.4 kB)
+
+Collecting mypy-extensions>=0.3.0 (from typing-inspect>=0.4.0->dataclasses-json<=0.5.6,>=0.5.2->lytekit==0.15.10->latch==2.49.6)
+
+  Downloading mypy_extensions-1.0.0-py3-none-any.whl.metadata (1.1 kB)
+
+Collecting types-python-dateutil>=2.8.10 (from arrow->cookiecutter>=1.7.3->lytekit==0.15.10->latch==2.49.6)
+
+  Downloading types_python_dateutil-2.9.0.20240316-py3-none-any.whl.metadata (1.8 kB)
+
+Collecting more-itertools (from jaraco.classes->keyring>=18.0.1->lytekit==0.15.10->latch==2.49.6)
+
+  Downloading more_itertools-10.3.0-py3-none-any.whl.metadata (36 kB)
+
+Collecting backports.tarfile (from jaraco.context->keyring>=18.0.1->lytekit==0.15.10->latch==2.49.6)
+
+  Downloading backports.tarfile-1.2.0-py3-none-any.whl.metadata (2.0 kB)
+
+Collecting markdown-it-py>=2.2.0 (from rich->cookiecutter>=1.7.3->lytekit==0.15.10->latch==2.49.6)
+
+  Downloading markdown_it_py-3.0.0-py3-none-any.whl.metadata (6.9 kB)
+
+Collecting pygments<3.0.0,>=2.13.0 (from rich->cookiecutter>=1.7.3->lytekit==0.15.10->latch==2.49.6)
+
+  Downloading pygments-2.18.0-py3-none-any.whl.metadata (2.5 kB)
+
+Collecting mdurl~=0.1 (from markdown-it-py>=2.2.0->rich->cookiecutter>=1.7.3->lytekit==0.15.10->latch==2.49.6)
+
+  Downloading mdurl-0.1.2-py3-none-any.whl.metadata (1.6 kB)
+
+[91mWARNING: The candidate selected for download or install is a yanked version: 'apscheduler' candidate (version 3.9.1 at https://files.pythonhosted.org/packages/e4/9f/c3937d4babe62504b874d4bf2c0d85aa69c7f59fa84cf6050f3b9dc5d83e/APScheduler-3.9.1-py2.py3-none-any.whl (from https://pypi.org/simple/apscheduler/) (requires-python:>=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*, <4))
+Reason for being yanked: Not compatible with Python 2.7
+[0m
+Downloading latch-2.49.6-py3-none-any.whl (236 kB)
+
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 236.1/236.1 kB 6.7 MB/s eta 0:00:00
+
+
+Downloading aioconsole-0.6.1-py3-none-any.whl (30 kB)
+
+Downloading APScheduler-3.9.1-py2.py3-none-any.whl (59 kB)
+
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 59.5/59.5 kB 2.5 MB/s eta 0:00:00
+
+
+Downloading asyncssh-2.13.2-py3-none-any.whl (349 kB)
+
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 349.3/349.3 kB 11.1 MB/s eta 0:00:00
+
+
+Downloading gql-3.4.0-py2.py3-none-any.whl (65 kB)
+
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 65.2/65.2 kB 2.6 MB/s eta 0:00:00
+
+
+Downloading graphql_core-3.2.3-py3-none-any.whl (202 kB)
+
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 202.9/202.9 kB 6.2 MB/s eta 0:00:00
+
+
+Downloading latch_sdk_config-0.0.4-py3-none-any.whl (4.5 kB)
+
+Downloading latch_sdk_gql-0.0.6-py3-none-any.whl (4.0 kB)
+
+Downloading lytekit-0.15.10-py3-none-any.whl (389 kB)
+
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 389.0/389.0 kB 12.8 MB/s eta 0:00:00
+
+
+Downloading lytekitplugins_pods-0.6.2-py3-none-any.whl (4.3 kB)
+
+Downloading requests_toolbelt-0.10.1-py2.py3-none-any.whl (54 kB)
+
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 54.5/54.5 kB 2.0 MB/s eta 0:00:00
+
+
+Downloading typing_extensions-4.7.1-py3-none-any.whl (33 kB)
+
+Downloading watchfiles-0.19.0-cp37-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (1.3 MB)
+
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.3/1.3 MB 30.6 MB/s eta 0:00:00
+
+
+Downloading websockets-11.0.3-cp311-cp311-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl (130 kB)
+
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 130.6/130.6 kB 4.2 MB/s eta 0:00:00
+
+
+Downloading lyteidl-0.2.0a0-py3-none-any.whl (162 kB)
+
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 162.2/162.2 kB 5.9 MB/s eta 0:00:00
+
+
+Downloading retry-0.9.2-py2.py3-none-any.whl (8.0 kB)
+
+Downloading click-8.1.7-py3-none-any.whl (97 kB)
+
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 97.9/97.9 kB 3.6 MB/s eta 0:00:00
+
+
+Downloading docker-7.1.0-py3-none-any.whl (147 kB)
+
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 147.8/147.8 kB 6.1 MB/s eta 0:00:00
+
+
+Downloading kubernetes-30.1.0-py2.py3-none-any.whl (1.7 MB)
+
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.7/1.7 MB 38.0 MB/s eta 0:00:00
+
+
+Downloading paramiko-3.4.0-py3-none-any.whl (225 kB)
+
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 225.9/225.9 kB 11.9 MB/s eta 0:00:00
+
+
+Downloading PyJWT-2.8.0-py3-none-any.whl (22 kB)
+
+Downloading requests-2.32.3-py3-none-any.whl (64 kB)
+
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 64.9/64.9 kB 2.5 MB/s eta 0:00:00
+
+
+Downloading scp-0.15.0-py2.py3-none-any.whl (8.8 kB)
+
+Downloading tqdm-4.66.4-py3-none-any.whl (78 kB)
+
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 78.3/78.3 kB 3.2 MB/s eta 0:00:00
+
+
+Downloading anyio-4.4.0-py3-none-any.whl (86 kB)
+
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 86.8/86.8 kB 2.8 MB/s eta 0:00:00
+
+
+Downloading backoff-2.2.1-py3-none-any.whl (15 kB)
+
+Downloading bcrypt-4.2.0-cp39-abi3-manylinux_2_28_x86_64.whl (273 kB)
+
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 273.8/273.8 kB 9.9 MB/s eta 0:00:00
+
+
+Downloading certifi-2024.7.4-py3-none-any.whl (162 kB)
+
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 163.0/163.0 kB 4.9 MB/s eta 0:00:00
+
+
+Downloading charset_normalizer-3.3.2-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (140 kB)
+
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 140.3/140.3 kB 3.4 MB/s eta 0:00:00
+
+
+Downloading cloudpickle-3.0.0-py3-none-any.whl (20 kB)
+
+Downloading cookiecutter-2.6.0-py3-none-any.whl (39 kB)
+
+Downloading croniter-3.0.0-py2.py3-none-any.whl (22 kB)
+
+Downloading cryptography-43.0.0-cp39-abi3-manylinux_2_28_x86_64.whl (4.0 MB)
+
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 4.0/4.0 MB 49.5 MB/s eta 0:00:00
+
+
+Downloading dataclasses_json-0.5.6-py3-none-any.whl (25 kB)
+
+Downloading Deprecated-1.2.14-py2.py3-none-any.whl (9.6 kB)
+
+Downloading diskcache-5.6.3-py3-none-any.whl (45 kB)
+
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 45.5/45.5 kB 1.1 MB/s eta 0:00:00
+
+
+Downloading docker_image_py-0.1.13-py3-none-any.whl (8.9 kB)
+
+Downloading docstring_parser-0.16-py3-none-any.whl (36 kB)
+
+Downloading google_auth-2.32.0-py2.py3-none-any.whl (195 kB)
+
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 195.5/195.5 kB 5.6 MB/s eta 0:00:00
+
+
+Downloading grpcio-1.65.1-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (5.7 MB)
+
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 5.7/5.7 MB 57.6 MB/s eta 0:00:00
+
+
+Downloading grpcio_status-1.48.2-py3-none-any.whl (14 kB)
+
+Downloading idna-3.7-py3-none-any.whl (66 kB)
+
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 66.8/66.8 kB 2.5 MB/s eta 0:00:00
+
+
+Downloading jsonschema-4.23.0-py3-none-any.whl (88 kB)
+
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 88.5/88.5 kB 3.8 MB/s eta 0:00:00
+
+
+Downloading keyring-25.2.1-py3-none-any.whl (38 kB)
+
+Downloading marshmallow_enum-1.5.1-py2.py3-none-any.whl (4.2 kB)
+
+Downloading marshmallow_jsonschema-0.13.0-py3-none-any.whl (11 kB)
+
+Downloading natsort-8.4.0-py3-none-any.whl (38 kB)
+
+Downloading oauthlib-3.2.2-py3-none-any.whl (151 kB)
+
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 151.7/151.7 kB 7.7 MB/s eta 0:00:00
+
+
+Downloading protobuf-3.20.3-py2.py3-none-any.whl (162 kB)
+
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 162.1/162.1 kB 7.7 MB/s eta 0:00:00
+
+
+Downloading PyNaCl-1.5.0-cp36-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.manylinux_2_24_x86_64.whl (856 kB)
+
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 856.7/856.7 kB 26.5 MB/s eta 0:00:00
+
+
+Downloading python_json_logger-2.0.7-py3-none-any.whl (8.1 kB)
+
+Downloading pytimeparse-1.1.8-py2.py3-none-any.whl (10.0 kB)
+
+Downloading responses-0.25.3-py3-none-any.whl (55 kB)
+
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 55.2/55.2 kB 2.2 MB/s eta 0:00:00
+
+
+Downloading sortedcontainers-2.4.0-py2.py3-none-any.whl (29 kB)
+
+Downloading statsd-3.3.0-py2.py3-none-any.whl (11 kB)
+
+Downloading tzlocal-5.2-py3-none-any.whl (17 kB)
+
+Downloading urllib3-1.26.19-py2.py3-none-any.whl (143 kB)
+
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 143.9/143.9 kB 4.6 MB/s eta 0:00:00
+
+
+Downloading websocket_client-1.8.0-py3-none-any.whl (58 kB)
+
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 58.8/58.8 kB 2.7 MB/s eta 0:00:00
+
+
+Downloading wrapt-1.16.0-cp311-cp311-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl (80 kB)
+
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 80.7/80.7 kB 3.6 MB/s eta 0:00:00
+
+
+Downloading yarl-1.9.4-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (328 kB)
+
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 328.1/328.1 kB 12.5 MB/s eta 0:00:00
+
+
+Downloading requests_oauthlib-2.0.0-py2.py3-none-any.whl (24 kB)
+
+Downloading attrs-23.2.0-py3-none-any.whl (60 kB)
+
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 60.8/60.8 kB 2.9 MB/s eta 0:00:00
+
+
+Downloading binaryornot-0.4.4-py2.py3-none-any.whl (9.0 kB)
+
+Downloading cachetools-5.4.0-py3-none-any.whl (9.5 kB)
+
+Downloading cffi-1.16.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (464 kB)
+
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 464.8/464.8 kB 18.5 MB/s eta 0:00:00
+
+
+Downloading decorator-5.1.1-py3-none-any.whl (9.1 kB)
+
+Downloading googleapis_common_protos-1.63.2-py2.py3-none-any.whl (220 kB)
+
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 220.0/220.0 kB 9.6 MB/s eta 0:00:00
+
+
+Downloading importlib_metadata-8.2.0-py3-none-any.whl (25 kB)
+
+Downloading jeepney-0.8.0-py3-none-any.whl (48 kB)
+
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 48.4/48.4 kB 1.9 MB/s eta 0:00:00
+
+
+Downloading jinja2-3.1.4-py3-none-any.whl (133 kB)
+
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 133.3/133.3 kB 5.7 MB/s eta 0:00:00
+
+
+Downloading jsonschema_specifications-2023.12.1-py3-none-any.whl (18 kB)
+
+Downloading marshmallow-3.21.3-py3-none-any.whl (49 kB)
+
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 49.2/49.2 kB 2.2 MB/s eta 0:00:00
+
+
+Downloading multidict-6.0.5-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (128 kB)
+
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 128.7/128.7 kB 5.9 MB/s eta 0:00:00
+
+
+Downloading py-1.11.0-py2.py3-none-any.whl (98 kB)
+
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 98.7/98.7 kB 4.6 MB/s eta 0:00:00
+
+
+Downloading pyasn1_modules-0.4.0-py3-none-any.whl (181 kB)
+
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 181.2/181.2 kB 7.7 MB/s eta 0:00:00
+
+
+Downloading python_slugify-8.0.4-py2.py3-none-any.whl (10 kB)
+
+Downloading referencing-0.35.1-py3-none-any.whl (26 kB)
+
+Downloading regex-2024.7.24-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (786 kB)
+
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 786.6/786.6 kB 26.1 MB/s eta 0:00:00
+
+
+Downloading rpds_py-0.19.1-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (355 kB)
+
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 355.5/355.5 kB 15.4 MB/s eta 0:00:00
+
+
+Downloading SecretStorage-3.3.3-py3-none-any.whl (15 kB)
+
+Downloading sniffio-1.3.1-py3-none-any.whl (10 kB)
+
+Downloading typing_inspect-0.9.0-py3-none-any.whl (8.8 kB)
+
+Downloading arrow-1.3.0-py3-none-any.whl (66 kB)
+
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 66.4/66.4 kB 3.0 MB/s eta 0:00:00
+
+
+Downloading jaraco.classes-3.4.0-py3-none-any.whl (6.8 kB)
+
+Downloading jaraco.context-5.3.0-py3-none-any.whl (6.5 kB)
+
+Downloading jaraco.functools-4.0.1-py3-none-any.whl (9.8 kB)
+
+Downloading protoc_gen_swagger-0.1.0-py2.py3-none-any.whl (9.4 kB)
+
+Downloading rich-13.7.1-py3-none-any.whl (240 kB)
+
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 240.7/240.7 kB 10.2 MB/s eta 0:00:00
+
+
+Downloading chardet-5.2.0-py3-none-any.whl (199 kB)
+
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 199.4/199.4 kB 8.9 MB/s eta 0:00:00
+
+
+Downloading markdown_it_py-3.0.0-py3-none-any.whl (87 kB)
+
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 87.5/87.5 kB 4.0 MB/s eta 0:00:00
+
+
+Downloading MarkupSafe-2.1.5-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (28 kB)
+
+Downloading mypy_extensions-1.0.0-py3-none-any.whl (4.7 kB)
+
+Downloading packaging-24.1-py3-none-any.whl (53 kB)
+
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 54.0/54.0 kB 2.3 MB/s eta 0:00:00
+
+
+Downloading pygments-2.18.0-py3-none-any.whl (1.2 MB)
+
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.2/1.2 MB 36.4 MB/s eta 0:00:00
+
+
+Downloading text_unidecode-1.3-py2.py3-none-any.whl (78 kB)
+
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 78.2/78.2 kB 4.2 MB/s eta 0:00:00
+
+
+Downloading types_python_dateutil-2.9.0.20240316-py3-none-any.whl (9.7 kB)
+
+Downloading zipp-3.19.2-py3-none-any.whl (9.0 kB)
+
+Downloading backports.tarfile-1.2.0-py3-none-any.whl (30 kB)
+
+Downloading more_itertools-10.3.0-py3-none-any.whl (59 kB)
+
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 59.2/59.2 kB 2.5 MB/s eta 0:00:00
+
+
+Downloading pycparser-2.22-py3-none-any.whl (117 kB)
+
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 117.6/117.6 kB 6.3 MB/s eta 0:00:00
+
+
+Downloading mdurl-0.1.2-py3-none-any.whl (10.0 kB)
+
+Installing collected packages: text-unidecode, statsd, sortedcontainers, pytimeparse, zipp, wrapt, websockets, websocket-client, urllib3, tzlocal, typing-extensions, types-python-dateutil, tqdm, sniffio, rpds-py, regex, python-slugify, python-json-logger, pyjwt, pygments, pycparser, pyasn1-modules, py, protobuf, packaging, oauthlib, natsort, mypy-extensions, multidict, more-itertools, mdurl, MarkupSafe, latch-sdk-config, jeepney, idna, grpcio, graphql-core, docstring-parser, diskcache, decorator, cloudpickle, click, charset-normalizer, chardet, certifi, cachetools, bcrypt, backports.tarfile, backoff, attrs, aioconsole, yarl, typing-inspect, retry, requests, referencing, protoc-gen-swagger, marshmallow, markdown-it-py, Jinja2, jaraco.functools, jaraco.context, jaraco.classes, importlib-metadata, googleapis-common-protos, google-auth, docker-image-py, deprecated, croniter, cffi, binaryornot, arrow, apscheduler, anyio, watchfiles, rich, responses, requests-toolbelt, requests-oauthlib, pynacl, marshmallow-jsonschema, marshmallow-enum, lyteidl, jsonschema-specifications, grpcio-status, gql, docker, cryptography, SecretStorage, paramiko, latch-sdk-gql, kubernetes, jsonschema, dataclasses-json, cookiecutter, asyncssh, scp, keyring, lytekit, lytekitplugins-pods, latch
+
+  Attempting uninstall: urllib3
+
+    Found existing installation: urllib3 2.2.2
+
+    Uninstalling urllib3-2.2.2:
+
+      Successfully uninstalled urllib3-2.2.2
+
+Successfully installed Jinja2-3.1.4 MarkupSafe-2.1.5 SecretStorage-3.3.3 aioconsole-0.6.1 anyio-4.4.0 apscheduler-3.9.1 arrow-1.3.0 asyncssh-2.13.2 attrs-23.2.0 backoff-2.2.1 backports.tarfile-1.2.0 bcrypt-4.2.0 binaryornot-0.4.4 cachetools-5.4.0 certifi-2024.7.4 cffi-1.16.0 chardet-5.2.0 charset-normalizer-3.3.2 click-8.1.7 cloudpickle-3.0.0 cookiecutter-2.6.0 croniter-3.0.0 cryptography-43.0.0 dataclasses-json-0.5.6 decorator-5.1.1 deprecated-1.2.14 diskcache-5.6.3 docker-7.1.0 docker-image-py-0.1.13 docstring-parser-0.16 google-auth-2.32.0 googleapis-common-protos-1.63.2 gql-3.4.0 graphql-core-3.2.3 grpcio-1.65.1 grpcio-status-1.48.2 idna-3.7 importlib-metadata-8.2.0 jaraco.classes-3.4.0 jaraco.context-5.3.0 jaraco.functools-4.0.1 jeepney-0.8.0 jsonschema-4.23.0 jsonschema-specifications-2023.12.1 keyring-25.2.1 kubernetes-30.1.0 latch-2.49.6 latch-sdk-config-0.0.4 latch-sdk-gql-0.0.6 lyteidl-0.2.0a0 lytekit-0.15.10 lytekitplugins-pods-0.6.2 markdown-it-py-3.0.0 marshmallow-3.21.3 marshmallow-enum-1.5.1 marshmallow-jsonschema-0.13.0 mdurl-0.1.2 more-itertools-10.3.0 multidict-6.0.5 mypy-extensions-1.0.0 natsort-8.4.0 oauthlib-3.2.2 packaging-24.1 paramiko-3.4.0 protobuf-3.20.3 protoc-gen-swagger-0.1.0 py-1.11.0 pyasn1-modules-0.4.0 pycparser-2.22 pygments-2.18.0 pyjwt-2.8.0 pynacl-1.5.0 python-json-logger-2.0.7 python-slugify-8.0.4 pytimeparse-1.1.8 referencing-0.35.1 regex-2024.7.24 requests-2.32.3 requests-oauthlib-2.0.0 requests-toolbelt-0.10.1 responses-0.25.3 retry-0.9.2 rich-13.7.1 rpds-py-0.19.1 scp-0.15.0 sniffio-1.3.1 sortedcontainers-2.4.0 statsd-3.3.0 text-unidecode-1.3 tqdm-4.66.4 types-python-dateutil-2.9.0.20240316 typing-extensions-4.7.1 typing-inspect-0.9.0 tzlocal-5.2 urllib3-1.26.19 watchfiles-0.19.0 websocket-client-1.8.0 websockets-11.0.3 wrapt-1.16.0 yarl-1.9.4 zipp-3.19.2
+
+[91mWARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+[0m
+[91m
+[notice] A new release of pip is available: 24.0 -> 24.1.2
+[notice] To update, run: pip install --upgrade pip
+[0m
+ ---> fa6729dac369
+
+Step 13/17 : RUN mkdir /opt/latch
+
+
+ ---> Running in 1d0e0e17d9f0
+
+[91mmkdir /opt/latch
+[0m
+ ---> 11df4a4d1c5d
+
+Step 14/17 : COPY . /root/
+
+
+ ---> fa2ea7e007f8
+
+Step 15/17 : ARG tag
+
+
+ ---> Running in 8a6de8a84f3c
+
+ ---> 2df793c92548
+
+Step 16/17 : ENV FLYTE_INTERNAL_IMAGE $tag
+
+
+ ---> Running in 541fa32e5329
+
+ ---> 70767a22f5fe
+
+Step 17/17 : WORKDIR /root
+
+
+ ---> Running in b0ca91330684
+
+ ---> e383ce7119f4
+
+Successfully built e383ce7119f4
+
+Successfully tagged 812206152185.dkr.ecr.us-west-2.amazonaws.com/18440_nf_nf_core_rnaseq:3.14.0-9b5907
+

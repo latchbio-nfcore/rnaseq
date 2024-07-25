@@ -2,6 +2,7 @@ import csv
 import os
 import shutil
 import subprocess
+import sys
 import typing
 from dataclasses import dataclass
 from enum import Enum
@@ -10,23 +11,28 @@ from typing import Any, List, Optional
 
 import requests
 from latch.ldata.path import LPath
-from latch.resources.launch_plan import LaunchPlan
 from latch.resources.tasks import custom_task, nextflow_runtime_task
-from latch.resources.workflow import workflow
-from latch.types import metadata
 from latch.types.directory import LatchOutputDir
 from latch.types.file import LatchFile
 from latch_cli.nextflow.utils import _get_execution_name
 from latch_cli.nextflow.workflow import get_flag
-from latch_cli.services.register.utils import import_module_by_path
 from latch_cli.utils import urljoins
 
-# meta = Path("latch_metadata") / "__init__.py"
-# import_module_by_path(meta)
+sys.stdout.reconfigure(line_buffering=True)
 
 
 @dataclass
 class SampleSheet:
+    """
+    Represents a sample in the RNA-seq analysis.
+
+    Attributes:
+        sample (str): The name or identifier of the sample.
+        fastq_1 (LatchFile): The first FASTQ file for the sample.
+        fastq_2 (Optional[LatchFile]): The second FASTQ file for paired-end data (optional).
+        strandedness (str): The strandedness of the library preparation.
+    """
+
     sample: str
     fastq_1: LatchFile
     fastq_2: Optional[LatchFile]
@@ -34,6 +40,12 @@ class SampleSheet:
 
 
 class Reference_Type(Enum):
+    """
+    Enumeration of supported reference genomes.
+
+    Each enum value represents a different species and its corresponding reference genome.
+    """
+
     homo_sapiens = "Homo sapiens (RefSeq GRCh38.p14)"
     mus_musculus = "Mus musculus (RefSeq GRCm39)"
     rattus_norvegicus = "Rattus norvegicus (RefSeq GRCr8)"
@@ -43,11 +55,25 @@ class Reference_Type(Enum):
 
 
 class Trimmer(Enum):
+    """
+    Enumeration of supported trimming tools.
+
+    Attributes:
+        trimgalore: TrimGalore trimming tool.
+        fastp: fastp trimming tool.
+    """
+
     trimgalore = "trimgalore"
     fastp = "fastp"
 
 
 class UMIToolsGrouping(Enum):
+    """
+    Enumeration of UMI-tools grouping methods.
+
+    These methods are used for deduplicating reads based on UMIs.
+    """
+
     directional = "directional"
     unique = "unique"
     cluster = "cluster"
@@ -56,12 +82,27 @@ class UMIToolsGrouping(Enum):
 
 
 class Aligner(Enum):
+    """
+    Enumeration of supported alignment tools.
+
+    Attributes:
+        star_salmon: STAR aligner with Salmon quantification.
+        star_rsem: STAR aligner with RSEM quantification.
+        hisat2: HISAT2 aligner.
+    """
+
     star_salmon = "star_salmon"
     star_rsem = "star_rsem"
     hisat2 = "hisat2"
 
 
 class SalmonQuantLibType(Enum):
+    """
+    Enumeration of Salmon quantification library types.
+
+    These specify the type of library preparation for accurate quantification.
+    """
+
     A = "A"
     IS = "IS"
     ISF = "ISF"
@@ -81,18 +122,53 @@ class SalmonQuantLibType(Enum):
 
 
 class PseudoAligner(Enum):
+    """
+    Enumeration of supported pseudo-alignment tools.
+
+    Attributes:
+        salmon: Salmon pseudo-aligner.
+        kallisto: Kallisto pseudo-aligner.
+    """
+
     salmon = "salmon"
     kallisto = "kallisto"
 
 
 def get_flag_defaults(name: str, val: Any, default_val: Optional[Any]):
+    """
+    Generate command-line flags for Nextflow based on parameter values.
+
+    Args:
+        name (str): The name of the parameter.
+        val (Any): The current value of the parameter.
+        default_val (Optional[Any]): The default value of the parameter.
+
+    Returns:
+        str: A string containing the appropriate command-line flag, or an empty string if the value is default or None.
+    """
     if val == default_val or val is None:
         return ""
     else:
         return get_flag(name=name, val=val)
 
 
-def custom_samplesheet_constructor(samples: List[SampleSheet]) -> Path:
+def custom_samplesheet_constructor(
+    samples: List[SampleSheet], shared_dir: Path
+) -> Path:
+    """
+    Construct a custom sample sheet CSV file from the provided samples.
+
+    This function creates a CSV file containing information about each sample,
+    including sample name, FASTQ file paths, and strandedness. It also handles
+    compression of FASTQ files if they are not already gzipped.
+
+    Args:
+        samples (List[SampleSheet]): A list of SampleSheet objects containing sample information.
+        shared_dir (Path): The shared directory path for storing compressed files.
+
+    Returns:
+        Path: The path to the created sample sheet CSV file.
+    """
     samplesheet = Path("/root/samplesheet.csv")
 
     columns = ["sample", "fastq_1", "fastq_2", "strandedness"]
@@ -102,10 +178,37 @@ def custom_samplesheet_constructor(samples: List[SampleSheet]) -> Path:
         writer.writeheader()
 
         for sample in samples:
+            # Check and compress fastq_1 if needed
+            fastq_1_path = sample.fastq_1.remote_path
+            if not sample.fastq_1.remote_path.endswith(".gz"):
+                local_path = Path(sample.fastq_1.local_path)
+                compressed_path = shared_dir / f"{local_path.name}.gz"
+                print(f"Compressing to {compressed_path}")
+                subprocess.run(
+                    ["pigz", "-p", "8", "-c", local_path],
+                    stdout=open(compressed_path, "wb"),
+                    check=True,
+                )
+                fastq_1_path = compressed_path
+
+            # Check and compress fastq_2 if it exists and needs compression
+            if sample.fastq_2:
+                fastq_2_path = sample.fastq_2.remote_path
+                if not sample.fastq_2.remote_path.endswith(".gz"):
+                    local_path = Path(sample.fastq_2.local_path)
+                    compressed_path = shared_dir / f"{local_path.name}.gz"
+                    print(f"Compressing to {compressed_path}")
+                    subprocess.run(
+                        ["pigz", "-p", "8", "-c", local_path],
+                        stdout=open(compressed_path, "wb"),
+                        check=True,
+                    )
+                    fastq_2_path = compressed_path
+
             row_data = {
                 "sample": sample.sample,
-                "fastq_1": sample.fastq_1.remote_path,
-                "fastq_2": "" if sample.fastq_2 is None else sample.fastq_2.remote_path,
+                "fastq_1": fastq_1_path,
+                "fastq_2": fastq_2_path,
                 "strandedness": sample.strandedness,
             }
             writer.writerow(row_data)
@@ -115,6 +218,18 @@ def custom_samplesheet_constructor(samples: List[SampleSheet]) -> Path:
 
 @custom_task(cpu=0.25, memory=0.5, storage_gib=1)
 def initialize() -> str:
+    """
+    Initialize the workflow by provisioning a shared storage volume.
+
+    This function requests a shared storage volume from the Nextflow dispatcher service
+    and returns the name of the provisioned volume.
+
+    Returns:
+        str: The name of the provisioned storage volume.
+
+    Raises:
+        RuntimeError: If the execution token is not available.
+    """
     token = os.environ.get("FLYTE_INTERNAL_EXECUTION_ID")
     if token is None:
         raise RuntimeError("failed to get execution token")
@@ -126,6 +241,7 @@ def initialize() -> str:
         "http://nf-dispatcher-service.flyte.svc.cluster.local/provision-storage",
         headers=headers,
         json={
+            "storage_expiration_hours": 1,
             "storage_gib": 100,
         },
     )
@@ -135,7 +251,7 @@ def initialize() -> str:
     return resp.json()["name"]
 
 
-@nextflow_runtime_task(cpu=4, memory=16, storage_gib=1000)
+@nextflow_runtime_task(cpu=8, memory=32, storage_gib=2000)
 def nextflow_runtime(
     pvc_name: str,
     input: typing.List[SampleSheet],
@@ -223,11 +339,38 @@ def nextflow_runtime(
     skip_multiqc: bool,
     skip_qc: bool,
 ) -> str:
+    """
+    Execute the Nextflow RNA-seq pipeline with the provided parameters.
+
+    This function sets up the Nextflow environment, prepares input files,
+    constructs the Nextflow command with all specified parameters, and runs
+    the pipeline. It also handles log file uploading after execution.
+
+    Args:
+        pvc_name (str): Name of the persistent volume claim.
+        input (List[SampleSheet]): List of input samples.
+        run_name (str): Name of the analysis run.
+        outdir (LatchOutputDir): Output directory for results.
+        genome_source (str): Source of the reference genome.
+        ... (other parameters as described in the function signature)
+
+    Returns:
+        str: The name of the analysis run.
+
+    Note:
+        This function has a large number of parameters to control various
+        aspects of the RNA-seq analysis pipeline. Refer to the nf-core/rnaseq
+        documentation for detailed information on each parameter.
+    """
     try:
         shared_dir = Path("/nf-workdir")
 
-        input_samplesheet = custom_samplesheet_constructor(samples=input)
+        # Create custom sample sheet
+        input_samplesheet = custom_samplesheet_constructor(
+            samples=input, shared_dir=shared_dir
+        )
 
+        # List of directories and files to ignore when copying
         ignore_list = [
             "latch",
             ".latch",
@@ -240,6 +383,7 @@ def nextflow_runtime(
             "mambaforge",
         ]
 
+        # Copy necessary files to the shared directory
         shutil.copytree(
             Path("/root"),
             shared_dir,
@@ -248,6 +392,7 @@ def nextflow_runtime(
             dirs_exist_ok=True,
         )
 
+        # Construct the Nextflow command
         cmd = [
             "/root/nextflow",
             "run",
@@ -256,6 +401,7 @@ def nextflow_runtime(
             str(shared_dir),
             "-profile",
             "docker",
+            "-resume",
             "-process.executor",
             "k8s",
             *get_flag(
@@ -267,6 +413,7 @@ def nextflow_runtime(
             ),
         ]
 
+        # Add genome-specific parameters if using Latch genome source
         if genome_source == "latch_genome_source":
             cmd += [
                 "--fasta",
@@ -291,6 +438,7 @@ def nextflow_runtime(
                 f"s3://latch-public/nf-core/rnaseq/{latch_genome.name}/index/kallisto",
             ]
 
+        # Add all other parameters to the command
         cmd += [
             *get_flag_defaults("fasta", fasta, None),
             *get_flag_defaults("gtf", gtf, None),
@@ -403,13 +551,16 @@ def nextflow_runtime(
         print(" ".join(cmd))
         print(flush=True)
 
+        # Set up environment variables for Nextflow
         env = {
             **os.environ,
             "NXF_HOME": "/root/.nextflow",
-            "NXF_OPTS": "-Xms2048M -Xmx8G -XX:ActiveProcessorCount=4",
-            "K8S_STORAGE_CLAIM_NAME": pvc_name,
+            "NXF_OPTS": "-Xms1536M -Xmx6144M -XX:ActiveProcessorCount=4",
             "NXF_DISABLE_CHECK_LATEST": "true",
+            "NXF_ENABLE_VIRTUAL_THREADS": "false",
         }
+
+        # Run the Nextflow command
         subprocess.run(
             cmd,
             env=env,
@@ -422,6 +573,7 @@ def nextflow_runtime(
     finally:
         print()
 
+        # Upload Nextflow log file
         nextflow_log = shared_dir / ".nextflow.log"
         if nextflow_log.exists():
             name = _get_execution_name()

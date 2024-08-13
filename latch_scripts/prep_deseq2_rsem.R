@@ -38,7 +38,7 @@ colnames(counts_df) <- sample_names
 counts_df$gene_id <- rownames(counts_df)
 counts_df <- counts_df[, c("gene_id", sample_names)]
 
-scaled_counts_file <- file.path(output_dir, "deseq2_rsem_length_scaled_counts.csv")
-write.csv(counts_df, file = scaled_counts_file, quote = FALSE, row.names = FALSE)
+scaled_counts_file <- file.path(output_dir, "deseq2_rsem_length_scaled_counts.tsv")
+write.csv(counts_df, file = scaled_counts_file, quote = FALSE, row.names = FALSE, sep = "\t")
 
 print(paste("Length-scaled TPM counts have been written to:", scaled_counts_file))

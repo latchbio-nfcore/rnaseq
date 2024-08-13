@@ -2,8 +2,9 @@ import typing
 from dataclasses import dataclass
 from enum import Enum
 from pathlib import Path
-from typing import List, Optional
+from typing import Annotated, List, Optional
 
+from flytekit.core.annotation import FlyteAnnotation
 from latch.resources.launch_plan import LaunchPlan
 from latch.resources.workflow import workflow
 from latch.types import metadata
@@ -31,6 +32,15 @@ flow = [
         "Samples",
         Params(
             "input",
+        ),
+        Spoiler(
+            "",
+            Text(
+                "Sample identifier and FASTQ files should not contain spaces in file names or full directory locations."
+            ),
+            Text(
+                "Strandedness can be set to 'auto', 'reverse', 'forward'. If left untoggled, it will default to 'auto'."
+            ),
         ),
     ),
     Section(
@@ -228,7 +238,7 @@ class SampleSheet:
     sample: str
     fastq_1: LatchFile
     fastq_2: Optional[LatchFile]
-    strandedness: str
+    strandedness: Optional[str] = None
 
 
 class Reference_Type(Enum):
@@ -826,7 +836,19 @@ NextflowMetadata(
 @workflow(metadata._nextflow_metadata)
 def nf_nf_core_rnaseq(
     input: typing.List[SampleSheet],
-    run_name: str,
+    run_name: Annotated[
+        str,
+        FlyteAnnotation(
+            {
+                "rules": [
+                    {
+                        "regex": r"^[a-zA-Z0-9_-]+$",
+                        "message": "ID name must contain only letters, digits, underscores, and dashes. No spaces are allowed.",
+                    }
+                ],
+            }
+        ),
+    ],
     genome_source: str,
     fasta: typing.Optional[LatchFile],
     gtf: typing.Optional[LatchFile],

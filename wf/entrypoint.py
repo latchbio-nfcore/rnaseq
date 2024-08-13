@@ -3,13 +3,16 @@ import os
 import shutil
 import subprocess
 import sys
+import time
 import typing
 from dataclasses import dataclass
 from enum import Enum
 from pathlib import Path
-from typing import Any, List, Optional
+from typing import Annotated, Any, List, Optional
 
 import requests
+from flytekit.core.annotation import FlyteAnnotation
+from latch.executions import rename_current_execution
 from latch.ldata.path import LPath
 from latch.resources.tasks import custom_task, nextflow_runtime_task
 from latch.types.directory import LatchOutputDir
@@ -36,7 +39,7 @@ class SampleSheet:
     sample: str
     fastq_1: LatchFile
     fastq_2: Optional[LatchFile]
-    strandedness: str
+    strandedness: Optional[str] = None
 
 
 class Reference_Type(Enum):
@@ -209,7 +212,9 @@ def custom_samplesheet_constructor(
                 "sample": sample.sample,
                 "fastq_1": fastq_1_path,
                 "fastq_2": fastq_2_path,
-                "strandedness": sample.strandedness,
+                "strandedness": sample.strandedness
+                if sample.strandedness is not None
+                else "auto",
             }
             writer.writerow(row_data)
 
@@ -255,7 +260,19 @@ def initialize() -> str:
 def nextflow_runtime(
     pvc_name: str,
     input: typing.List[SampleSheet],
-    run_name: str,
+    run_name: Annotated[
+        str,
+        FlyteAnnotation(
+            {
+                "rules": [
+                    {
+                        "regex": r"^[a-zA-Z0-9_-]+$",
+                        "message": "ID name must contain only letters, digits, underscores, and dashes. No spaces are allowed.",
+                    }
+                ],
+            }
+        ),
+    ],
     outdir: LatchOutputDir,
     genome_source: str,
     fasta: typing.Optional[LatchFile],
@@ -364,6 +381,7 @@ def nextflow_runtime(
     """
     try:
         shared_dir = Path("/nf-workdir")
+        rename_current_execution(str(run_name))
 
         # Create custom sample sheet
         input_samplesheet = custom_samplesheet_constructor(
@@ -567,6 +585,27 @@ def nextflow_runtime(
             check=True,
             cwd=str(shared_dir),
         )
+
+        # Copying multiqc report
+        try:
+            time.sleep(10)
+            if skip_alignment is True:
+                # Pseudo aligner case
+                multiqc_src_path = LPath(
+                    f"{outdir.remote_path}/{run_name}/multiqc/multiqc_report.html"
+                )
+            else:
+                multiqc_src_path = LPath(
+                    f"{outdir.remote_path}/{run_name}/multiqc/{aligner.value}/multiqc_report.html"
+                )
+
+            multiqc_dst_path = LPath(
+                f"{outdir.remote_path}/{run_name}/{run_name}_report.html"
+            )
+            multiqc_src_path.copy_to(multiqc_dst_path)
+        except Exception as e:
+            print(e)
+            print("Could not copy multiqc report to outer folder.")
 
         return run_name
 

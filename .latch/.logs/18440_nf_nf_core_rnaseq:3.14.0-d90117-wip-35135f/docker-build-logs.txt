@@ -1,0 +1,119 @@
+Step 1/17 : FROM 812206152185.dkr.ecr.us-west-2.amazonaws.com/latch-base-nextflow:v1.1.5
+
+
+ ---> a7ebb447d94e
+
+Step 2/17 : WORKDIR /tmp/docker-build/work/
+
+
+ ---> Using cache
+
+ ---> 416ded9895d6
+
+Step 3/17 : SHELL [     "/usr/bin/env", "bash",     "-o", "errexit",     "-o", "pipefail",     "-o", "nounset",     "-o", "verbose",     "-o", "errtrace",     "-O", "inherit_errexit",     "-O", "shift_verbose",     "-c" ]
+
+
+ ---> Using cache
+
+ ---> 5b24c39f1846
+
+Step 4/17 : ENV TZ='Etc/UTC'
+
+
+ ---> Using cache
+
+ ---> 27dd55b8d338
+
+Step 5/17 : ENV LANG='en_US.UTF-8'
+
+
+ ---> Using cache
+
+ ---> a4c213f3d20d
+
+Step 6/17 : ARG DEBIAN_FRONTEND=noninteractive
+
+
+ ---> Using cache
+
+ ---> 7eed5569a303
+
+Step 7/17 : RUN     curl         --location         --fail         --remote-name         https://github.com/r-lib/rig/releases/download/latest/rig-linux-latest.tar.gz &&     tar         --extract         --gunzip         --file rig-linux-latest.tar.gz         --directory /usr/local/ &&     rm rig-linux-latest.tar.gz
+
+
+ ---> Using cache
+
+ ---> bfdccf73351c
+
+Step 8/17 : RUN rig add release
+
+
+ ---> Using cache
+
+ ---> 4a8d999eeab2
+
+Step 9/17 : COPY latch_environment.R /tmp/docker-build/work/latch_environment.R
+
+
+ ---> Using cache
+
+ ---> 3c6f64d4b476
+
+Step 10/17 : RUN Rscript /tmp/docker-build/work/latch_environment.R
+
+
+ ---> Using cache
+
+ ---> f7ea29112e47
+
+Step 11/17 : RUN pip install pandas &&     apt-get update && apt-get install -y pigz
+
+
+ ---> Using cache
+
+ ---> f9804ee3c60c
+
+Step 12/17 : RUN pip install latch==2.49.6
+
+
+ ---> Using cache
+
+ ---> fa6729dac369
+
+Step 13/17 : RUN mkdir /opt/latch
+
+
+ ---> Using cache
+
+ ---> 11df4a4d1c5d
+
+Step 14/17 : COPY . /root/
+
+
+ ---> 28380dc2f0f8
+
+Step 15/17 : ARG tag
+
+
+ ---> Running in 53629f1b5ebb
+
+ ---> 207605243b2e
+
+Step 16/17 : ENV FLYTE_INTERNAL_IMAGE $tag
+
+
+ ---> Running in e067f3a97b65
+
+ ---> b39cdfdb36c7
+
+Step 17/17 : WORKDIR /root
+
+
+ ---> Running in 496350fbf008
+
+ ---> 89d0d012a7fb
+
+Successfully built 89d0d012a7fb
+
+Successfully tagged 812206152185.dkr.ecr.us-west-2.amazonaws.com/18440_nf_nf_core_rnaseq:3.14.0-d90117-wip-35135f
+

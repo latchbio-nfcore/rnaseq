@@ -172,9 +172,9 @@ def prep_dge(
             df = df.rename(columns={df.columns[0]: "gene_id"})
 
         output_file = (
-            local_output_directory / f"deseq2_{method}_length_scaled_counts.csv"
+            local_output_directory / f"deseq2_{method}_length_scaled_counts.tsv"
         )
-        df.to_csv(output_file, index=False)
+        df.to_csv(output_file, index=False, sep="\t")
 
         print(f"Wrote DESeq2 input file to {output_file}")
 

@@ -1,3 +1,50 @@
+<html>
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/31255434/182289305-4cc620e3-86ae-480f-9b61-6ca83283caa5.jpg" alt="Latch Verified" width="100">
+</p>
+
+<h1 align="center">
+  Bulk RNA-seq
+</h1>
+
+<p align="center">
+<strong>
+Latch Verified
+</strong>
+</p>
+
+<p align="center">
+  Produce transcript/count matrices from sequencing reads.
+  nf-core/rnaseq is an open-source bioinformatics workflow that processes raw sequencing reads, aligns them to genes, and performs quality control checks. The pipeline uses gold-standard tools, is maintained by the growing nf-core community and can be modified or extended as needed to adapt to bespoke biology.
+
+  This workflow is hosted on Latch Workflows, using a native Nextflow integration, with a graphical interface for accessible analysis by scientists. There is also an integration with Latch Registry so that batched workflows can be launched from “graphical sample sheets” or tables associating raw sequencing files with metadata.
+
+  The managed computing infrastructure scales to hundreds of samples, with clear logging and error-reporting. Data provenance links versioned and containerized workflow code to input and output files.
+
+</p>
+
+<p align="center">
+  <a href="https://github.com/latch-verified/pathway/releases/latest">
+    <img src="https://img.shields.io/github/release/latch-verified/pathway.svg" alt="Current Release" />
+  </a>
+  <a href="https://opensource.org/licenses/MIT">
+    <img src="https://img.shields.io/badge/LICENSE-MIT-brightgreen.svg" alt="License" />
+  </a>
+  <img src="https://img.shields.io/github/commit-activity/w/latch-verified/pathway.svg?style=plastic" alt="Commit Activity" />
+  <img src="https://img.shields.io/github/commits-since/latch-verified/pathway/latest.svg?style=plastic" alt="Commits since Last Release" />
+</p>
+
+<h3 align="center">
+  <a href="https://console.latch.bio/explore/65992/info">Hosted Interface</a>
+  <span> · </span>
+  <a href="https://docs.latch.bio">SDK Documentation</a>
+  <span> · </span>
+  <a href="https://join.slack.com/t/latchbiosdk/shared_invite/zt-193ibmedi-WB6mBu2GJ2WejUHhxMOuwg">Slack Community</a>
+</h3>
+
+</html>
+
+
 # ![nf-core/rnaseq](docs/images/nf-core-rnaseq_logo_light.png#gh-light-mode-only) ![nf-core/rnaseq](docs/images/nf-core-rnaseq_logo_dark.png#gh-dark-mode-only)
 
 [![GitHub Actions CI Status](https://github.com/nf-core/rnaseq/workflows/nf-core%20CI/badge.svg)](https://github.com/nf-core/rnaseq/actions?query=workflow%3A%22nf-core+CI%22)

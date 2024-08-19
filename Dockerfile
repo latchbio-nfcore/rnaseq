@@ -1,5 +1,5 @@
 # DO NOT CHANGE
-FROM 812206152185.dkr.ecr.us-west-2.amazonaws.com/latch-base-nextflow:v1.1.5
+FROM 812206152185.dkr.ecr.us-west-2.amazonaws.com/latch-base-nextflow:v1.1.7
 
 WORKDIR /tmp/docker-build/work/
 
@@ -45,7 +45,7 @@ RUN pip install pandas && \
 
 # Latch SDK
 # DO NOT REMOVE
-RUN pip install latch==2.49.6
+RUN pip install latch==2.50.5
 RUN mkdir /opt/latch
 
 # Copy workflow data (use .dockerignore to skip files)

@@ -33,14 +33,11 @@ flow = [
         Params(
             "input",
         ),
-        Spoiler(
-            "",
-            Text(
-                "Sample identifier and FASTQ files should not contain spaces in file names or full directory locations."
-            ),
-            Text(
-                "Strandedness can be set to 'auto', 'reverse', 'forward'. If left untoggled, it will default to 'auto'."
-            ),
+        Text(
+            "Sample identifier and FASTQ files should not contain spaces in file names or full directory locations."
+        ),
+        Text(
+            "Strandedness can be set to 'auto', 'reverse', 'forward'. If left untoggled, it will default to 'auto'."
         ),
     ),
     Section(

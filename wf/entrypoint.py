@@ -12,7 +12,7 @@ from typing import Annotated, Any, List, Optional
 
 import requests
 from flytekit.core.annotation import FlyteAnnotation
-from latch.executions import rename_current_execution
+from latch.executions import rename_current_execution, report_nextflow_used_storage
 from latch.ldata.path import LPath
 from latch.resources.tasks import custom_task, nextflow_runtime_task
 from latch.types.directory import LatchOutputDir
@@ -572,6 +572,7 @@ def nextflow_runtime(
         # Set up environment variables for Nextflow
         env = {
             **os.environ,
+            "NXF_ANSI_LOG": "false",
             "NXF_HOME": "/root/.nextflow",
             "NXF_OPTS": "-Xms1536M -Xmx6144M -XX:ActiveProcessorCount=4",
             "NXF_DISABLE_CHECK_LATEST": "true",
@@ -626,3 +627,27 @@ def nextflow_runtime(
                 )
                 print(f"Uploading .nextflow.log to {remote.path}")
                 remote.upload_from(nextflow_log)
+
+        #
+        print("Computing size of workdir... ", end="")
+        try:
+            result = subprocess.run(
+                ["du", "-sb", str(shared_dir)],
+                check=True,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                text=True,
+                timeout=5 * 60,
+            )
+
+            size = int(result.stdout.split()[0])
+            report_nextflow_used_storage(size)
+            print(f"Done. Workdir size: {size / 1024 / 1024 / 1024: .2f} GiB")
+        except subprocess.TimeoutExpired:
+            print(
+                "Failed to compute storage size: Operation timed out after 5 minutes."
+            )
+        except subprocess.CalledProcessError as e:
+            print(f"Failed to compute storage size: {e.stderr}")
+        except Exception as e:
+            print(f"Failed to compute storage size: {e}")

@@ -15,6 +15,7 @@ Latch Verified
 
 <p align="center">
   Produce transcript/count matrices from sequencing reads.
+
   nf-core/rnaseq is an open-source bioinformatics workflow that processes raw sequencing reads, aligns them to genes, and performs quality control checks. The pipeline uses gold-standard tools, is maintained by the growing nf-core community and can be modified or extended as needed to adapt to bespoke biology.
 
   This workflow is hosted on Latch Workflows, using a native Nextflow integration, with a graphical interface for accessible analysis by scientists. There is also an integration with Latch Registry so that batched workflows can be launched from “graphical sample sheets” or tables associating raw sequencing files with metadata.

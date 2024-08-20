@@ -336,8 +336,11 @@ class PseudoAligner(Enum):
 # Define Nextflow metadata for the workflow
 NextflowMetadata(
     display_name="nf-core/rnaseq",
+    documentation="https://wiki.latch.bio/workflows/bulk-rna-seq#bulk-rnaseq-quantification",
+    wiki_url="https://wiki.latch.bio/workflows/bulk-rna-seq#bulk-rnaseq-quantification",
     author=LatchAuthor(
         name="nf-core",
+        github="https://github.com/latchbio-nfcore/rnaseq",
     ),
     parameters={
         "input": NextflowParameter(
@@ -931,6 +934,30 @@ def nf_nf_core_rnaseq(
     skip_qc: bool = False,
 ) -> LatchOutputDir:
     """nf-core/rnaseq is a bioinformatics pipeline that can be used to analyse RNA sequencing data obtained from organisms with a reference genome and annotation. It takes a samplesheet and FASTQ files as input, performs quality control (QC), trimming and (pseudo-)alignment, and produces a gene expression matrix and extensive QC report.
+
+    <html>
+    <p align="center">
+    <img src="https://user-images.githubusercontent.com/31255434/182289305-4cc620e3-86ae-480f-9b61-6ca83283caa5.jpg" alt="Latch Verified" width="100">
+    </p>
+
+    <p align="center">
+    <strong>
+    Latch Verified
+    </strong>
+    </p>
+
+    <p align="center">
+    Produce transcript/count matrices from sequencing reads.
+
+    nf-core/rnaseq is an open-source bioinformatics workflow that processes raw sequencing reads, aligns them to genes, and performs quality control checks. The pipeline uses gold-standard tools, is maintained by the growing nf-core community and can be modified or extended as needed to adapt to bespoke biology.
+
+    This workflow is hosted on Latch Workflows, using a native Nextflow integration, with a graphical interface for accessible analysis by scientists. There is also an integration with Latch Registry so that batched workflows can be launched from “graphical sample sheets” or tables associating raw sequencing files with metadata.
+
+    The managed computing infrastructure scales to hundreds of samples, with clear logging and error-reporting. Data provenance links versioned and containerized workflow code to input and output files.
+
+    </p>
+
+    </html>
 
     # nf-core/rnaseq
 

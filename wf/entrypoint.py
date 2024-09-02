@@ -195,6 +195,7 @@ def custom_samplesheet_constructor(
                 fastq_1_path = compressed_path
 
             # Check and compress fastq_2 if it exists and needs compression
+            fastq_2_path = None
             if sample.fastq_2:
                 fastq_2_path = sample.fastq_2.remote_path
                 if not sample.fastq_2.remote_path.endswith(".gz"):
@@ -211,7 +212,7 @@ def custom_samplesheet_constructor(
             row_data = {
                 "sample": sample.sample,
                 "fastq_1": fastq_1_path,
-                "fastq_2": fastq_2_path,
+                "fastq_2": fastq_2_path if fastq_2_path else "",
                 "strandedness": sample.strandedness
                 if sample.strandedness is not None
                 else "auto",

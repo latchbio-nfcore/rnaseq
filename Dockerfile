@@ -45,7 +45,7 @@ RUN pip install pandas && \
 
 # Latch SDK
 # DO NOT REMOVE
-RUN pip install latch==2.50.5
+RUN pip install latch==2.52.1
 RUN mkdir /opt/latch
 
 # Copy workflow data (use .dockerignore to skip files)

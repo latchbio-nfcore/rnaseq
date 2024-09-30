@@ -1,7 +1,5 @@
 import subprocess
 import sys
-from dataclasses import dataclass
-from enum import Enum
 from pathlib import Path
 from typing import Optional
 
@@ -12,41 +10,12 @@ from latch.resources.tasks import small_task
 from latch.types.directory import LatchOutputDir
 from latch.types.file import LatchFile
 
+from wf.dataclasses import (
+    Reference_Type,
+)
+
 # Configure stdout for line buffering
 sys.stdout.reconfigure(line_buffering=True)
-
-
-@dataclass
-class SampleSheet:
-    """
-    Represents a sample in the RNA-seq analysis.
-
-    Attributes:
-        sample (str): The name or identifier of the sample.
-        fastq_1 (LatchFile): The first FASTQ file for the sample.
-        fastq_2 (Optional[LatchFile]): The second FASTQ file for paired-end data (optional).
-        strandedness (str): The strandedness of the library preparation.
-    """
-
-    sample: str
-    fastq_1: LatchFile
-    fastq_2: Optional[LatchFile]
-    strandedness: str
-
-
-class Reference_Type(Enum):
-    """
-    Enumeration of supported reference genomes.
-
-    Each enum value represents a different species and its corresponding reference genome.
-    """
-
-    homo_sapiens = "Homo sapiens (RefSeq GRCh38.p14)"
-    mus_musculus = "Mus musculus (RefSeq GRCm39)"
-    rattus_norvegicus = "Rattus norvegicus (RefSeq GRCr8)"
-    # drosophila_melanogaster = "Drosophila melanogaster (RefSeq Release_6_plus_ISO1_MT)"
-    # rhesus_macaque = "Macaca mulatta (RefSeq rheMac10/Mmul_10)"
-    saccharomyces_cerevisiae = "Saccharomyces cerevisiae (RefSeq R64)"
 
 
 def detect_method_type(selected_run_path: LPath):

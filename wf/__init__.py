@@ -1,19 +1,16 @@
-import typing
-from dataclasses import dataclass
-from enum import Enum
 from pathlib import Path
-from typing import Annotated, List, Optional
+from typing import List, Optional
 
-from flytekit.core.annotation import FlyteAnnotation
 from latch.resources.launch_plan import LaunchPlan
 from latch.resources.workflow import workflow
 from latch.types import metadata
-from latch.types.directory import LatchOutputDir
+from latch.types.directory import LatchDir, LatchOutputDir
 from latch.types.file import LatchFile
 from latch.types.metadata import (
     Fork,
     ForkBranch,
     LatchAuthor,
+    LatchRule,
     NextflowMetadata,
     NextflowParameter,
     NextflowRuntimeResources,
@@ -23,6 +20,15 @@ from latch.types.metadata import (
     Text,
 )
 
+from wf.dataclasses import (
+    Aligner,
+    PseudoAligner,
+    Reference_Type,
+    SalmonQuantLibType,
+    SampleSheet,
+    Trimmer,
+    UMIToolsGrouping,
+)
 from wf.entrypoint import custom_samplesheet_constructor, initialize, nextflow_runtime
 from wf.prep_dge import prep_dge
 
@@ -56,6 +62,32 @@ flow = [
                 Params(
                     "fasta",
                     "gtf",
+                ),
+                Spoiler(
+                    "Additional Reference Options",
+                    Params(
+                        "gff",
+                        "gene_bed",
+                        "transcript_fasta",
+                        "additional_fasta",
+                        "splicesites",
+                        "star_index",
+                        "hisat2_index",
+                        "rsem_index",
+                        "salmon_index",
+                        "kallisto_index",
+                        "tx2gene_file",
+                        "hisat2_build_memory",
+                        "gencode",
+                        "gtf_extra_attributes",
+                        "gtf_group_features",
+                        "featurecounts_group_type",
+                        "featurecounts_feature_type",
+                    ),
+                    Text(
+                        "The transcriptome and GTF files in iGenomes are vastly out of date with respect to current annotations from Ensembl e.g. human iGenomes annotations are from Ensembl release 75, while the current Ensembl release is 108. Please consider downloading and using a more updated version of your reference genome."
+                    ),
+                    Params("genome"),
                 ),
             ),
         ),
@@ -96,36 +128,14 @@ flow = [
     Spoiler(
         "Optional Arguments",
         Text("Additional optional arguments"),
-        Section(
+        Spoiler(
             "General Options",
             Params(
                 "email",
                 "multiqc_title",
             ),
         ),
-        Section(
-            "Reference Files",
-            Params(
-                "gff",
-                "gene_bed",
-                "transcript_fasta",
-                "additional_fasta",
-                "splicesites",
-                "star_index",
-                "hisat2_index",
-                "rsem_index",
-                "salmon_index",
-                "kallisto_index",
-                "tx2gene_file",
-                "hisat2_build_memory",
-                "gencode",
-                "gtf_extra_attributes",
-                "gtf_group_features",
-                "featurecounts_group_type",
-                "featurecounts_feature_type",
-            ),
-        ),
-        Section(
+        Spoiler(
             "Trimming Options",
             Params(
                 "trimmer",
@@ -134,7 +144,7 @@ flow = [
                 "min_trimmed_reads",
             ),
         ),
-        Section(
+        Spoiler(
             "Read Filtering",
             Params(
                 "bbsplit_fasta_list",
@@ -143,7 +153,7 @@ flow = [
                 "ribo_database_manifest",
             ),
         ),
-        Section(
+        Spoiler(
             "UMI Options",
             Params(
                 "with_umi",
@@ -156,7 +166,7 @@ flow = [
                 "umitools_dedup_stats",
             ),
         ),
-        Section(
+        Spoiler(
             "Alignment Options",
             Params(
                 "pseudo_aligner_kmer_size",
@@ -173,7 +183,7 @@ flow = [
                 "kallisto_quant_fraglen_sd",
             ),
         ),
-        Section(
+        Spoiler(
             "Optional Outputs",
             Params(
                 "save_merged_fastq",
@@ -186,14 +196,14 @@ flow = [
                 "save_unaligned",
             ),
         ),
-        Section(
+        Spoiler(
             "Quality Control",
             Params(
                 "deseq2_vst",
                 "rseqc_modules",
             ),
         ),
-        Section(
+        Spoiler(
             "Process Skipping",
             Params(
                 "skip_gtf_filter",
@@ -220,119 +230,6 @@ flow = [
 ]
 
 
-@dataclass
-class SampleSheet:
-    """
-    Represents a sample in the RNA-seq analysis.
-
-    Attributes:
-        sample (str): The name or identifier of the sample.
-        fastq_1 (LatchFile): The first FASTQ file for the sample.
-        fastq_2 (Optional[LatchFile]): The second FASTQ file for paired-end data (optional).
-        strandedness (str): The strandedness of the library preparation.
-    """
-
-    sample: str
-    fastq_1: LatchFile
-    fastq_2: Optional[LatchFile]
-    strandedness: Optional[str] = None
-
-
-class Reference_Type(Enum):
-    """
-    Enumeration of supported reference genomes.
-
-    Each enum value represents a different species and its corresponding reference genome.
-    """
-
-    homo_sapiens = "Homo sapiens (RefSeq GRCh38.p14)"
-    mus_musculus = "Mus musculus (RefSeq GRCm39)"
-    rattus_norvegicus = "Rattus norvegicus (RefSeq GRCr8)"
-    # drosophila_melanogaster = "Drosophila melanogaster (RefSeq Release_6_plus_ISO1_MT)"
-    # rhesus_macaque = "Macaca mulatta (RefSeq rheMac10/Mmul_10)"
-    saccharomyces_cerevisiae = "Saccharomyces cerevisiae (RefSeq R64)"
-
-
-class Trimmer(Enum):
-    """
-    Enumeration of supported trimming tools.
-
-    Attributes:
-        trimgalore: TrimGalore trimming tool.
-        fastp: fastp trimming tool.
-    """
-
-    trimgalore = "trimgalore"
-    fastp = "fastp"
-
-
-class UMIToolsGrouping(Enum):
-    """
-    Enumeration of UMI-tools grouping methods.
-
-    These methods are used for deduplicating reads based on UMIs.
-    """
-
-    directional = "directional"
-    unique = "unique"
-    cluster = "cluster"
-    percentile = "percentile"
-    adjacency = "adjacency"
-
-
-class Aligner(Enum):
-    """
-    Enumeration of supported alignment tools.
-
-    Attributes:
-        star_salmon: STAR aligner with Salmon quantification.
-        star_rsem: STAR aligner with RSEM quantification.
-        hisat2: HISAT2 aligner.
-    """
-
-    star_salmon = "star_salmon"
-    star_rsem = "star_rsem"
-    hisat2 = "hisat2"
-
-
-class SalmonQuantLibType(Enum):
-    """
-    Enumeration of Salmon quantification library types.
-
-    These specify the type of library preparation for accurate quantification.
-    """
-
-    A = "A"
-    IS = "IS"
-    ISF = "ISF"
-    ISR = "ISR"
-    IU = "IU"
-    MS = "MS"
-    MSF = "MSF"
-    MSR = "MSR"
-    MU = "MU"
-    OS = "OS"
-    OSF = "OSF"
-    OSR = "OSR"
-    OU = "OU"
-    SF = "SF"
-    SR = "SR"
-    U = "U"
-
-
-class PseudoAligner(Enum):
-    """
-    Enumeration of supported pseudo-alignment tools.
-
-    Attributes:
-        salmon: Salmon pseudo-aligner.
-        kallisto: Kallisto pseudo-aligner.
-    """
-
-    salmon = "salmon"
-    kallisto = "kallisto"
-
-
 # Define Nextflow metadata for the workflow
 NextflowMetadata(
     display_name="nf-core/rnaseq",
@@ -356,6 +253,12 @@ NextflowMetadata(
             display_name="Run Name",
             description="Name of run",
             batch_table_column=True,
+            rules=[
+                LatchRule(
+                    regex=r"^[a-zA-Z0-9_-]+$",
+                    message="Run name must contain only letters, digits, underscores, and dashes. No spaces are allowed.",
+                )
+            ],
         ),
         "outdir": NextflowParameter(
             type=LatchOutputDir,
@@ -363,6 +266,7 @@ NextflowMetadata(
             description="The output directory where the results will be saved. You have to use absolute paths to storage on Cloud infrastructure.",
             batch_table_column=True,
             default=LatchOutputDir("latch:///Bulk_RNAseq"),
+            results_paths=[Path("/")],
         ),
         "genome_source": NextflowParameter(
             type=str,
@@ -374,6 +278,13 @@ NextflowMetadata(
             display_name="Latch Verfied Reference Genome",
             description="Name of Latch Verfied Reference Genome.",
             default=Reference_Type.homo_sapiens,
+        ),
+        "genome": NextflowParameter(
+            type=Optional[str],
+            default=None,
+            section_title=None,
+            display_name="iGenomes Reference",
+            description="If using a reference genome configured in the pipeline using iGenomes, use this parameter to give the ID for the reference. This is then used to build the full paths for all required reference genome files e.g. --genome GRCh38.",
         ),
         "fasta": NextflowParameter(
             type=Optional[LatchFile],
@@ -827,58 +738,46 @@ NextflowMetadata(
         ),
     },
     runtime_resources=NextflowRuntimeResources(cpus=4, memory=16, storage_gib=100),
-    log_dir=LatchOutputDir("latch:///Bulk_RNAseq_logs"),
+    log_dir=LatchDir("latch:///your_log_dir"),
     flow=flow,
-    about_page_path=Path("./README.md"),
 )
 
 
 @workflow(metadata._nextflow_metadata)
 def nf_nf_core_rnaseq(
-    input: typing.List[SampleSheet],
-    run_name: Annotated[
-        str,
-        FlyteAnnotation(
-            {
-                "rules": [
-                    {
-                        "regex": r"^[a-zA-Z0-9_-]+$",
-                        "message": "ID name must contain only letters, digits, underscores, and dashes. No spaces are allowed.",
-                    }
-                ],
-            }
-        ),
-    ],
+    input: List[SampleSheet],
+    run_name: str,
     genome_source: str,
-    fasta: typing.Optional[LatchFile],
-    gtf: typing.Optional[LatchFile],
-    gff: typing.Optional[LatchFile],
-    gene_bed: typing.Optional[LatchFile],
-    transcript_fasta: typing.Optional[LatchFile],
-    additional_fasta: typing.Optional[LatchFile],
-    splicesites: typing.Optional[LatchFile],
-    star_index: typing.Optional[LatchFile],
-    hisat2_index: typing.Optional[LatchFile],
-    rsem_index: typing.Optional[LatchFile],
-    salmon_index: typing.Optional[LatchFile],
-    kallisto_index: typing.Optional[LatchFile],
-    extra_trimgalore_args: typing.Optional[str],
-    extra_fastp_args: typing.Optional[str],
-    bbsplit_fasta_list: typing.Optional[LatchFile],
-    bbsplit_index: typing.Optional[LatchFile],
-    ribo_database_manifest: typing.Optional[LatchFile],
-    umitools_bc_pattern: typing.Optional[str],
-    umitools_bc_pattern2: typing.Optional[str],
-    umi_discard_read: typing.Optional[int],
-    umitools_umi_separator: typing.Optional[str],
-    pseudo_aligner: typing.Optional[PseudoAligner],
-    salmon_quant_libtype: typing.Optional[SalmonQuantLibType],
-    seq_center: typing.Optional[str],
-    extra_star_align_args: typing.Optional[str],
-    extra_salmon_quant_args: typing.Optional[str],
-    extra_kallisto_quant_args: typing.Optional[str],
-    email: typing.Optional[str],
-    multiqc_title: typing.Optional[str],
+    genome: Optional[str],
+    fasta: Optional[LatchFile],
+    gtf: Optional[LatchFile],
+    gff: Optional[LatchFile],
+    gene_bed: Optional[LatchFile],
+    transcript_fasta: Optional[LatchFile],
+    additional_fasta: Optional[LatchFile],
+    splicesites: Optional[LatchFile],
+    star_index: Optional[LatchFile],
+    hisat2_index: Optional[LatchFile],
+    rsem_index: Optional[LatchFile],
+    salmon_index: Optional[LatchFile],
+    kallisto_index: Optional[LatchFile],
+    extra_trimgalore_args: Optional[str],
+    extra_fastp_args: Optional[str],
+    bbsplit_fasta_list: Optional[LatchFile],
+    bbsplit_index: Optional[LatchFile],
+    ribo_database_manifest: Optional[LatchFile],
+    umitools_bc_pattern: Optional[str],
+    umitools_bc_pattern2: Optional[str],
+    umi_discard_read: Optional[int],
+    umitools_umi_separator: Optional[str],
+    pseudo_aligner: Optional[PseudoAligner],
+    salmon_quant_libtype: Optional[SalmonQuantLibType],
+    seq_center: Optional[str],
+    extra_star_align_args: Optional[str],
+    extra_salmon_quant_args: Optional[str],
+    extra_kallisto_quant_args: Optional[str],
+    email: Optional[str],
+    multiqc_title: Optional[str],
     tx2gene_file: Optional[LatchFile],
     outdir: LatchOutputDir = LatchOutputDir("latch:///Bulk_RNAseq"),
     latch_genome: Reference_Type = Reference_Type.homo_sapiens,
@@ -961,18 +860,11 @@ def nf_nf_core_rnaseq(
 
     # nf-core/rnaseq
 
-    [![GitHub Actions CI Status](https://github.com/nf-core/rnaseq/workflows/nf-core%20CI/badge.svg)](https://github.com/nf-core/rnaseq/actions?query=workflow%3A%22nf-core+CI%22)
-    [![GitHub Actions Linting Status](https://github.com/nf-core/rnaseq/workflows/nf-core%20linting/badge.svg)](https://github.com/nf-core/rnaseq/actions?query=workflow%3A%22nf-core+linting%22)[![AWS CI](https://img.shields.io/badge/CI%20tests-full%20size-FF9900?labelColor=000000&logo=Amazon%20AWS)](https://nf-co.re/rnaseq/results)[![Cite with Zenodo](http://img.shields.io/badge/DOI-10.5281/zenodo.1400710-1073c8?labelColor=000000)](https://doi.org/10.5281/zenodo.1400710)
-
-    [![Nextflow](https://img.shields.io/badge/nextflow%20DSL2-%E2%89%A523.04.0-23aa62.svg)](https://www.nextflow.io/)
-
-    [![Get help on Slack](http://img.shields.io/badge/slack-nf--core%20%23rnaseq-4A154B?labelColor=000000&logo=slack)](https://nfcore.slack.com/channels/rnaseq)[![Follow on Twitter](http://img.shields.io/badge/twitter-%40nf__core-1DA1F2?labelColor=000000&logo=twitter)](https://twitter.com/nf_core)[![Follow on Mastodon](https://img.shields.io/badge/mastodon-nf__core-6364ff?labelColor=FFFFFF&logo=mastodon)](https://mstdn.science/@nf_core)[![Watch on YouTube](http://img.shields.io/badge/youtube-nf--core-FF0000?labelColor=000000&logo=youtube)](https://www.youtube.com/c/nf-core)
+    [![Cite with Zenodo](http://img.shields.io/badge/DOI-10.5281/zenodo.1400710-1073c8?labelColor=000000)](https://doi.org/10.5281/zenodo.1400710)
 
     ## Introduction
 
     **nf-core/rnaseq** is a bioinformatics pipeline that can be used to analyse RNA sequencing data obtained from organisms with a reference genome and annotation. It takes a samplesheet and FASTQ files as input, performs quality control (QC), trimming and (pseudo-)alignment, and produces a gene expression matrix and extensive QC report.
-
-    ![nf-core/rnaseq metro map](docs/images/nf-core-rnaseq_metro_map_grey.png)
 
     1. Merge re-sequenced FastQ files ([`cat`](http://www.linfo.org/cat.html))
     2. Sub-sample FastQ files and auto-infer strandedness ([`fq`](https://github.com/stjude-rust-labs/fq), [`Salmon`](https://combine-lab.github.io/salmon/))
@@ -1017,11 +909,6 @@ def nf_nf_core_rnaseq(
     CONTROL_REP1,AEG588A1_S1_L004_R1_001.fastq.gz,AEG588A1_S1_L004_R2_001.fastq.gz,auto
 
     Each row represents a fastq file (single-end) or a pair of fastq files (paired end). Rows with the same sample identifier are considered technical replicates and merged automatically. The strandedness refers to the library preparation and will be automatically inferred if set to `auto`.
-
-    > **Warning:**
-    > Please provide pipeline parameters via the CLI or Nextflow `-params-file` option. Custom config files including those
-    > provided by the `-c` Nextflow option can be used to provide any configuration _**except for parameters**_;
-    > see [docs](https://nf-co.re/usage/configuration#custom-configuration-files).
 
     For more details and further functionality, please refer to the [usage documentation](https://nf-co.re/rnaseq/usage) and the [parameter documentation](https://nf-co.re/rnaseq/parameters).
 
@@ -1085,7 +972,7 @@ def nf_nf_core_rnaseq(
 
     """
 
-    pvc_name: str = initialize()
+    pvc_name: str = initialize(run_name=run_name)
     run_name = nextflow_runtime(
         pvc_name=pvc_name,
         input=input,
@@ -1093,6 +980,7 @@ def nf_nf_core_rnaseq(
         outdir=outdir,
         genome_source=genome_source,
         latch_genome=latch_genome,
+        genome=genome,
         fasta=fasta,
         gtf=gtf,
         gff=gff,

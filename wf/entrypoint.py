@@ -4,14 +4,10 @@ import shutil
 import subprocess
 import sys
 import time
-import typing
-from dataclasses import dataclass
-from enum import Enum
 from pathlib import Path
-from typing import Annotated, Any, List, Optional
+from typing import Any, List, Optional
 
 import requests
-from flytekit.core.annotation import FlyteAnnotation
 from latch.executions import rename_current_execution, report_nextflow_used_storage
 from latch.ldata.path import LPath
 from latch.resources.tasks import custom_task, nextflow_runtime_task
@@ -21,120 +17,17 @@ from latch_cli.nextflow.utils import _get_execution_name
 from latch_cli.nextflow.workflow import get_flag
 from latch_cli.utils import urljoins
 
+from wf.dataclasses import (
+    Aligner,
+    PseudoAligner,
+    Reference_Type,
+    SalmonQuantLibType,
+    SampleSheet,
+    Trimmer,
+    UMIToolsGrouping,
+)
+
 sys.stdout.reconfigure(line_buffering=True)
-
-
-@dataclass
-class SampleSheet:
-    """
-    Represents a sample in the RNA-seq analysis.
-
-    Attributes:
-        sample (str): The name or identifier of the sample.
-        fastq_1 (LatchFile): The first FASTQ file for the sample.
-        fastq_2 (Optional[LatchFile]): The second FASTQ file for paired-end data (optional).
-        strandedness (str): The strandedness of the library preparation.
-    """
-
-    sample: str
-    fastq_1: LatchFile
-    fastq_2: Optional[LatchFile]
-    strandedness: Optional[str] = None
-
-
-class Reference_Type(Enum):
-    """
-    Enumeration of supported reference genomes.
-
-    Each enum value represents a different species and its corresponding reference genome.
-    """
-
-    homo_sapiens = "Homo sapiens (RefSeq GRCh38.p14)"
-    mus_musculus = "Mus musculus (RefSeq GRCm39)"
-    rattus_norvegicus = "Rattus norvegicus (RefSeq GRCr8)"
-    # drosophila_melanogaster = "Drosophila melanogaster (RefSeq Release_6_plus_ISO1_MT)"
-    # rhesus_macaque = "Macaca mulatta (RefSeq rheMac10/Mmul_10)"
-    saccharomyces_cerevisiae = "Saccharomyces cerevisiae (RefSeq R64)"
-
-
-class Trimmer(Enum):
-    """
-    Enumeration of supported trimming tools.
-
-    Attributes:
-        trimgalore: TrimGalore trimming tool.
-        fastp: fastp trimming tool.
-    """
-
-    trimgalore = "trimgalore"
-    fastp = "fastp"
-
-
-class UMIToolsGrouping(Enum):
-    """
-    Enumeration of UMI-tools grouping methods.
-
-    These methods are used for deduplicating reads based on UMIs.
-    """
-
-    directional = "directional"
-    unique = "unique"
-    cluster = "cluster"
-    percentile = "percentile"
-    adjacency = "adjacency"
-
-
-class Aligner(Enum):
-    """
-    Enumeration of supported alignment tools.
-
-    Attributes:
-        star_salmon: STAR aligner with Salmon quantification.
-        star_rsem: STAR aligner with RSEM quantification.
-        hisat2: HISAT2 aligner.
-    """
-
-    star_salmon = "star_salmon"
-    star_rsem = "star_rsem"
-    hisat2 = "hisat2"
-
-
-class SalmonQuantLibType(Enum):
-    """
-    Enumeration of Salmon quantification library types.
-
-    These specify the type of library preparation for accurate quantification.
-    """
-
-    A = "A"
-    IS = "IS"
-    ISF = "ISF"
-    ISR = "ISR"
-    IU = "IU"
-    MS = "MS"
-    MSF = "MSF"
-    MSR = "MSR"
-    MU = "MU"
-    OS = "OS"
-    OSF = "OSF"
-    OSR = "OSR"
-    OU = "OU"
-    SF = "SF"
-    SR = "SR"
-    U = "U"
-
-
-class PseudoAligner(Enum):
-    """
-    Enumeration of supported pseudo-alignment tools.
-
-    Attributes:
-        salmon: Salmon pseudo-aligner.
-        kallisto: Kallisto pseudo-aligner.
-    """
-
-    salmon = "salmon"
-    kallisto = "kallisto"
 
 
 def get_flag_defaults(name: str, val: Any, default_val: Optional[Any]):
@@ -223,7 +116,7 @@ def custom_samplesheet_constructor(
 
 
 @custom_task(cpu=0.25, memory=0.5, storage_gib=1)
-def initialize() -> str:
+def initialize(run_name: str) -> str:
     """
     Initialize the workflow by provisioning a shared storage volume.
 
@@ -236,6 +129,8 @@ def initialize() -> str:
     Raises:
         RuntimeError: If the execution token is not available.
     """
+    rename_current_execution(str(run_name))
+
     token = os.environ.get("FLYTE_INTERNAL_EXECUTION_ID")
     if token is None:
         raise RuntimeError("failed to get execution token")
@@ -244,11 +139,11 @@ def initialize() -> str:
 
     print("Provisioning shared storage volume... ", end="")
     resp = requests.post(
-        "http://nf-dispatcher-service.flyte.svc.cluster.local/provision-storage",
+        "http://nf-dispatcher-service.flyte.svc.cluster.local/provision-storage-ofs",
         headers=headers,
         json={
             "storage_expiration_hours": 1,
-            "storage_gib": 100,
+            "version": 2,
         },
     )
     resp.raise_for_status()
@@ -260,51 +155,40 @@ def initialize() -> str:
 @nextflow_runtime_task(cpu=8, memory=32, storage_gib=2000)
 def nextflow_runtime(
     pvc_name: str,
-    input: typing.List[SampleSheet],
-    run_name: Annotated[
-        str,
-        FlyteAnnotation(
-            {
-                "rules": [
-                    {
-                        "regex": r"^[a-zA-Z0-9_-]+$",
-                        "message": "ID name must contain only letters, digits, underscores, and dashes. No spaces are allowed.",
-                    }
-                ],
-            }
-        ),
-    ],
+    input: List[SampleSheet],
+    run_name: str,
     outdir: LatchOutputDir,
     genome_source: str,
-    fasta: typing.Optional[LatchFile],
-    gtf: typing.Optional[LatchFile],
-    gff: typing.Optional[LatchFile],
-    gene_bed: typing.Optional[LatchFile],
-    transcript_fasta: typing.Optional[LatchFile],
-    additional_fasta: typing.Optional[LatchFile],
-    splicesites: typing.Optional[LatchFile],
-    star_index: typing.Optional[LatchFile],
-    hisat2_index: typing.Optional[LatchFile],
-    rsem_index: typing.Optional[LatchFile],
-    salmon_index: typing.Optional[LatchFile],
-    kallisto_index: typing.Optional[LatchFile],
-    extra_trimgalore_args: typing.Optional[str],
-    extra_fastp_args: typing.Optional[str],
-    bbsplit_fasta_list: typing.Optional[LatchFile],
-    bbsplit_index: typing.Optional[LatchFile],
-    ribo_database_manifest: typing.Optional[LatchFile],
-    umitools_bc_pattern: typing.Optional[str],
-    umitools_bc_pattern2: typing.Optional[str],
-    umi_discard_read: typing.Optional[int],
-    umitools_umi_separator: typing.Optional[str],
-    pseudo_aligner: typing.Optional[PseudoAligner],
-    salmon_quant_libtype: typing.Optional[SalmonQuantLibType],
-    seq_center: typing.Optional[str],
-    extra_star_align_args: typing.Optional[str],
-    extra_salmon_quant_args: typing.Optional[str],
-    extra_kallisto_quant_args: typing.Optional[str],
-    email: typing.Optional[str],
-    multiqc_title: typing.Optional[str],
+    genome: Optional[str],
+    fasta: Optional[LatchFile],
+    gtf: Optional[LatchFile],
+    gff: Optional[LatchFile],
+    gene_bed: Optional[LatchFile],
+    transcript_fasta: Optional[LatchFile],
+    additional_fasta: Optional[LatchFile],
+    splicesites: Optional[LatchFile],
+    star_index: Optional[LatchFile],
+    hisat2_index: Optional[LatchFile],
+    rsem_index: Optional[LatchFile],
+    salmon_index: Optional[LatchFile],
+    kallisto_index: Optional[LatchFile],
+    extra_trimgalore_args: Optional[str],
+    extra_fastp_args: Optional[str],
+    bbsplit_fasta_list: Optional[LatchFile],
+    bbsplit_index: Optional[LatchFile],
+    ribo_database_manifest: Optional[LatchFile],
+    umitools_bc_pattern: Optional[str],
+    umitools_bc_pattern2: Optional[str],
+    umi_discard_read: Optional[int],
+    umitools_umi_separator: Optional[str],
+    pseudo_aligner: Optional[PseudoAligner],
+    salmon_quant_libtype: Optional[SalmonQuantLibType],
+    seq_center: Optional[str],
+    extra_star_align_args: Optional[str],
+    extra_salmon_quant_args: Optional[str],
+    extra_kallisto_quant_args: Optional[str],
+    email: Optional[str],
+    multiqc_title: Optional[str],
     latch_genome: Reference_Type,
     hisat2_build_memory: int,
     gencode: bool,
@@ -382,7 +266,6 @@ def nextflow_runtime(
     """
     try:
         shared_dir = Path("/nf-workdir")
-        rename_current_execution(str(run_name))
 
         # Create custom sample sheet
         input_samplesheet = custom_samplesheet_constructor(
@@ -459,6 +342,7 @@ def nextflow_runtime(
 
         # Add all other parameters to the command
         cmd += [
+            *get_flag_defaults("genome", genome, None),
             *get_flag_defaults("fasta", fasta, None),
             *get_flag_defaults("gtf", gtf, None),
             *get_flag_defaults("gff", gff, None),
@@ -623,7 +507,7 @@ def nextflow_runtime(
             else:
                 remote = LPath(
                     urljoins(
-                        "latch:///Bulk_RNAseq_logs/nfcore_rnaseq", name, "nextflow.log"
+                        "latch:///your_log_dir/nf_nf_core_rnaseq", name, "nextflow.log"
                     )
                 )
                 print(f"Uploading .nextflow.log to {remote.path}")

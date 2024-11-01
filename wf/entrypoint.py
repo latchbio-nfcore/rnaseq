@@ -306,6 +306,8 @@ def nextflow_runtime(
             "-resume",
             "-process.executor",
             "k8s",
+            "-c",
+            "latch.config",
             *get_flag(
                 "input",
                 input_samplesheet,

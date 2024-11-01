@@ -131,7 +131,7 @@ flow = [
         Spoiler(
             "General Options",
             Params(
-                "email",
+                # "email",
                 "multiqc_title",
             ),
         ),
@@ -235,9 +235,9 @@ NextflowMetadata(
     display_name="nf-core/rnaseq",
     documentation="https://wiki.latch.bio/workflows/bulk-rna-seq#bulk-rnaseq-quantification",
     wiki_url="https://wiki.latch.bio/workflows/bulk-rna-seq#bulk-rnaseq-quantification",
+    repository="https://github.com/latchbio-nfcore/rnaseq",
     author=LatchAuthor(
         name="nf-core",
-        github="https://github.com/latchbio-nfcore/rnaseq",
     ),
     parameters={
         "input": NextflowParameter(

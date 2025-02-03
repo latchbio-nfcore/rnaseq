@@ -152,7 +152,7 @@ def initialize(run_name: str) -> str:
     return resp.json()["name"]
 
 
-@nextflow_runtime_task(cpu=8, memory=32, storage_gib=2000)
+@nextflow_runtime_task(cpu=8, memory=32, storage_gib=4949)
 def nextflow_runtime(
     pvc_name: str,
     input: List[SampleSheet],

@@ -2,6 +2,7 @@ from dataclasses import dataclass
 from enum import Enum
 from typing import Optional
 
+from latch.types.directory import LatchOutputDir
 from latch.types.file import LatchFile
 
 
@@ -21,6 +22,19 @@ class SampleSheet:
     fastq_1: LatchFile
     fastq_2: Optional[LatchFile]
     strandedness: Optional[str] = None
+
+
+# @dataclass
+# class WrappedSample:
+#     sample: SampleSheet
+#     _trigger: str  # this will carry pvc_name
+
+
+@dataclass
+class WrappedSample:
+    sample: SampleSheet
+    run_name: str
+    outdir: str
 
 
 class Reference_Type(Enum):

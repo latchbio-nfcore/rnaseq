@@ -8,6 +8,7 @@ from pathlib import Path
 from typing import Any, List, Optional
 
 import requests
+from latch import medium_task, small_task
 from latch.executions import rename_current_execution, report_nextflow_used_storage
 from latch.ldata.path import LPath
 from latch.resources.tasks import custom_task, nextflow_runtime_task
@@ -25,6 +26,7 @@ from wf.dataclasses import (
     SampleSheet,
     Trimmer,
     UMIToolsGrouping,
+    WrappedSample,
 )
 
 sys.stdout.reconfigure(line_buffering=True)
@@ -116,62 +118,92 @@ def get_flag_defaults(name: str, val: Any, default_val: Optional[Any]):
 from latch.ldata.path import LPath
 
 
+@small_task
 def custom_samplesheet_constructor(
-    samples: List[SampleSheet], shared_dir: Path
-) -> Path:
+    samples: List[SampleSheet], outdir: LatchOutputDir, run_name: str
+) -> LatchFile:
     samplesheet = Path("/root/samplesheet.csv")
     columns = ["sample", "fastq_1", "fastq_2", "strandedness"]
 
     with open(samplesheet, "w") as f:
         writer = csv.DictWriter(f, columns, delimiter=",")
         writer.writeheader()
-
         for sample in samples:
-            # fastq_1
-            fastq_1_path = sample.fastq_1.remote_path
-            if not sample.fastq_1.remote_path.endswith(".gz"):
-                # Download to shared_dir
-                local_path = shared_dir / Path(sample.fastq_1.remote_path).name
-                print(f"Downloading {sample.fastq_1.remote_path} to {local_path}")
-                LPath(sample.fastq_1.remote_path).download(local_path)
+            writer.writerow(
+                {
+                    "sample": sample.sample,
+                    "fastq_1": sample.fastq_1.remote_path,
+                    "fastq_2": sample.fastq_2.remote_path if sample.fastq_2 else "",
+                    "strandedness": sample.strandedness or "auto",
+                }
+            )
 
-                # Compress directly in shared_dir
-                compressed_path = shared_dir / f"{local_path.name}.gz"
-                print(f"Compressing to {compressed_path}")
-                subprocess.run(
-                    ["pigz", "-p", "8", "-c", str(local_path)],
-                    stdout=open(compressed_path, "wb"),
-                    check=True,
-                )
-                fastq_1_path = compressed_path
+    return LatchFile(
+        str(samplesheet), remote_path=f"{outdir.remote_path}/{run_name}/samplesheet.csv"
+    )
 
-            # fastq_2
-            fastq_2_path = None
-            if sample.fastq_2:
-                fastq_2_path = sample.fastq_2.remote_path
-                if not sample.fastq_2.remote_path.endswith(".gz"):
-                    local_path = shared_dir / Path(sample.fastq_2.remote_path).name
-                    print(f"Downloading {sample.fastq_2.remote_path} to {local_path}")
-                    LPath(sample.fastq_2.remote_path).download(local_path)
 
-                    compressed_path = shared_dir / f"{local_path.name}.gz"
-                    print(f"Compressing to {compressed_path}")
-                    subprocess.run(
-                        ["pigz", "-p", "8", "-c", str(local_path)],
-                        stdout=open(compressed_path, "wb"),
-                        check=True,
-                    )
-                    fastq_2_path = compressed_path
+@medium_task
+def compress_sample_fastqs(wrapped: WrappedSample) -> SampleSheet:
+    shared_path = Path("/root")
+    sample = wrapped.sample
 
-            row_data = {
-                "sample": sample.sample,
-                "fastq_1": fastq_1_path,
-                "fastq_2": fastq_2_path if fastq_2_path else "",
-                "strandedness": sample.strandedness if sample.strandedness else "auto",
-            }
-            writer.writerow(row_data)
+    output_dir = f"{wrapped.outdir}/{wrapped.run_name}/gzip"
+    os.makedirs(shared_path / "gzip", exist_ok=True)
 
-    return samplesheet
+    # fastq_1
+    if not sample.fastq_1.remote_path.endswith(".gz"):
+        local_path = shared_path / Path(sample.fastq_1.remote_path).name
+        LPath(sample.fastq_1.remote_path).download(local_path)
+
+        compressed_path = shared_path / "gzip" / f"{local_path.name}.gz"
+        with open(compressed_path, "wb") as out_f:
+            subprocess.run(
+                ["pigz", "-p", "8", "-c", str(local_path)], stdout=out_f, check=True
+            )
+
+        remote_path = f"{output_dir}/{compressed_path.name}"
+        LPath(remote_path).upload_from(compressed_path)
+        sample.fastq_1 = LatchFile(str(compressed_path), remote_path=remote_path)
+
+    # fastq_2
+    if sample.fastq_2 and not sample.fastq_2.remote_path.endswith(".gz"):
+        local_path = shared_path / Path(sample.fastq_2.remote_path).name
+        LPath(sample.fastq_2.remote_path).download(local_path)
+
+        compressed_path = shared_path / "gzip" / f"{local_path.name}.gz"
+        with open(compressed_path, "wb") as out_f:
+            subprocess.run(
+                ["pigz", "-p", "8", "-c", str(local_path)], stdout=out_f, check=True
+            )
+
+        remote_path = f"{output_dir}/{compressed_path.name}"
+        LPath(remote_path).upload_from(compressed_path)
+        sample.fastq_2 = LatchFile(str(compressed_path), remote_path=remote_path)
+
+    return sample
+
+
+@small_task
+def prepare_wrapped_inputs(
+    samples: List[SampleSheet], run_name: str, outdir: LatchOutputDir
+) -> List[WrappedSample]:
+    return [
+        WrappedSample(sample=s, run_name=run_name, outdir=outdir.remote_path)
+        for s in samples
+    ]
+
+
+# @small_task
+# def prepare_wrapped_inputs(
+#     samples: list[SampleSheet], pvc_name: str
+# ) -> list[WrappedSample]:
+#     return [WrappedSample(sample=s, _trigger=pvc_name) for s in samples]
+
+
+# @small_task
+# def wrapper_compress(wrapped: WrappedSample) -> SampleSheet:
+#     return compress_sample_fastqs(sample=wrapped.sample)
 
 
 @custom_task(cpu=0.25, memory=0.5, storage_gib=1)
@@ -214,7 +246,8 @@ def initialize(run_name: str) -> str:
 @nextflow_runtime_task(cpu=8, memory=32, storage_gib=2000)
 def nextflow_runtime(
     pvc_name: str,
-    input: List[SampleSheet],
+    input_samplesheet: LatchFile,
+    # input: List[SampleSheet],
     run_name: str,
     outdir: LatchOutputDir,
     genome_source: str,
@@ -325,11 +358,6 @@ def nextflow_runtime(
     """
     try:
         shared_dir = Path("/nf-workdir")
-
-        # Create custom sample sheet
-        input_samplesheet = custom_samplesheet_constructor(
-            samples=input, shared_dir=shared_dir
-        )
 
         # List of directories and files to ignore when copying
         ignore_list = [
@@ -596,5 +624,6 @@ def nextflow_runtime(
         except subprocess.CalledProcessError as e:
             print(f"Failed to compute storage size: {e.stderr}")
         except Exception as e:
+            print(f"Failed to compute storage size: {e}")
             print(f"Failed to compute storage size: {e}")
             print(f"Failed to compute storage size: {e}")

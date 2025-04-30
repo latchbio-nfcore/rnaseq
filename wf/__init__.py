@@ -1,6 +1,7 @@
 from pathlib import Path
 from typing import List, Optional
 
+from latch import map_task
 from latch.resources.launch_plan import LaunchPlan
 from latch.resources.workflow import workflow
 from latch.types import metadata
@@ -28,8 +29,15 @@ from wf.dataclasses import (
     SampleSheet,
     Trimmer,
     UMIToolsGrouping,
+    WrappedSample,
 )
-from wf.entrypoint import custom_samplesheet_constructor, initialize, nextflow_runtime
+from wf.entrypoint import (  # prepare_wrapped_inputs,; wrapper_compress,
+    compress_sample_fastqs,
+    custom_samplesheet_constructor,
+    initialize,
+    nextflow_runtime,
+    prepare_wrapped_inputs,
+)
 from wf.prep_dge import prep_dge
 
 # Define the structure of the workflow UI
@@ -746,6 +754,7 @@ NextflowMetadata(
 @workflow(metadata._nextflow_metadata)
 def nf_nf_core_rnaseq(
     input: List[SampleSheet],
+    # input_samplesheet: LatchFile,
     run_name: str,
     genome_source: str,
     genome: Optional[str],
@@ -973,9 +982,33 @@ def nf_nf_core_rnaseq(
     """
 
     pvc_name: str = initialize(run_name=run_name)
+    shared_dir = Path("/nf-workdir")
+
+    # wrapped_inputs = prepare_wrapped_inputs(samples=input, pvc_name=pvc_name)
+
+    # compressed_samples = map_task(wrapper_compress)(wrapped=wrapped_inputs)
+
+    wrapped_inputs = prepare_wrapped_inputs(
+        samples=input, run_name=run_name, outdir=outdir
+    )
+
+    compressed_samples = map_task(compress_sample_fastqs)(wrapped=wrapped_inputs)
+
+    # # Step 1: Compress FASTQs in parallel
+    # compressed_samples = map_task(compress_sample_fastqs)(
+    #     sample=input,
+    # )
+
+    input_samplesheet = custom_samplesheet_constructor(
+        samples=compressed_samples,
+        run_name=run_name,
+        outdir=outdir,
+    )
+
     run_name = nextflow_runtime(
         pvc_name=pvc_name,
-        input=input,
+        # input=input,
+        input_samplesheet=input_samplesheet,
         run_name=run_name,
         outdir=outdir,
         genome_source=genome_source,

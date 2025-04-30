@@ -48,25 +48,78 @@ def get_flag_defaults(name: str, val: Any, default_val: Optional[Any]):
         return get_flag(name=name, val=val)
 
 
+# def custom_samplesheet_constructor(
+#     samples: List[SampleSheet], shared_dir: Path
+# ) -> Path:
+#     """
+#     Construct a custom sample sheet CSV file from the provided samples.
+
+#     This function creates a CSV file containing information about each sample,
+#     including sample name, FASTQ file paths, and strandedness. It also handles
+#     compression of FASTQ files if they are not already gzipped.
+
+#     Args:
+#         samples (List[SampleSheet]): A list of SampleSheet objects containing sample information.
+#         shared_dir (Path): The shared directory path for storing compressed files.
+
+#     Returns:
+#         Path: The path to the created sample sheet CSV file.
+#     """
+#     samplesheet = Path("/root/samplesheet.csv")
+
+#     columns = ["sample", "fastq_1", "fastq_2", "strandedness"]
+
+#     with open(samplesheet, "w") as f:
+#         writer = csv.DictWriter(f, columns, delimiter=",")
+#         writer.writeheader()
+
+#         for sample in samples:
+#             # Check and compress fastq_1 if needed
+#             fastq_1_path = sample.fastq_1.remote_path
+#             if not sample.fastq_1.remote_path.endswith(".gz"):
+#                 local_path = Path(sample.fastq_1.local_path)
+#                 compressed_path = shared_dir / f"{local_path.name}.gz"
+#                 print(f"Compressing to {compressed_path}")
+#                 subprocess.run(
+#                     ["pigz", "-p", "8", "-c", local_path],
+#                     stdout=open(compressed_path, "wb"),
+#                     check=True,
+#                 )
+#                 fastq_1_path = compressed_path
+
+#             # Check and compress fastq_2 if it exists and needs compression
+#             fastq_2_path = None
+#             if sample.fastq_2:
+#                 fastq_2_path = sample.fastq_2.remote_path
+#                 if not sample.fastq_2.remote_path.endswith(".gz"):
+#                     local_path = Path(sample.fastq_2.local_path)
+#                     compressed_path = shared_dir / f"{local_path.name}.gz"
+#                     print(f"Compressing to {compressed_path}")
+#                     subprocess.run(
+#                         ["pigz", "-p", "8", "-c", local_path],
+#                         stdout=open(compressed_path, "wb"),
+#                         check=True,
+#                     )
+#                     fastq_2_path = compressed_path
+
+#             row_data = {
+#                 "sample": sample.sample,
+#                 "fastq_1": fastq_1_path,
+#                 "fastq_2": fastq_2_path if fastq_2_path else "",
+#                 "strandedness": sample.strandedness
+#                 if sample.strandedness is not None
+#                 else "auto",
+#             }
+#             writer.writerow(row_data)
+
+#     return samplesheet
+from latch.ldata.path import LPath
+
+
 def custom_samplesheet_constructor(
     samples: List[SampleSheet], shared_dir: Path
 ) -> Path:
-    """
-    Construct a custom sample sheet CSV file from the provided samples.
-
-    This function creates a CSV file containing information about each sample,
-    including sample name, FASTQ file paths, and strandedness. It also handles
-    compression of FASTQ files if they are not already gzipped.
-
-    Args:
-        samples (List[SampleSheet]): A list of SampleSheet objects containing sample information.
-        shared_dir (Path): The shared directory path for storing compressed files.
-
-    Returns:
-        Path: The path to the created sample sheet CSV file.
-    """
     samplesheet = Path("/root/samplesheet.csv")
-
     columns = ["sample", "fastq_1", "fastq_2", "strandedness"]
 
     with open(samplesheet, "w") as f:
@@ -74,29 +127,37 @@ def custom_samplesheet_constructor(
         writer.writeheader()
 
         for sample in samples:
-            # Check and compress fastq_1 if needed
+            # fastq_1
             fastq_1_path = sample.fastq_1.remote_path
             if not sample.fastq_1.remote_path.endswith(".gz"):
-                local_path = Path(sample.fastq_1.local_path)
+                # Download to shared_dir
+                local_path = shared_dir / Path(sample.fastq_1.remote_path).name
+                print(f"Downloading {sample.fastq_1.remote_path} to {local_path}")
+                LPath(sample.fastq_1.remote_path).download(local_path)
+
+                # Compress directly in shared_dir
                 compressed_path = shared_dir / f"{local_path.name}.gz"
                 print(f"Compressing to {compressed_path}")
                 subprocess.run(
-                    ["pigz", "-p", "8", "-c", local_path],
+                    ["pigz", "-p", "8", "-c", str(local_path)],
                     stdout=open(compressed_path, "wb"),
                     check=True,
                 )
                 fastq_1_path = compressed_path
 
-            # Check and compress fastq_2 if it exists and needs compression
+            # fastq_2
             fastq_2_path = None
             if sample.fastq_2:
                 fastq_2_path = sample.fastq_2.remote_path
                 if not sample.fastq_2.remote_path.endswith(".gz"):
-                    local_path = Path(sample.fastq_2.local_path)
+                    local_path = shared_dir / Path(sample.fastq_2.remote_path).name
+                    print(f"Downloading {sample.fastq_2.remote_path} to {local_path}")
+                    LPath(sample.fastq_2.remote_path).download(local_path)
+
                     compressed_path = shared_dir / f"{local_path.name}.gz"
                     print(f"Compressing to {compressed_path}")
                     subprocess.run(
-                        ["pigz", "-p", "8", "-c", local_path],
+                        ["pigz", "-p", "8", "-c", str(local_path)],
                         stdout=open(compressed_path, "wb"),
                         check=True,
                     )
@@ -106,9 +167,7 @@ def custom_samplesheet_constructor(
                 "sample": sample.sample,
                 "fastq_1": fastq_1_path,
                 "fastq_2": fastq_2_path if fastq_2_path else "",
-                "strandedness": sample.strandedness
-                if sample.strandedness is not None
-                else "auto",
+                "strandedness": sample.strandedness if sample.strandedness else "auto",
             }
             writer.writerow(row_data)
 
@@ -537,4 +596,5 @@ def nextflow_runtime(
         except subprocess.CalledProcessError as e:
             print(f"Failed to compute storage size: {e.stderr}")
         except Exception as e:
+            print(f"Failed to compute storage size: {e}")
             print(f"Failed to compute storage size: {e}")

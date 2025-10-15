@@ -5,7 +5,7 @@ process RSEQC_READDISTRIBUTION {
     conda "bioconda::rseqc=5.0.3"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/rseqc:5.0.3--py39hf95cd2a_0' :
-        'biocontainers/rseqc:5.0.3--py39hf95cd2a_0' }"
+        'quay.io/biocontainers/rseqc:5.0.3--py39hf95cd2a_0' }"
 
     input:
     tuple val(meta), path(bam)

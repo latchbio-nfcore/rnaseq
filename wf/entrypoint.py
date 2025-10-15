@@ -74,33 +74,34 @@ def custom_samplesheet_constructor(
         writer.writeheader()
 
         for sample in samples:
+            # print
             # Check and compress fastq_1 if needed
             fastq_1_path = sample.fastq_1.remote_path
-            if not sample.fastq_1.remote_path.endswith(".gz"):
-                local_path = Path(sample.fastq_1.local_path)
-                compressed_path = shared_dir / f"{local_path.name}.gz"
-                print(f"Compressing to {compressed_path}")
-                subprocess.run(
-                    ["pigz", "-p", "8", "-c", local_path],
-                    stdout=open(compressed_path, "wb"),
-                    check=True,
-                )
-                fastq_1_path = compressed_path
+            #     if not sample.fastq_1.remote_path.endswith(".gz"):
+            #         local_path = Path(sample.fastq_1.local_path)
+            #         compressed_path = shared_dir / f"{local_path.name}.gz"
+            #         print(f"Compressing to {compressed_path}")
+            #         subprocess.run(
+            #             ["pigz", "-p", "8", "-c", local_path],
+            #             stdout=open(compressed_path, "wb"),
+            #             check=True,
+            #         )
+            #         fastq_1_path = compressed_path
 
             # Check and compress fastq_2 if it exists and needs compression
             fastq_2_path = None
             if sample.fastq_2:
                 fastq_2_path = sample.fastq_2.remote_path
-                if not sample.fastq_2.remote_path.endswith(".gz"):
-                    local_path = Path(sample.fastq_2.local_path)
-                    compressed_path = shared_dir / f"{local_path.name}.gz"
-                    print(f"Compressing to {compressed_path}")
-                    subprocess.run(
-                        ["pigz", "-p", "8", "-c", local_path],
-                        stdout=open(compressed_path, "wb"),
-                        check=True,
-                    )
-                    fastq_2_path = compressed_path
+            #         if not sample.fastq_2.remote_path.endswith(".gz"):
+            #             local_path = Path(sample.fastq_2.local_path)
+            #             compressed_path = shared_dir / f"{local_path.name}.gz"
+            #             print(f"Compressing to {compressed_path}")
+            #             subprocess.run(
+            #                 ["pigz", "-p", "8", "-c", local_path],
+            #                 stdout=open(compressed_path, "wb"),
+            #                 check=True,
+            #             )
+            #             fastq_2_path = compressed_path
 
             row_data = {
                 "sample": sample.sample,
@@ -142,8 +143,9 @@ def initialize(run_name: str) -> str:
         "http://nf-dispatcher-service.flyte.svc.cluster.local/provision-storage-ofs",
         headers=headers,
         json={
-            "storage_expiration_hours": 1,
+            "storage_expiration_hours": 12,
             "version": 2,
+            # "src_execution_id": 776711,
         },
     )
     resp.raise_for_status()

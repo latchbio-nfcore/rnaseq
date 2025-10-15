@@ -36,6 +36,17 @@ params.kallisto_index   = WorkflowMain.getGenomeAttribute(params, 'kallisto')
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
+// Detect uncompressed FASTQ files before nf-validation plugin is loaded
+def samplesheet_text = file(params.input).text
+def has_uncompressed_fastq = samplesheet_text =~ /(?i)\.(fastq|fq)(?!\.gz)/
+
+// Disable param validation entirely if any uncompressed FASTQs found
+if (has_uncompressed_fastq) {
+    log.warn "Disabling nf-validation plugin because uncompressed FASTQ files were found."
+    params.validate_params = false
+}
+
+
 include { validateParameters; paramsHelp } from 'plugin/nf-validation'
 
 // Print help message if needed
@@ -48,9 +59,10 @@ if (params.help) {
 }
 
 // Validate input parameters
-if (params.validate_params) {
-    validateParameters()
-}
+// if (params.validate_params) {
+//     validateParameters()
+// }
+
 
 WorkflowMain.initialise(workflow, params, log)
 

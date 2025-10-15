@@ -5,7 +5,7 @@ process KALLISTO_INDEX {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/kallisto:0.48.0--h15996b6_2':
-        'biocontainers/kallisto:0.48.0--h15996b6_2' }"
+        'quay.io/biocontainers/kallisto:0.48.0--h15996b6_2' }"
 
     input:
     tuple val(meta), path(fasta)

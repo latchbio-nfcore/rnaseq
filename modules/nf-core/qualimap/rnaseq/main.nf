@@ -5,7 +5,7 @@ process QUALIMAP_RNASEQ {
     conda "bioconda::qualimap=2.3"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/qualimap:2.3--hdfd78af_0' :
-        'biocontainers/qualimap:2.3--hdfd78af_0' }"
+        'quay.io/biocontainers/qualimap:2.3--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(bam)
@@ -22,7 +22,9 @@ process QUALIMAP_RNASEQ {
     def args = task.ext.args   ?: ''
     prefix   = task.ext.prefix ?: "${meta.id}"
     def paired_end = meta.single_end ? '' : '-pe'
-    def memory = (task.memory.mega*0.8).intValue() + 'M'
+    // def memory = (task.memory.mega*0.8).intValue() + 'M'
+    def memory = (task.memory.toMega() * 0.95).intValue() + 'M'
+
 
     def strandedness = 'non-strand-specific'
     if (meta.strandedness == 'forward') {
